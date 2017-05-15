@@ -1,0 +1,25 @@
+<div class="container page">
+	<div class="text-center">
+		<h1>settings</h1>
+		<form>
+			<div class="form-group">
+				<label>Background image</label>
+				<img src="../backend/web/uploads/backgrounds/{{user.flat.background_image}}" class="previewBackgroundImg"/>
+				<input type="file" background-change class="form-control" id="backgroundImage">
+			</div>
+			<div class="form-group">
+				<label for="widgetColor">widget color</label>
+				<input type="color" ng-change="changeFlatSettings()" ng-model="user.flat.widget_color" class="form-control" id="widgetColor">
+			</div>
+			<div class="form-group">
+				<label for="headerColor">header color</label>
+				<input type="color" ng-change="changeFlatSettings()" ng-model="user.flat.header_color" class="form-control" id="headerColor">
+			</div>
+			<div class="form-group">
+				<label for="fontColor">font color</label>
+				<input type="color" ng-change="changeFlatSettings()" ng-model="user.flat.font_color" class="form-control" id="fontColor">
+			</div>
+		</form>
+		<a href="#flat" class="btn btn-primary">Change flat</a>
+	</div>
+</div>

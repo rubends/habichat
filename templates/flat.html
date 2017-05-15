@@ -1,0 +1,43 @@
+<div class="container">
+	<div class="text-center">
+		<h1>Find your flat</h1>
+		<h2>By flatname</h2>
+		<form>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Flatname">	
+			</div>
+		</form>
+		<h2>Or by adress</h2>
+		<form>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Street">
+				<input type="number" class="form-control" placeholder="Number">
+			</div>
+			<div class="form-group">
+				<input type="number" class="form-control" placeholder="Zipcode">
+			</div>
+		</form>
+		<h1>Create a dashboard for your flat</h1>
+		<p>Chat with your flatmates, share the bills, create grocery lists, divide the weekly chores and many more in your own personalised dashboard that fits your flat.</p>
+		<form ng-submit="flatForm.$valid && createFlat()" name="flatForm" novalidate>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Flatname" ng-model="registerFlat.name" required ng-minlength="3">	
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Street" ng-model="registerFlat.street" required ng-minlength="3">
+				<input type="number" class="form-control" placeholder="Number" ng-model="registerFlat.number" required>
+			</div>
+			<div class="form-group">
+				<input type="number" class="form-control" placeholder="Zipcode" ng-model="registerFlat.zipcode" required ng-minlength="4">
+			</div>
+			<p>Add your flatmates</p>
+			<div class="form-group">
+				<input type="email" class="form-control" placeholder="Flatmate's e-mailadress">
+				<p>...</p>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary" ng-disabled="flatForm.$invalid">Create</button>
+			</div>
+		</form>
+	</div>
+</div>

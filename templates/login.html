@@ -1,0 +1,16 @@
+<div class="container">
+	<div class="text-center">
+		<h1>Login</h1>
+		<form ng-submit="loginForm.$valid && loginUser()" name="loginForm" novalidate>
+			<div class="form-group">
+				<input type="email" class="form-control" id="loginMail" placeholder="E-mailadress" ng-model="userLogin.email" required>	
+			</div>
+			<div class="form-group">
+				<input type="password" class="form-control" id="loginPass" placeholder="Password" ng-model="userLogin.password" required>
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">Login</button>
+			</div>
+		</form>
+	</div>
+</div>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>HabiChat</title>
+	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="style/style.css" />
+</head>
+<body ng-app="habichat" ng-controller="mainCtrl" ng-init="getUser()">
+
+	<header ng-include="'fragments/header.html'"></header>
+
+	<ng-view></ng-view>
+
+	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/angular-route/angular-route.min.js"></script>
+    <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
+    <script src="app.js"></script> 
+    <script src="controllers/dashboardController.js"></script>
+    <script src="controllers/loginController.js"></script>
+    <script src="controllers/registerController.js"></script>
+    <script src="controllers/flatController.js"></script>
+    <script src="controllers/logoutController.js"></script>
+    <script src="controllers/settingsController.js"></script>
+    <script src="services/getUser.js"></script>
+    <script src="services/getFlat.js"></script>
+</body>
+</html>

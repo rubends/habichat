@@ -1,0 +1,55 @@
+@backgroundColor: #f8f8f8;
+
+// NAVIGATION 
+.navbar {
+	margin-bottom: 0;
+}
+
+// PAGE
+.page{
+	padding-top: 16px;
+	min-height: calc(~"100vh - 50px");
+}
+
+// DASHBOARD
+#dashboard {
+	background-size: cover;
+}
+
+.previewBackgroundImg {
+	width: 20%;
+}
+
+.addWidgetBtn {
+	position: absolute;
+	bottom: 24px;
+	right: 24px;
+}
+
+#widgets {
+	background-color: rgba(0, 0, 0, 0.38);
+    height: 100vh;
+    position: absolute;
+    width: 100%;
+    top: 50px;
+
+	.widgetBlock {
+		position: relative;
+		width: 50%;
+		margin: auto;
+		min-height: 50vh;
+		background-color: @backgroundColor;
+		padding: 16px;
+		margin-top: 50px;
+
+		.closeIcon {
+			position: absolute;
+    		right: 16px;
+    		top: 16px;
+		}
+
+		.closeIcon:hover {
+			cursor: pointer;
+		}
+	}
+}

@@ -1,0 +1,30 @@
+{
+  "name": "habichat",
+  "authors": [
+    "rubends <rubendeswaef@gmail.com>"
+  ],
+  "description": "The online dashboard for flatmates",
+  "main": "app.js",
+  "keywords": [
+    "dashboard",
+    "flat",
+    "habichat"
+  ],
+  "license": "none",
+  "homepage": "https://github.com/rubends/habichat",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.1",
+    "font-awesome": "^4.7.0",
+    "bootstrap": "^3.3.7",
+    "angular-route": "^1.6.1",
+    "angular-cookies": "^1.6.1"
+  }
+}

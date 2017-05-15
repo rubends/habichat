@@ -1,0 +1,20 @@
+<div class="move">
+    <div class="panel panel-default" ng-style="widgetStyle">
+        <div class="panel-heading" ng-style="headerStyle">
+            <h3>{{widget.title}}</h3>
+        </div>
+        <div class="panel-body">
+            <form ng-submit="postTodo(widget.id)">
+                <div class="input-group">
+                    <input type="text" ng-model="todoForm.todo" id="addTodo" name="todo" class="form-control" placeholder="Add a todo">
+                    <span class="input-group-btn">
+                    <button class="btn btn-secondary" type="submit" ng-style="widgetHeader"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+                    </span>
+                </div>
+            </form> 
+        </div>
+        <div class="panel-footer" ng-style="widgetStyle">
+            
+        </div>
+    </div>
+</div>
