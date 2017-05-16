@@ -71,6 +71,8 @@ class Widget
      */
     protected $user;
 
+    protected $items;
+
     /**
      * @return int
      */
@@ -198,5 +200,15 @@ class Widget
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    public function getItems()
+    {
+        return $this->items;
+    }
+
+    public function setItems($items)
+    {
+        $this->items = $items;
     }
 }

@@ -84,9 +84,6 @@ class GroceryController extends FOSRestController
     {
         $this->getDoctrine()->getManager()->remove($grocery);
         $this->getDoctrine()->getManager()->flush();
-
-        // $user = $this->get('security.token_storage')->getToken()->getUser();
-        // return $this->getDoctrine()->getRepository('AppBundle:Grocery')->findByUserID($user->getId());
         return new JsonResponse(array('deleted' => $grocery));
     }
 

@@ -21,6 +21,13 @@ class UserController extends FOSRestController
     public function getUserAction()
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
+        $flat = $user->getFlat();
+        $widgets = $flat->getWidgets();
+        foreach($widgets as $key => $widget){
+            $type = $widget->getWidgetType();
+            $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+            $widget->setItems($items);
+        }
         return $user;
     }
 
@@ -162,36 +169,5 @@ class UserController extends FOSRestController
         $em->flush();
 
         return new Response('Changed flat', Response::HTTP_NO_CONTENT);
-    }
-
-    /**
-     * @ApiDoc()
-     *
-     * @param string $option
-     * @param int $color
-     *
-     * @return User[]
-     */
-    public function patchUserColorAction($option, $color)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-
-        if ($option == "backgroundcolor") {
-            $user->setBackgroundColor($color);
-        }
-        if ($option == "widgetcolor") {
-            $user->setWidgetColor($color);
-        }
-        if ($option == "headercolor") {
-            $user->setHeaderColor($color);
-        }
-        if ($option == "fontcolor") {
-            $user->setFontColor($color);
-        }
-        
-
-        $em->flush();
-        return new JsonResponse(array('API' => "Changed color setting."));
     }
 }

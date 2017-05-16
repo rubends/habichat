@@ -28,54 +28,6 @@ class TodoController extends FOSRestController
     /**
      * @ApiDoc()
      *
-     * @return Todo[]
-     */
-    public function getTodosAction()
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        return $this->getDoctrine()->getRepository('AppBundle:Todo')->findByFlatID($user->getFlat());
-    }
-
-    /**
-     * @ApiDoc()
-     *
-     * @param Request $request
-     *
-     * @return Todo[]
-     */
-    public function postTodosAction(Request $request)
-    {
-        $todo = new Todo();
-        $todo->setTitle($request->request->get('todo'));
-        $todo->setDone("0");
-
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $todo->setUserID($user->getId());
-
-
-        $errors = $this->get('validator')->validate($todo);
-        if (count($errors) > 0) {
-            $errorStrings = [];
-            foreach ($errors as $error) {
-                $errorStrings[] = $error->getMessage();
-            }
-            return $this->view(
-                [
-                    'error' => implode(',', $errorStrings)
-                ],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        $this->getDoctrine()->getManager()->persist($todo);
-        $this->getDoctrine()->getManager()->flush();
-
-        return $todo;
-    }
-
-    /**
-     * @ApiDoc()
-     *
      * @param Todo $todo
      *
      * @return Todo[]
@@ -93,14 +45,12 @@ class TodoController extends FOSRestController
     /**
      * @ApiDoc()
      *
-     * @param int $id
+     * @param Todo $todo
      *
      * @return Todo[]
      */
-    public function patchTodoToggleAction($id)
+    public function putTodoToggleAction(Todo $todo)
     {
-        $em = $this->getDoctrine()->getManager();
-        $todo = $em->getRepository('AppBundle:Todo')->find($id);
         $done = $todo->getDone();
 
         if ($done==0) {
@@ -110,8 +60,8 @@ class TodoController extends FOSRestController
             $todo->setDone('0');
         }
 
-        $em->flush();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        return $this->getDoctrine()->getRepository('AppBundle:Todo')->findByFlatID($user->getFlat());
+        $this->getDoctrine()->getManager()->persist($todo);
+        $this->getDoctrine()->getManager()->flush();
+        return $todo;
     }
 }

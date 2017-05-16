@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Widget;
+use AppBundle\Entity\Todo;
+use AppBundle\Entity\Grocery;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -21,7 +23,13 @@ class WidgetController extends FOSRestController
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $flat = $user->getFlat();
-        return $flat->getWidgets();
+        $widgets = $flat->getWidgets();
+        foreach($widgets as $key => $widget){
+            $type = $widget->getWidgetType();
+            $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+            $widget->setItems($items);
+        }
+        return $widgets;
     }
 
     /**
@@ -44,38 +52,13 @@ class WidgetController extends FOSRestController
         $widget->setUser($user);
         $widget->setFlat($flat);
         $widget->setSize(2);
+        $widget->setItems([]);
 
         $this->getDoctrine()->getManager()->persist($widget);
         $this->getDoctrine()->getManager()->flush();
 
         return $widget;
     }
-
-    // /**
-    //  * @ApiDoc()
-    //  *
-    //  * @return Widget[]
-    //  */
-    // public function postWidgetsUserAction()
-    // {
-    //     $user = $this->get('security.token_storage')->getToken()->getUser();
-    //     $userId = $user->getId();
-
-    //     $place = -1; //every widget gets the next place
-    //     $widgets = ['todo', 'weather', 'joke', 'catGifs', 'groceryList', 'analogClock', 'digitalClock', 'meeting'];
-    //     foreach ($widgets as $widget) {
-    //         $widget = new Widget();
-    //         $widget->setWidget($widget);
-    //         $widget->setVisible(0);
-    //         $place++;
-    //         $widget->setPlace($place);
-    //         $widget->setSize(2);
-    //         $widget->setUserId($userId);
-    //         $this->getDoctrine()->getManager()->persist($widget);
-    //         $this->getDoctrine()->getManager()->flush();
-    //     }
-    //     return new JsonResponse(array('API' => "Post widget."));
-    // }
 
     /**
      * @ApiDoc()
@@ -92,14 +75,12 @@ class WidgetController extends FOSRestController
     /**
      * @ApiDoc()
      *
-     * @param int $id
+     * @param Widget $widget
      *
      * @return int
      */
-    public function patchWidgetToggleAction($id)
+    public function putWidgetToggleAction(Widget $widget)
     {
-        $em = $this->getDoctrine()->getManager();
-        $widget = $em->getRepository('AppBundle:Widget')->find($id);
         $visible = $widget->getVisible();
 
         if ($visible==0) {
@@ -111,45 +92,79 @@ class WidgetController extends FOSRestController
             $updateVis = 0;
         }
 
-        $em->flush();
-        return $updateVis;
+        $this->getDoctrine()->getManager()->persist($widget);
+        $this->getDoctrine()->getManager()->flush();
+        return $widget;
     }
 
     /**
      * @ApiDoc()
      *
-     * @param int $id
+     * @param Widget $widget
      * @param int $place
      *
      * @return Widget[]
      */
-    public function patchWidgetPlaceAction($id, $place)
+    public function putWidgetPlaceAction(Widget $widget, $place)
     {
-        $em = $this->getDoctrine()->getManager();
-        $widget = $em->getRepository('AppBundle:Widget')->find($id);
-
         $widget->setPlace($place);
 
-        $em->flush();
+        $this->getDoctrine()->getManager()->persist($widget);
+        $this->getDoctrine()->getManager()->flush();
         return new JsonResponse(array('API' => "Changed place widget."));
     }
 
     /**
      * @ApiDoc()
      *
-     * @param int $id
+     * @param Widget $widget
      * @param int $size
      *
      * @return Widget[]
      */
-    public function patchWidgetSizeAction($id, $size)
+    public function putWidgetSizeAction(Widget $widget, $size)
     {
-        $em = $this->getDoctrine()->getManager();
-        $widget = $em->getRepository('AppBundle:Widget')->find($id);
-
         $widget->setSize($size);
 
-        $em->flush();
+        $this->getDoctrine()->getManager()->persist($widget);
+        $this->getDoctrine()->getManager()->flush();
         return new JsonResponse(array('API' => "Changed size widget."));
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Widget $widget
+     * @param Request $request
+     * @return todo[]
+     */
+    public function postWidgetTodoAction(Widget $widget, Request $request)
+    {
+        $todo = new Todo();
+        $todo->setTitle($request->request->get('title'));
+        $todo->setDone(0);
+        $todo->setWidget($widget->getId());
+
+        $this->getDoctrine()->getManager()->persist($todo);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $todo;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Widget $widget
+     * @param Request $request
+     * @return grocery[]
+     */
+    public function postWidgetGroceryAction(Widget $widget, Request $request)
+    {
+        $grocery = new Grocery();
+        $grocery->setItem($request->request->get('item'));
+        $grocery->setWidget($widget->getId());
+
+        $this->getDoctrine()->getManager()->persist($grocery);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $grocery;
     }
 }
