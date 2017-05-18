@@ -22,11 +22,13 @@ class UserController extends FOSRestController
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $flat = $user->getFlat();
-        $widgets = $flat->getWidgets();
-        foreach($widgets as $key => $widget){
-            $type = $widget->getWidgetType();
-            $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-            $widget->setItems($items);
+        if($flat){
+            $widgets = $flat->getWidgets();
+            foreach($widgets as $key => $widget){
+                $type = $widget->getWidgetType();
+                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                $widget->setItems($items);
+            }
         }
         return $user;
     }
@@ -74,7 +76,6 @@ class UserController extends FOSRestController
                 $user->setEmail($data['email']);
                 $user->setUsername($data['username']);
                 $user->setRole("ROLE_USER");
-                $user->setFlat("0");
 
                 $encoder = $this->container->get('security.password_encoder');
                 $encoded = $encoder->encodePassword($user, $data['password']);
@@ -154,20 +155,41 @@ class UserController extends FOSRestController
 
     /**
      * @ApiDoc()
-     *
-     * @param int $flat
-     * @param string $role
-     *
+     * @param User $user
      * @return Response
      */
-    public function patchUserFlatAction($flat, $role)
+    public function deleteUsersFlatAction(User $user)
     {
-        $em = $this->getDoctrine()->getManager();
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $user->setFlat($flat);
-        $user->setRole($role);
-        $em->flush();
+        if($user->getRole() === 'ROLE_ADMIN'){
+            $admins = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('flat' => $user->getFlat(), 'role' => 'ROLE_ADMIN'));
+            if($admins.length <= 1){
+                return new JsonResponse(array('error' => "You can't delete the only admin!"));
+            }
+        }
+        $user->setFlat(null);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
 
-        return new Response('Changed flat', Response::HTTP_NO_CONTENT);
+        return $this->get('security.token_storage')->getToken()->getUser()->getFlat();
+    }
+
+    /**
+     * @ApiDoc()
+     * @param User $user
+     * @return Response
+     */
+    public function putUsersRoleAction(User $user)
+    {
+        $role = $user->getRole();
+        if($role === 'ROLE_ADMIN'){
+            $user->setRole('ROLE_USER');
+        } else if ($role === 'ROLE_USER') {
+            $user->setRole('ROLE_ADMIN');
+        }
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $user;
     }
 }

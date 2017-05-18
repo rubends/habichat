@@ -1,22 +1,48 @@
 <div class="container-fluid page" id="dashboard" ng-style="dashboardStyle">
 	<div class="widgets">
-		<div ng-repeat="widget in user.flat.widgets | filter: {visible: '1'} | orderBy:'place'" class="moveWidget col-md-{{widget.size}}">
-			<div ng-include="'widgets/' + widget.widget_type + '.html'"></div>
+		<div ng-repeat="widget in user.flat.widgets | filter: {visible: '1'} | orderBy:'place' as allWidgets" class="moveWidget col-md-{{widget.size}}" id="{{widget.id}}" packery>
+			<div class="move todo" >
+				<div class="panel panel-default" ng-style="widgetStyle">
+					<div class="panel-heading" ng-style="headerStyle">
+						<h3>{{widget.title}}</h3>
+						<div class="resize">
+							<i class="fa fa-window-restore" aria-hidden="true" ng-click="changeWidgetSize(widget.id, widget.size)" data-toggle="tooltip" title="Resize widget" onmouseenter="$(this).tooltip()"></i>
+							<i ng-if="!widget.user || widget.user.id === user.id || user.role === 'ROLE_ADMIN'" class="fa fa-times" aria-hidden="true" ng-click="deleteWidget(widget.id)" data-toggle="tooltip" title="Delete widget" onmouseenter="$(this).tooltip()"></i>
+						</div>
+					</div>
+					<div ng-include="'widgets/' + widget.widget_type + '.html'"></div>
+				</div>
+			</div>
 		</div>
+		<h2 ng-hide="allWidgets.length" class="text-center">There are no widgets set.</h2>
 	</div>
 	<div ng-click="addWidgets = true" class="addWidgetBtn"><button type="button" class="btn btn-secondary">Add widget</button></div>
 </div>
+
 <div id="widgets" ng-show="addWidgets">
 	<div class="widgetBlock">	
-		<div class="closeIcon" ng-click="addWidgets = false"><i class="fa fa-times fa-lg" aria-hidden="true"></i></div>
+		<div class="closeIcon" ng-click="addWidgets = false; widgetForm = []"><i class="fa fa-times fa-lg" aria-hidden="true"></i></div>
 		<h1>Widgets</h1>
-		<form ng-submit="addWidget()">
-			<div class="form-group">
-				<label for="title">title</label>
-				<input type="text" ng-model="widgetForm.title" class="form-control" id="title">
-			</div>
-			<input type="text" ng-model="widgetForm.type" class="form-control" id="type">
-			<button type="submit" class="btn btn-default">Add</button>
-		</form>
+		<div class="typeBlock" ng-click="widgetForm.type = 'Todo'" ng-hide="widgetForm.type">
+			<i class="fa fa-list" aria-hidden="true"></i>
+			<p>Todo</p>
+		</div>
+		<div class="typeBlock" ng-click="widgetForm.type = 'Grocery'" ng-hide="widgetForm.type">
+			<i class="fa fa-shopping-basket" aria-hidden="true"></i>
+			<p>Grocery</p>
+		</div>
+		<div class="typeBlock" ng-click="widgetForm.type = 'Text'" ng-hide="widgetForm.type">
+			<i class="fa fa-file-text-o" aria-hidden="true"></i>
+			<p>Text</p>
+		</div>
+		<div class="typeBlock" ng-click="widgetForm.type = 'Picture'" ng-hide="widgetForm.type">
+			<i class="fa fa-picture-o" aria-hidden="true"></i>
+			<p>Picture</p>
+		</div>
+		<div ng-include="'widgets/forms/' + widgetForm.type + 'Form.html'"></div>
 	</div>
+</div>
+
+<div class="undoDelete" ng-show="widgetDeleted" ng-click="deleteWidget(widgetDeleted)">
+	<p>Undo delete</p>
 </div>

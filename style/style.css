@@ -5,8 +5,29 @@
   padding-top: 16px;
   min-height: calc(100vh - 50px);
 }
+.homepage {
+  background-size: cover;
+  background-image: url('/img/intro.jpg');
+}
+.homepage .intro {
+  width: 50%;
+  margin: auto;
+}
 #dashboard {
   background-size: cover;
+}
+#dashboard h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+}
+#dashboard .moveWidget {
+  padding-right: 8px;
+  padding-left: 8px;
+}
+#dashboard .move {
+  cursor: move;
+  word-break: break-word;
 }
 .previewBackgroundImg {
   width: 20%;
@@ -16,12 +37,67 @@
   bottom: 24px;
   right: 24px;
 }
+.undoDelete {
+  position: absolute;
+  background-color: #2f2f2f;
+  bottom: 0;
+  width: 20%;
+  margin-left: 40%;
+  color: #f8f8f8;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+}
+.undoDelete p {
+  margin-bottom: 0;
+}
+.todo .resize {
+  float: right;
+}
+.todo .resize .fa {
+  cursor: pointer;
+}
+.todo ul {
+  list-style: none;
+  padding-left: 0;
+}
+.todo li {
+  cursor: pointer;
+}
+.todo li div {
+  display: inline-block;
+}
+.todo li .deleteTodo {
+  float: right;
+  display: none;
+}
+.todo li .checkSquare {
+  padding-right: 16px;
+}
+.todo li .hoverSquare {
+  display: none;
+  padding-right: 14px;
+}
+.todo li:hover .deleteTodo {
+  display: block;
+}
+.todo li:hover .checkSquare {
+  display: none;
+}
+.todo li:hover .hoverSquare {
+  display: inline-block;
+}
+.todo .deleteTodo:hover {
+  color: #c70000;
+  font-size: 19px;
+}
 #widgets {
   background-color: rgba(0, 0, 0, 0.38);
   height: 100vh;
   position: absolute;
   width: 100%;
   top: 50px;
+  z-index: 10;
 }
 #widgets .widgetBlock {
   position: relative;
@@ -39,4 +115,12 @@
 }
 #widgets .widgetBlock .closeIcon:hover {
   cursor: pointer;
+}
+#widgets .widgetBlock .typeBlock {
+  float: left;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #c5c5c5;
+  margin-right: 8px;
 }

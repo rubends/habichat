@@ -45,24 +45,23 @@ class FlatController extends FOSRestController
     {
         $data = $request->request->all();
         
-        $repository = $this->getDoctrine()->getRepository('AppBundle:Flat');
-        if (!$repository->findOneByName($data['name'])) {
+        $flat = new Flat();
+        $flat->setName($data['name']);
+        $flat->setStreet($data['street']);
+        $flat->setNumber($data['number']);
+        $flat->setZipcode($data['zipcode']);
+        // DEFAULT
+        $flat->setBackgroundImage('cork.jpg');
 
-            $flat = new Flat();
-            $flat->setName($data['name']);
-            $flat->setStreet($data['street']);
-            $flat->setNumber($data['number']);
-            $flat->setZipcode($data['zipcode']);
-            // DEFAULT
-            $flat->setBackgroundImage('/img/cork.jpg');
+        $this->getDoctrine()->getManager()->persist($flat);
+        
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $user->setFlat($flat);
+        $user->setRole('ROLE_ADMIN');
 
-            $this->getDoctrine()->getManager()->persist($flat);
-            $this->getDoctrine()->getManager()->flush();
-
-            return $flat;
-        }
-
-        return new JsonResponse(array('error' => "Flatname is already taken."));
+        $this->getDoctrine()->getManager()->flush();
+        
+        return $flat;
     }
 
     /**
@@ -123,4 +122,5 @@ class FlatController extends FOSRestController
 
         return $flat;
     }
+    
 }

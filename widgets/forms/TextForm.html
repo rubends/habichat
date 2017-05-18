@@ -1,0 +1,11 @@
+<p>Add a text</p>
+<form ng-submit="addWidget()">
+    <div class="form-group">
+        <label for="title">title</label>
+        <input type="text" ng-model="$parent.widgetForm.title" class="form-control" id="title">
+        <label for="title">text</label>
+        <textarea rows="4" ng-model="$parent.widgetForm.text" class="form-control" id="title"/>
+    </div>
+    <button type="submit" class="btn btn-default">Add</button>
+    <p ng-click="$parent.widgetForm = []">return</p>
+</form>

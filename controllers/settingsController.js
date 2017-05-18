@@ -7,7 +7,6 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 	};
 
 	$scope.changeFlatSettings = function(){
-		console.log($rootScope.user.flat);
         var sUrl = "../backend/web/api/flats/" + $rootScope.user.flat.id;
         var oConfig = {
             url: sUrl,
@@ -23,6 +22,53 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			else{
 				console.log(response);
 				$rootScope.user.flat = response.data;
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
+		});
+    }
+
+	$scope.moveOutFlat = function($userId){
+        var sUrl = "../backend/web/api/users/" + $userId + "/flat";
+        var oConfig = {
+            url: sUrl,
+            method: "DELETE",
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				console.log(response.data);
+			}
+			else{
+				$rootScope.user.flat = response.data;
+				if(!response.data){
+					$location.path('/flat');
+				}
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
+		});
+    }
+
+	$scope.toggleUserRole = function($userId){
+        var sUrl = "../backend/web/api/users/" + $userId + "/role";
+        var oConfig = {
+            url: sUrl,
+            method: "PUT",
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				console.log(response.data);
+			}
+			else{
+				for(flatmate in $rootScope.user.flat.users){
+					if($rootScope.user.flat.users[flatmate].id === response.data.id){
+						$rootScope.user.flat.users[flatmate] = response.data;
+					}
+				}
 			}
 		}, function errorCallback(response) {
 		    console.log(response);

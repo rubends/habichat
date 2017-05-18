@@ -1,20 +1,35 @@
-<div class="move">
-    <div class="panel panel-default" ng-style="widgetStyle">
-        <div class="panel-heading" ng-style="headerStyle">
-            <h3>{{widget.title}}</h3>
+<div class="panel-body tasks">
+    <p ng-hide="widget.items.length">You have no todo's</p>
+    <ul>
+        <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone" reload-packery>
+            <div ng-click="toggleTodoDone(widget.id, item.id)">
+                <i class="fa fa-square-o checkSquare" aria-hidden="true"></i>
+                <i class="fa fa-check-square-o hoverSquare" aria-hidden="true"></i>
+                <span>{{item.title}}</span>
+            </div>
+            <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i>
+        </li>
+    </ul>
+    <p ng-show="widget.items.length && !notDone.length">Congrats, you have done everything!</p>
+    <form ng-submit="postTodo(widget.id, todoForm.title); todoForm.title = ''">
+        <div class="input-group">
+            <input type="text" ng-model="todoForm.title" id="addTodo" name="todo" class="form-control" placeholder="Add a todo">
+            <span class="input-group-btn">
+            <button class="btn btn-secondary" type="submit" ng-style="widgetHeader"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+            </span>
         </div>
-        <div class="panel-body">
-            <form ng-submit="postTodo(widget.id)">
-                <div class="input-group">
-                    <input type="text" ng-model="todoForm.todo" id="addTodo" name="todo" class="form-control" placeholder="Add a todo">
-                    <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="submit" ng-style="widgetHeader"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
-                    </span>
-                </div>
-            </form> 
-        </div>
-        <div class="panel-footer" ng-style="widgetStyle">
-            
-        </div>
-    </div>
+    </form> 
+</div>
+<div class="panel-footer done" ng-style="widgetStyle" ng-show="widget.items.length">
+    <p>done</p>
+    <ul>
+        <li ng-repeat="item in widget.items | filter: {done: '1'} as dones" reload-packery>
+            <div ng-click="toggleTodoDone(widget.id, item.id)">
+            <i class="fa fa-check-square-o checkSquare" aria-hidden="true"></i>
+            <i class="fa fa-square-o hoverSquare" aria-hidden="true"></i>
+            <span href="">{{item.title}}</span>
+            </div>
+            <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i></li>
+    </ul>
+    <p ng-show="!dones.length">You haven't done anything!</p>
 </div>

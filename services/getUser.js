@@ -1,4 +1,4 @@
-app.factory('getUserService', ['$rootScope','$http', '$cookies', function($rootScope, $http, $cookies) {
+app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', function($rootScope, $http, $cookies, $location) {
 	return {
 		getUser: function(){
             if ($cookies.get('token')) {
@@ -25,7 +25,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', function($rootS
                 });
             }
             else{
-                console.log("no cookie");
+                $location.path('/login');
             }
             return promise;
         }

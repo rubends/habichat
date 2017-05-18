@@ -1,19 +1,49 @@
 @backgroundColor: #f8f8f8;
+@mainColor: #42AB9E;
+@secondaryColor: #c5c5c5;
+@darkColor: #2f2f2f;
 
-// NAVIGATION 
+// NAVIGATION ****************************************************************************
 .navbar {
 	margin-bottom: 0;
 }
 
-// PAGE
+// PAGE ****************************************************************************
 .page{
 	padding-top: 16px;
 	min-height: calc(~"100vh - 50px");
 }
 
-// DASHBOARD
+// HOME **************************************************************************************
+.homepage {
+	background-size: cover;
+    background-image: url('/img/intro.jpg');
+
+	.intro {
+		width: 50%;
+    	margin: auto;
+	}
+}
+
+// DASHBOARD ****************************************************************************
 #dashboard {
 	background-size: cover;
+
+	h3 {
+		margin-top: 0;
+    	margin-bottom: 0;
+    	display: inline-block;
+	}
+
+	.moveWidget {
+		padding-right: 8px;
+		padding-left: 8px;
+	}
+
+	.move {
+		cursor: move;
+		word-break: break-word;
+	}
 }
 
 .previewBackgroundImg {
@@ -26,12 +56,80 @@
 	right: 24px;
 }
 
+.undoDelete {
+	position: absolute;
+    background-color: @darkColor;
+    bottom: 0;
+    width: 20%;
+    margin-left: 40%;
+    color: @backgroundColor;
+    padding: 8px;
+    text-align: center;
+	cursor: pointer;
+
+	p {
+		margin-bottom: 0;
+	}
+}
+
+//TODO WIDGET
+.todo {
+	.resize{
+		float: right;
+
+		.fa{
+			cursor: pointer;
+		}
+	}
+
+	ul {
+		list-style: none;
+    	padding-left: 0;
+	}
+
+	li{
+		cursor: pointer;
+
+		div{
+			display: inline-block;
+		}
+		.deleteTodo{
+			float:right;
+			display: none;
+		}
+		.checkSquare{
+			padding-right: 16px;
+		}
+		.hoverSquare{
+			display: none;
+			padding-right: 14px;
+		}
+	}
+	li:hover{
+		.deleteTodo{
+			display: block;
+		}
+		.checkSquare{
+			display: none;
+		}
+		.hoverSquare{
+			display: inline-block;
+		}
+	}
+	.deleteTodo:hover{
+		color: #c70000;
+    	font-size: 19px;
+	}
+}
+
+// WIDGETOVERLAY
 #widgets {
 	background-color: rgba(0, 0, 0, 0.38);
     height: 100vh;
     position: absolute;
     width: 100%;
     top: 50px;
+	z-index: 10;
 
 	.widgetBlock {
 		position: relative;
@@ -50,6 +148,15 @@
 
 		.closeIcon:hover {
 			cursor: pointer;
+		}
+
+		.typeBlock {
+			float: left;
+			padding: 8px;
+			text-align: center;
+			cursor: pointer;
+			background-color: @secondaryColor;
+			margin-right: 8px;
 		}
 	}
 }

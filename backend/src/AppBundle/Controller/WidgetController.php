@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Widget;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\Grocery;
+use AppBundle\Entity\Text;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -57,6 +58,16 @@ class WidgetController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($widget);
         $this->getDoctrine()->getManager()->flush();
 
+        if($request->request->get('type') === 'Text'){
+            $text = new Text();
+            $text->setText($request->request->get('text'));
+            $text->setWidget($widget->getId());
+
+            $this->getDoctrine()->getManager()->persist($text);
+            $this->getDoctrine()->getManager()->flush();
+            $widget->setItems(array($text));
+        }
+
         return $widget;
     }
 
@@ -81,15 +92,24 @@ class WidgetController extends FOSRestController
      */
     public function putWidgetToggleAction(Widget $widget)
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
         $visible = $widget->getVisible();
 
-        if ($visible==0) {
-            $widget->setVisible(1);
-            $updateVis = 1;
-        }
-        else{
-            $widget->setVisible(0);
-            $updateVis = 0;
+        if($widget->getUser()->getId() === $user->getId())
+        {
+            if ($visible==0) {
+                $widget->setVisible(1);
+                $updateVis = 1;
+                $type = $widget->getWidgetType();
+                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                $widget->setItems($items);
+            }
+            else{
+                $widget->setVisible(0);
+                $updateVis = 0;
+            }
+        } else {
+            return new JsonResponse(array('error' => "User is not the creator of this widget."));
         }
 
         $this->getDoctrine()->getManager()->persist($widget);

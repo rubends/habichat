@@ -17,28 +17,8 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 			}
 			else{
 				console.log(response.data);
-				$scope.assignFlat(response.data.id, "ROLE_ADMIN");
-			}
-		}, function errorCallback(response) {
-		    console.log("error on create flat");
-		});
-    }
-
-    $scope.assignFlat = function($flatId, $role){
-        var sUrl = "../backend/web/api/users/"+$flatId+"/flats/"+$role;
-        var oConfig = {
-            url: sUrl,
-            method: "PATCH",
-            params: {callback: "JSON_CALLBACK"},
-            headers: {Authorization: 'Bearer ' + $rootScope.user.token}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
-			}
-			else{
-				console.log(response.data);
-				$location.path('/dashboard');
+				$rootScope.user.flat = response.data;
+				$location.path('/login');
 			}
 		}, function errorCallback(response) {
 		    console.log("error on create flat");
