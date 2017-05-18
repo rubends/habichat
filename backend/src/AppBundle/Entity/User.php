@@ -38,7 +38,7 @@ class User implements UserInterface
     /**
      * 
      * @ORM\ManyToOne(targetEntity="Flat", inversedBy="users")
-     * @ORM\JoinColumn(name="flat_id", referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(name="flat_id", referencedColumnName="id")
      *
      */
     protected $flat;

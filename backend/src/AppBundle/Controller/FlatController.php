@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Flat;
+use AppBundle\Entity\Invite;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -121,6 +122,47 @@ class FlatController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         return $flat;
+    }
+
+     /**
+     * @ApiDoc()
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function postFlatsAddAction(Request $request)
+    {
+        $invitees = explode(',', $request->request->get('invites'));
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        foreach($invitees as $invited){
+            $invite = new Invite();
+            $invite->setInviter($user->getId());
+            $invite->setFlat($user->getFlat()->getId());
+            $invite->setRecipient($invited);
+            $invite->setSendDate(new \DateTime('now'));
+            $key = md5(uniqid($invited, true));
+            $invite->setInviteKey($key);
+            $this->getDoctrine()->getManager()->persist($invite);
+            $this->getDoctrine()->getManager()->flush();
+
+            $invited = str_replace(' ', '', $invited);
+            $message = \Swift_Message::newInstance()
+                ->setSubject($user->getUsername() . ' invited you to join his flat')
+                ->setFrom('invite@habichat.com')
+                ->setTo($invited)
+                ->setBody(
+                    $this->renderView(
+                        // app/Resources/views/Emails/registration.html.twig
+                        'Emails/invite.html.twig',
+                        array('name' => $invited, 'owner' => $user->getUsername(), 'key' => $key)
+                    ),
+                    'text/html'
+                )
+                ;
+            $this->get('mailer')->send($message);
+        }
+
+        return new JsonResponse(array('succes' => "Your flatmates got invited."));
     }
     
 }

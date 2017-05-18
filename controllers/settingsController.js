@@ -74,6 +74,27 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 		    console.log(response);
 		});
     }
+
+	$scope.sendInvites = function(){
+        var sUrl = "../backend/web/api/flats/adds";
+        var oConfig = {
+            url: sUrl,
+            method: "POST",
+			data: $scope.inviteList,
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				console.log(response.data);
+			}
+			else{
+				console.log(response.data);
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
+		});
+    }
 }]);
 
 app.directive('backgroundChange', ['$rootScope', '$http', function ($rootScope, $http) {

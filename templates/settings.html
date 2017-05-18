@@ -54,9 +54,9 @@
 						</tr>
 					</tbody>
 				</table>
-				<p>Invite your flatmates</p>
-				<input type="text">
-				<button class="btn btn-primary">Send invites</button>
+				<p>Invite your flatmates, divided by a comma</p>
+				<input type="text" ng-model="inviteList.invites">
+				<button class="btn btn-primary" ng-click="sendInvites()">Send invites</button>
 				<button class="btn btn-default" ng-click="moveOutFlat(user.id)">Move out of this flat</button>
 			</div>
 		</div>
