@@ -13,10 +13,10 @@
 			<div class="form-group">
 				<input type="number" class="form-control" placeholder="Zipcode" ng-model="registerFlat.zipcode" required ng-minlength="4">
 			</div>
-			<p>Add your flatmates</p>
+			<p ng-init="inviteList.invites = [{email: ''}]">Add your flatmates</p>
 			<div class="form-group">
-				<input type="email" class="form-control" placeholder="Flatmate's e-mailadress">
-				<p>...</p>
+				<input type="email"  class="form-control" placeholder="Flatmate's e-mailadress" ng-repeat="invite in inviteList.invites" ng-model="invite.email">
+				<button class="btn btn-default" ng-click="inviteList.invites.push({email: ''})">Add another flatmate</button>
 			</div>
 			<div class="form-group">
 				<button type="submit" class="btn btn-primary" ng-disabled="flatForm.$invalid">Create</button>

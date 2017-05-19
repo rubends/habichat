@@ -19,13 +19,16 @@ class Invite
     protected $id;
 
     /**
-     * 
-     * @ORM\Column(type="integer")
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="invite")
+     * @ORM\JoinColumn(name="inviter_id", referencedColumnName="id")
      */
     protected $inviter;
 
     /**
-     * @ORM\Column(type="integer")
+     * 
+     * @ORM\ManyToOne(targetEntity="Flat", inversedBy="invites")
+     * @ORM\JoinColumn(name="flat_id", referencedColumnName="id")
+     *
      */
     protected $flat;
 
@@ -43,6 +46,11 @@ class Invite
      * @ORM\Column(type="date")
      */
     protected $sendDate;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $accepted;
 
     /**
      * @return int
@@ -135,5 +143,22 @@ class Invite
     public function setSendDate($sendDate)
     {
         $this->sendDate = $sendDate;
+    }
+
+    /**
+     * @param bool $accepted
+     */
+    public function setAccepted($accepted)
+    {
+        $this->accepted = $accepted;
+    }
+
+    /**
+     * @return bool
+     *
+     */
+    public function getAccepted()
+    {
+        return $this->accepted;
     }
 }

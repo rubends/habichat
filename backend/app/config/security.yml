@@ -53,4 +53,5 @@ security:
     access_control:
         - { path: ^/api/doc,       roles: IS_AUTHENTICATED_ANONYMOUSLY } #IS_AUTHENTICATED_FULLY
         - { path: ^/api/users,       roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/invite,       roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/api,       roles: IS_AUTHENTICATED_REMEMBERED } #IS_AUTHENTICATED_FULLY

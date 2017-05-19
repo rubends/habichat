@@ -16,12 +16,33 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				console.log(response.data);
 			}
 			else{
-				console.log(response.data);
 				$rootScope.user.flat = response.data;
-				$location.path('/login');
+				$scope.sendInvites();
+				$location.path('/dashboard');
 			}
 		}, function errorCallback(response) {
 		    console.log("error on create flat");
+		});
+    }
+
+	$scope.sendInvites = function(){
+        var sUrl = "../backend/web/api/invites";
+        var oConfig = {
+            url: sUrl,
+            method: "POST",
+			data: $scope.inviteList,
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				console.log(response.data);
+			}
+			else{
+				$scope.inviteList.invites = [{email: ''}];
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
 		});
     }
 }]);

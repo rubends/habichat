@@ -39,13 +39,22 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies']);
 			templateUrl : "templates/home.html",
 			controller : "logoutCtrl"
 		})
+		.when("/invite/:key", {
+			templateUrl : "templates/invite.html",
+			controller : "inviteCtrl",
+			resolve: {
+                inviteService: ['getInviteService', '$route', function(getInviteService, $route){
+                    return getInviteService.getInvite($route.current.params.key);
+                }]
+            }
+		})
 		.otherwise({
 	        templateUrl : "templates/home.html"
 	    });
 	});
 
     app.controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location','getUserService', 'getFlatService', function($rootScope, $scope, $http, $cookies, $location, getUserService, getFlatService){
- 		getUserService.getUser();
+ 		// getUserService.getUser();
 		//  getFlatService.getFlat();
     }]);
 

@@ -81,6 +81,17 @@ class UserController extends FOSRestController
                 $encoded = $encoder->encodePassword($user, $data['password']);
                 $user->setPassword($encoded);
 
+                if($data['invitation']){
+                    $flat = $this->getDoctrine()
+                        ->getRepository('AppBundle:Flat')
+                        ->find($data['flat']);
+                    $user->setFlat($flat);
+                    $invite = $this->getDoctrine()
+                        ->getRepository('AppBundle:Invite')
+                        ->find($data['invitation']);
+                    $invite->setAccepted(1);
+                }
+
                 $this->getDoctrine()->getManager()->persist($user);
                 $this->getDoctrine()->getManager()->flush();
                 return $this->generateToken($user, 201);
@@ -132,6 +143,17 @@ class UserController extends FOSRestController
 
         $encoder = $this->container->get('security.password_encoder');
         if($encoder->isPasswordValid($user, $password)) {
+              if($request->request->get('invitation')){
+                    $flat = $this->getDoctrine()
+                        ->getRepository('AppBundle:Flat')
+                        ->find($request->request->get('flat'));
+                    $user->setFlat($flat);
+                    $invite = $this->getDoctrine()
+                        ->getRepository('AppBundle:Invite')
+                        ->find($request->request->get('invitation'));
+                    $invite->setAccepted(1);
+                    $this->getDoctrine()->getManager()->flush();
+                }
               return $this->generateToken($user, 201);
         } else {
             return new JsonResponse(array('error' => "Password is not valid."));

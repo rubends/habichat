@@ -53,6 +53,11 @@ class User implements UserInterface
     */
     protected $widget;
 
+    /*
+    * @ORM\OneToMany(targetEntity="Invite", mappedBy="inviter")
+    */
+    protected $invite;
+
     public function eraseCredentials()
     {
         return null;
@@ -169,6 +174,22 @@ class User implements UserInterface
     public function getSalt()
     {
         return null;
+    }
+
+    /**
+     * @return invite
+     */
+    public function getInvite()
+    {
+        return $this->invite;
+    }
+
+    /**
+     * @param $invite
+     */
+    public function setInvite($invite)
+    {
+        $this->invite = $invite;
     }
 
 }

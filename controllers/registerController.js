@@ -17,7 +17,11 @@ app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
 				$rootScope.user.loggedIn = true;
-				$location.path('/flat');
+				if(response.data.flat || response.data.flat_id){
+					$location.path('/dashboard');
+				} else {
+					$location.path('/flat');
+				}
 			}
 		}, function errorCallback(response) {
 		    console.log("error on register");

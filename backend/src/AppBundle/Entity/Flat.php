@@ -84,6 +84,11 @@ class Flat
     private $widgets;
 
     /**
+    * @ORM\OneToMany(targetEntity="Invite", mappedBy="flat")
+    */
+    protected $invites;
+
+    /**
      * @return int
      */
     public function getId()
@@ -276,5 +281,21 @@ class Flat
     public function setWidgets($widgets)
     {
         $this->widgets = $widgets;
+    }
+
+    /**
+     * @return invites
+     */
+    public function getInvites()
+    {
+        return $this->invites;
+    }
+
+    /**
+     * @param $invites
+     */
+    public function setInvites($invites)
+    {
+        $this->invites = $invites;
     }
 }

@@ -76,7 +76,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
     }
 
 	$scope.sendInvites = function(){
-        var sUrl = "../backend/web/api/flats/adds";
+        var sUrl = "../backend/web/api/invites";
         var oConfig = {
             url: sUrl,
             method: "POST",
@@ -89,6 +89,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				console.log(response.data);
 			}
 			else{
+				$scope.inviteList.invites = [{email: ''}];
 				console.log(response.data);
 			}
 		}, function errorCallback(response) {
