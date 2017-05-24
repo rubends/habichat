@@ -1,5 +1,5 @@
 <div class="container">
-	<div class="text-center">
+	<div class="flat text-center">
 		<h1>Create a dashboard for your flat</h1>
 		<p>Chat with your flatmates, share the bills, create grocery lists, divide the weekly chores and many more in your own personalised dashboard that fits your flat.</p>
 		<form ng-submit="flatForm.$valid && createFlat()" name="flatForm" novalidate>
@@ -12,6 +12,12 @@
 			</div>
 			<div class="form-group">
 				<input type="number" class="form-control" placeholder="Zipcode" ng-model="registerFlat.zipcode" required ng-minlength="4">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="City" ng-model="registerFlat.city" required ng-minlength="3">
+			</div>
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Country" ng-model="registerFlat.country" required ng-minlength="3">
 			</div>
 			<p ng-init="inviteList.invites = [{email: ''}]">Add your flatmates</p>
 			<div class="form-group">

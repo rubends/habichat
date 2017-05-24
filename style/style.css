@@ -1,5 +1,18 @@
+.btn-primary {
+  background-color: #42AB9E !important;
+}
+.btn-secondary {
+  color: #42AB9E !important;
+}
 .navbar {
   margin-bottom: 0;
+}
+.navbar .navbar-brand {
+  font-weight: bold;
+  color: #42AB9E;
+}
+.navbar .navbar-nav a {
+  color: #42AB9E !important;
 }
 .page {
   padding-top: 16px;
@@ -12,6 +25,56 @@
 .homepage .intro {
   width: 50%;
   margin: auto;
+}
+.login h1,
+.register h1,
+.flat h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+.login .form-control,
+.register .form-control,
+.flat .form-control {
+  width: 20% !important;
+  margin: auto;
+}
+.login .btn-default,
+.register .btn-default,
+.flat .btn-default {
+  margin-top: 8px;
+}
+.settings {
+  width: 70%;
+  margin: auto;
+}
+.settings h1 {
+  color: #42AB9E;
+  font-size: 24px;
+  font-weight: bold;
+}
+.settings .form-control {
+  margin-top: 8px;
+}
+.settings .nav-tabs {
+  cursor: pointer !important;
+}
+.settings .nav-tabs a {
+  color: #42AB9E !important;
+}
+.settings .nav-tabs .active a,
+.settings .nav-tabs a:hover {
+  background-color: #42AB9E !important;
+  color: #f8f8f8 !important;
+}
+.settings .inviteBtns {
+  margin-top: 16px;
+}
+.settings .moveBtn {
+  margin-top: 30px;
+}
+.settings .previewBackgroundImg {
+  width: 100%;
+  padding-bottom: 8px;
 }
 #dashboard {
   background-size: cover;
@@ -29,8 +92,12 @@
   cursor: move;
   word-break: break-word;
 }
-.previewBackgroundImg {
-  width: 20%;
+#dashboard .panel {
+  border: none;
+}
+#dashboard .panel .panel-heading {
+  padding: 5px 15px;
+  border: none;
 }
 .addWidgetBtn {
   position: absolute;
@@ -51,45 +118,57 @@
 .undoDelete p {
   margin-bottom: 0;
 }
-.todo .resize {
+.widget .resize {
   float: right;
 }
-.todo .resize .fa {
+.widget .resize .fa {
   cursor: pointer;
 }
-.todo ul {
+.widget ul {
   list-style: none;
   padding-left: 0;
 }
-.todo li {
+.widget .todo li {
   cursor: pointer;
 }
-.todo li div {
+.widget .todo li div {
   display: inline-block;
 }
-.todo li .deleteTodo {
+.widget .todo li .deleteTodo {
   float: right;
   display: none;
 }
-.todo li .checkSquare {
+.widget .todo li .checkSquare {
   padding-right: 16px;
 }
-.todo li .hoverSquare {
+.widget .todo li .hoverSquare {
   display: none;
   padding-right: 14px;
 }
-.todo li:hover .deleteTodo {
+.widget .todo li:hover .deleteTodo {
   display: block;
 }
-.todo li:hover .checkSquare {
+.widget .todo li:hover .checkSquare {
   display: none;
 }
-.todo li:hover .hoverSquare {
+.widget .todo li:hover .hoverSquare {
   display: inline-block;
 }
-.todo .deleteTodo:hover {
+.widget .todo .deleteTodo:hover {
   color: #c70000;
   font-size: 19px;
+}
+.widget .picture {
+  padding: 0;
+}
+.widget .picture img {
+  width: 100%;
+}
+.widget .bill .unpaidUser:hover {
+  cursor: pointer;
+}
+.widget .bill .unpaidUser:hover .fa {
+  color: #4cae4c;
 }
 #widgets {
   background-color: rgba(0, 0, 0, 0.38);
@@ -108,6 +187,12 @@
   padding: 16px;
   margin-top: 50px;
 }
+#widgets .widgetBlock h1 {
+  color: #42AB9E;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 0;
+}
 #widgets .widgetBlock .closeIcon {
   position: absolute;
   right: 16px;
@@ -121,6 +206,8 @@
   padding: 8px;
   text-align: center;
   cursor: pointer;
-  background-color: #c5c5c5;
+  background-color: #d4d4d4;
   margin-right: 8px;
+  color: #42AB9E;
+  border-radius: 3px;
 }

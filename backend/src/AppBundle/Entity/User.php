@@ -58,6 +58,21 @@ class User implements UserInterface
     */
     protected $invite;
 
+     /**
+     * @ORM\ManyToMany(targetEntity="Bill", mappedBy="unpaidUsers")
+     */
+    protected $bills;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Bill", mappedBy="paidUsers")
+     */
+    protected $paid;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="PollOption", mappedBy="voters")
+     */
+    protected $pollOptions;
+
     public function eraseCredentials()
     {
         return null;
@@ -190,6 +205,69 @@ class User implements UserInterface
     public function setInvite($invite)
     {
         $this->invite = $invite;
+    }
+
+    /**
+     * @return bills
+     */
+    public function getBills()
+    {
+        return $this->bills;
+    }
+
+    /**
+     * @param $bills
+     */
+    public function setBills($bills)
+    {
+        $this->bills = $bills;
+    }
+
+    public function addBill(Bill $bill)
+    {
+        $this->bills[] = $bill;
+    }
+
+    /**
+     * @return paid
+     */
+    public function getPaid()
+    {
+        return $this->paid;
+    }
+
+    /**
+     * @param $paid
+     */
+    public function setPaid($paid)
+    {
+        $this->paid = $paid;
+    }
+
+    public function addPaid(Bill $bill)
+    {
+        $this->paid[] = $bill;
+    }
+
+    /**
+     * @return pollOptions
+     */
+    public function getPollOptions()
+    {
+        return $this->pollOptions;
+    }
+
+    /**
+     * @param $pollOptions
+     */
+    public function setPollOptions($pollOptions)
+    {
+        $this->pollOptions = $pollOptions;
+    }
+
+    public function addPollOption(PollOption $pollOption)
+    {
+        $this->pollOptions[] = $pollOption;
     }
 
 }

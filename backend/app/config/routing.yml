@@ -34,3 +34,11 @@ invite:
     resource: "@AppBundle/Controller/InviteController.php"
     type:     rest
     prefix: /api
+poll:
+    resource: "@AppBundle/Controller/PollController.php"
+    type:     rest
+    prefix: /api
+bill:
+    resource: "@AppBundle/Controller/BillController.php"
+    type:     rest
+    prefix: /api

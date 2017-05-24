@@ -1,7 +1,7 @@
 <div class="container-fluid page" id="dashboard" ng-style="dashboardStyle">
 	<div class="widgets">
 		<div ng-repeat="widget in user.flat.widgets | filter: {visible: '1'} | orderBy:'place' as allWidgets" class="moveWidget col-md-{{widget.size}}" id="{{widget.id}}" packery>
-			<div class="move todo" >
+			<div class="move widget" >
 				<div class="panel panel-default" ng-style="widgetStyle">
 					<div class="panel-heading" ng-style="headerStyle">
 						<h3>{{widget.title}}</h3>
@@ -38,6 +38,18 @@
 		<div class="typeBlock" ng-click="widgetForm.type = 'Picture'" ng-hide="widgetForm.type">
 			<i class="fa fa-picture-o" aria-hidden="true"></i>
 			<p>Picture</p>
+		</div>
+		<div class="typeBlock" ng-click="widgetForm.type = 'Weather'" ng-hide="widgetForm.type">
+			<i class="fa fa-sun-o" aria-hidden="true"></i>
+			<p>Weather</p>
+		</div>
+		<div class="typeBlock" ng-click="widgetForm.type = 'Bill'" ng-hide="widgetForm.type">
+			<i class="fa fa-money" aria-hidden="true"></i>
+			<p>Expenses</p>
+		</div>
+		<div class="typeBlock" ng-click="widgetForm.type = 'Catgif'" ng-hide="widgetForm.type">
+			<i class="fa fa-heart" aria-hidden="true"></i>
+			<p>Cat gifs</p>
 		</div>
 		<div ng-include="'widgets/forms/' + widgetForm.type + 'Form.html'"></div>
 	</div>

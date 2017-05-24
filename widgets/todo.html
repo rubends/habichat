@@ -1,4 +1,5 @@
-<div class="panel-body tasks">
+<div class="todo">
+<div class="panel-body">
     <p ng-hide="widget.items.length">You have no todo's</p>
     <ul>
         <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone" reload-packery>
@@ -32,4 +33,5 @@
             <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i></li>
     </ul>
     <p ng-show="!dones.length">You haven't done anything!</p>
+</div>
 </div>

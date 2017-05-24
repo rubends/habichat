@@ -1,0 +1,19 @@
+<p>Add your expenses</p>
+<form ng-submit="addWidget()">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input type="text" ng-model="$parent.widgetForm.title" class="form-control" id="title">
+        <label for="summary">Summary</label>
+        <textarea rows="4" ng-model="$parent.addBillForm.summary" class="form-control" id="summary"/>
+        <label for="amount">Amount (in €)</label>
+        <input type="number" ng-model="$parent.addBillForm.amount" class="form-control" id="amount">
+        <label for="amount">Bankaccount</label>
+        <input type="text" ng-model="$parent.addBillForm.account" class="form-control" id="account">
+        <p>Split between</p>
+        <div ng-repeat="flatmate in user.flat.users">
+            <label for="user{{flatmate.id}}">{{flatmate.username}}</label><input type="checkbox" name="user" ng-model="$parent.addBillForm.users[flatmate.id]" ng-value="flatmate.id" id="user{{flatmate.id}}">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-default">Add</button>
+    <p ng-click="$parent.widgetForm = []">return</p>
+</form>

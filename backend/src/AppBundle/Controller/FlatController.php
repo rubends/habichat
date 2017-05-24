@@ -28,16 +28,6 @@ class FlatController extends FOSRestController
     /**
      * @ApiDoc()
      *
-     * @return Flat[]
-     */
-    public function getFlatsAction()
-    {
-        return $this->getDoctrine()->getRepository('AppBundle:Flat')->findAll();
-    }
-
-    /**
-     * @ApiDoc()
-     *
      * @param Request $request
      *
      * @return Flat
@@ -51,10 +41,14 @@ class FlatController extends FOSRestController
         $flat->setStreet($data['street']);
         $flat->setNumber($data['number']);
         $flat->setZipcode($data['zipcode']);
+        $flat->setCity($data['city']);
+        $flat->setCountry($data['country']);
         // DEFAULT
         $flat->setBackgroundImage('cork.jpg');
 
         $this->getDoctrine()->getManager()->persist($flat);
+        $key = md5(uniqid($flat->getId(), true));
+        $flat->setFlatToken($key);
         
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $user->setFlat($flat);
@@ -93,6 +87,12 @@ class FlatController extends FOSRestController
         $flat->setWidgetColor($request->request->get('widget_color'));
         $flat->setHeaderColor($request->request->get('header_color'));
         $flat->setFontColor($request->request->get('font_color'));
+        $flat->setStreet($request->request->get('street'));
+        $flat->setNumber($request->request->get('number'));
+        $flat->setZipcode($request->request->get('zipcode'));
+        $flat->setCity($request->request->get('city'));
+        $flat->setCountry($request->request->get('country'));
+        $flat->setName($request->request->get('name'));
 
         $this->getDoctrine()->getManager()->persist($flat);
         $this->getDoctrine()->getManager()->flush();
@@ -114,8 +114,9 @@ class FlatController extends FOSRestController
         $data = base64_decode($image);
         $f = finfo_open();
         $mime_type = finfo_buffer($f, $data, FILEINFO_MIME_TYPE);
-        $file = $flat->getName().$flat->getId().".".explode("/", $mime_type)[1];
-        file_put_contents('./uploads/backgrounds/'.$file, $data);
+        $file = "background.".explode("/", $mime_type)[1];
+        mkdir('./uploads/'.$flat->getFlatToken(), 0777, true);
+        file_put_contents('./uploads/'.$flat->getFlatToken().'/'.$file, $data);
         $flat->setBackgroundImage($file."?v=".time());
 
         $this->getDoctrine()->getManager()->persist($flat);

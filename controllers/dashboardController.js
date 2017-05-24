@@ -5,9 +5,17 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	else if (!$rootScope.user.flat) {
 		$location.path('/flat');
 	};
-	$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/backgrounds/'+$rootScope.user.flat.background_image+')'};
-	$scope.widgetStyle = {'background-color': $rootScope.user.flat.widget_color, 'color': $rootScope.user.flat.font_color};
-	$scope.headerStyle = {'background-color': $rootScope.user.flat.header_color, 'color': $rootScope.user.flat.font_color};
+
+	function colorConvert(color, a) {
+        var r = parseInt(color.substring(1,3),16);
+        var g = parseInt(color.substring(3,5),16);
+        var b = parseInt(color.substring(5,7),16);
+        return ('rgba(' + r + ',' + g + ',' + b + ',' + a + ')');
+	};
+
+	$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.user.flat.flat_token+'/'+$rootScope.user.flat.background_image+')'};
+	$scope.widgetStyle = {'background-color': colorConvert($rootScope.user.flat.widget_color, 0.7), 'color': $rootScope.user.flat.font_color};
+	$scope.headerStyle = {'background-color': colorConvert($rootScope.user.flat.header_color,0.7), 'color': $rootScope.user.flat.font_color};
 
 	$scope.addWidget = function(){
         var sUrl = "../backend/web/api/widgets";
@@ -28,6 +36,12 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$scope.widgetForm = {};
 				if($scope.allWidgets){
 					$rootScope.packery.layout();
+				}
+				if(response.data.widget_type === 'Picture'){
+					postPicture(response.data.id);
+				}
+				if(response.data.widget_type === 'Bill'){
+					postBill(response.data.id);
 				}
 			}
 		}, function errorCallback(response) {
@@ -224,6 +238,100 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 								$rootScope.user.flat.widgets[widget].items.splice(item, 1);
 							}
 						}
+					}
+				}
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
+		});
+	}
+
+	function postPicture($widgetId){
+		var file = $('#addPictureImage')[0].files[0];
+		var reader = new FileReader();
+		reader.readAsDataURL(file);
+		reader.onload = function () {
+			var img = reader.result.replace(/^data:image\/[a-z]+;base64,/, '');
+			var sUrl = "../backend/web/api/widgets/"+$widgetId+"/pictures";
+			var oConfig = {
+				url: sUrl,
+				method: "POST",
+				data: {image: img},
+				headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+				params: {callback: "JSON_CALLBACK"}
+			};
+			$http(oConfig).then(function successCallback(response) {
+				if (response.data.hasOwnProperty('error')){
+					console.log(response.data);
+				}
+				else{
+					for(widget in $rootScope.user.flat.widgets){
+						if($rootScope.user.flat.widgets[widget].id === $widgetId){
+							$rootScope.user.flat.widgets[widget].items.push(response.data);
+						}
+					}
+				}
+			}, function errorCallback(response) {
+				console.log(response);
+			});
+		}
+	}
+
+	$scope.getWeather = function () {
+		var sUrl = "http://api.openweathermap.org/data/2.5/weather?q="+$rootScope.user.flat.city+"&units=metric&appid=ad5bf1181d1ab5166d19757241c1511e";
+		var oConfig = {
+			url: sUrl,
+			method: "GET"
+		};
+		$http(oConfig).then(function successCallback(response) {
+			$scope.weather = response.data;
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+
+
+	function postBill($widgetId){
+		var sUrl = "../backend/web/api/widgets/"+$widgetId+"/bills";
+        var oConfig = {
+            url: sUrl,
+            method: "POST",
+			data: $scope.addBillForm,
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				console.log(response.data);
+			}
+			else{
+				for(widget in $rootScope.user.flat.widgets){
+					if($rootScope.user.flat.widgets[widget].id === $widgetId){
+						$rootScope.user.flat.widgets[widget].items.push(response.data);
+					}
+				}
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
+		});
+	}
+
+	$scope.billPaid = function ($widgetId, $billId, $userId){
+		var sUrl = "../backend/web/api/bills/"+$billId+"/paids/"+$userId;
+        var oConfig = {
+            url: sUrl,
+            method: "PUT",
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				console.log(response.data);
+			}
+			else{
+				for(widget in $rootScope.user.flat.widgets){
+					if($rootScope.user.flat.widgets[widget].id === $widgetId){
+						$rootScope.user.flat.widgets[widget].items[0] = response.data;
 					}
 				}
 			}

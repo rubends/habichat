@@ -26,8 +26,10 @@ class UserController extends FOSRestController
             $widgets = $flat->getWidgets();
             foreach($widgets as $key => $widget){
                 $type = $widget->getWidgetType();
-                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-                $widget->setItems($items);
+                if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                    $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                    $widget->setItems($items);
+                }
             }
         }
         return $user;
@@ -112,7 +114,7 @@ class UserController extends FOSRestController
             'token' => $token,
             'username'  => $user->getUsername(),
             'email' => $user->getEmail(),
-            'flat_id' => $user->getFlat()
+            'flat' => $user->getFlat()
         );
 
         return new JsonResponse($response, $statusCode); // Return a 201 Created with the JWT.

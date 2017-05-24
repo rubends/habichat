@@ -1,11 +1,34 @@
 @backgroundColor: #f8f8f8;
 @mainColor: #42AB9E;
-@secondaryColor: #c5c5c5;
+@secondaryColor: #d4d4d4;
 @darkColor: #2f2f2f;
+@warningColor: #d43f3a;
+@okColor: #4cae4c;
+
+// GENERAL ************************************************************
+.btn-primary {
+	background-color: @mainColor !important;
+}
+
+.btn-secondary {
+	color: @mainColor !important;
+}
+
 
 // NAVIGATION ****************************************************************************
 .navbar {
 	margin-bottom: 0;
+
+	.navbar-brand {
+		font-weight: bold;
+		color: @mainColor;
+	}
+
+	.navbar-nav {
+		a {
+			color: @mainColor !important;
+		}
+	}
 }
 
 // PAGE ****************************************************************************
@@ -22,6 +45,64 @@
 	.intro {
 		width: 50%;
     	margin: auto;
+	}
+}
+
+// LOGIN & REGISTER & FLAT ***********************************************************************************
+.login, .register, .flat {
+	h1 {
+		font-size: 24px;
+		font-weight: bold;
+	}
+	.form-control {
+		width: 20% !important;
+		margin: auto;
+	}
+
+	.btn-default {
+		margin-top: 8px;
+	}
+}
+
+// SETTINGS *******************************************************************
+.settings {
+	width: 70%;
+	margin: auto;
+
+	h1 {
+		color: @mainColor;
+		font-size: 24px;
+		font-weight: bold;
+	}
+
+	.form-control {
+		margin-top: 8px;
+	}
+
+	.nav-tabs {
+		cursor: pointer !important;
+
+		a {
+			color: @mainColor !important;
+		}
+
+		.active a, a:hover{
+			background-color: @mainColor !important;
+			color: @backgroundColor !important;
+		}
+	}
+
+	.inviteBtns {
+		margin-top: 16px;
+	}
+
+	.moveBtn {
+		margin-top: 30px;
+	}
+
+	.previewBackgroundImg {
+		width: 100%;
+		padding-bottom: 8px;
 	}
 }
 
@@ -44,10 +125,15 @@
 		cursor: move;
 		word-break: break-word;
 	}
-}
 
-.previewBackgroundImg {
-	width: 20%;
+	.panel {
+		border: none;
+
+		.panel-heading{
+			padding: 5px 15px;
+			border: none;
+		}
+	}
 }
 
 .addWidgetBtn {
@@ -71,9 +157,8 @@
 		margin-bottom: 0;
 	}
 }
-
-//TODO WIDGET
-.todo {
+// WIDGETS
+.widget {
 	.resize{
 		float: right;
 
@@ -84,41 +169,62 @@
 
 	ul {
 		list-style: none;
-    	padding-left: 0;
+		padding-left: 0;
 	}
 
-	li{
-		cursor: pointer;
+	//TODO WIDGET
+	.todo {
+		li{
+			cursor: pointer;
 
-		div{
-			display: inline-block;
+			div{
+				display: inline-block;
+			}
+			.deleteTodo{
+				float:right;
+				display: none;
+			}
+			.checkSquare{
+				padding-right: 16px;
+			}
+			.hoverSquare{
+				display: none;
+				padding-right: 14px;
+			}
 		}
-		.deleteTodo{
-			float:right;
-			display: none;
+		li:hover{
+			.deleteTodo{
+				display: block;
+			}
+			.checkSquare{
+				display: none;
+			}
+			.hoverSquare{
+				display: inline-block;
+			}
 		}
-		.checkSquare{
-			padding-right: 16px;
-		}
-		.hoverSquare{
-			display: none;
-			padding-right: 14px;
+		.deleteTodo:hover{
+			color: #c70000;
+			font-size: 19px;
 		}
 	}
-	li:hover{
-		.deleteTodo{
-			display: block;
-		}
-		.checkSquare{
-			display: none;
-		}
-		.hoverSquare{
-			display: inline-block;
+	// PICTURE WIDGET
+	.picture {
+		padding: 0;
+
+		img {
+			width: 100%;
 		}
 	}
-	.deleteTodo:hover{
-		color: #c70000;
-    	font-size: 19px;
+
+	// BILL WIDGET
+	.bill {
+		.unpaidUser:hover {
+			cursor: pointer;
+			.fa {
+				color: @okColor;
+			}
+		}
 	}
 }
 
@@ -139,6 +245,13 @@
 		background-color: @backgroundColor;
 		padding: 16px;
 		margin-top: 50px;
+		
+		h1 {
+			color: @mainColor;
+			font-size: 24px;
+			font-weight: bold;
+			margin-top: 0;
+		}
 
 		.closeIcon {
 			position: absolute;
@@ -157,6 +270,8 @@
 			cursor: pointer;
 			background-color: @secondaryColor;
 			margin-right: 8px;
+			color: @mainColor;
+			border-radius: 3px;
 		}
 	}
 }

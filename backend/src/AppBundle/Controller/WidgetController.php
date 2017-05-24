@@ -6,6 +6,10 @@ use AppBundle\Entity\Widget;
 use AppBundle\Entity\Todo;
 use AppBundle\Entity\Grocery;
 use AppBundle\Entity\Text;
+use AppBundle\Entity\Picture;
+use AppBundle\Entity\Bill;
+use AppBundle\Entity\Poll;
+use AppBundle\Entity\PollOption;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -186,5 +190,87 @@ class WidgetController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         return $grocery;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Widget $widget
+     * @param Request $request
+     * @return Picture[]
+     */
+    public function postWidgetPictureAction(Widget $widget, Request $request)
+    {
+        $image = $request->request->get('image');
+        $data = base64_decode($image);
+        $f = finfo_open();
+        $mime_type = finfo_buffer($f, $data, FILEINFO_MIME_TYPE);
+        $file = time().'.'.explode("/", $mime_type)[1];
+        $flat = $widget->getFlat();
+        mkdir('./uploads/'.$flat->getFlatToken(), 0777, true);
+        file_put_contents('./uploads/'.$flat->getFlatToken().'/'.$file, $data);
+
+        $picture = new Picture();
+        $picture->setImage($file);
+        $picture->setWidget($widget->getId());
+
+        $this->getDoctrine()->getManager()->persist($picture);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $picture;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Widget $widget
+     * @param Request $request
+     * @return Bill[]
+     */
+    public function postWidgetBillAction(Widget $widget, Request $request)
+    {
+        $bill = new Bill();
+        $bill->setSummary($request->request->get('summary'));
+        $bill->setAmount($request->request->get('amount'));
+        $bill->setAccount($request->request->get('account'));
+        foreach($request->request->get('users') as $key => $value){
+            if($value){
+                $unpaidUser = $this->getDoctrine()
+                    ->getRepository('AppBundle:User')
+                    ->find($key);
+                $bill->addUnpaidUser($unpaidUser);
+            }
+        };
+        $bill->setWidget($widget->getId());
+
+        $this->getDoctrine()->getManager()->persist($bill);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $bill;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Widget $widget
+     * @param Request $request
+     * @return Poll[]
+     */
+    public function postWidgetPollAction(Widget $widget, Request $request)
+    {
+        $poll = new Poll();
+        $poll->setQuestion($request->request->get('question'));
+        $poll->setMultiple($request->request->get('multiple'));
+        $poll->setUntil($request->request->get('until'));
+    
+        $poll->setWidget($widget->getId());
+        $this->getDoctrine()->getManager()->persist($poll);
+
+        foreach($request->request->get('options') as $key => $value){
+           $option = new PollOption();
+           $option->setName($value);
+           $option->setPoll($poll->getId());
+           $this->getDoctrine()->getManager()->persist($option);
+        };
+
+        $this->getDoctrine()->getManager()->flush();
+        return $poll;
     }
 }

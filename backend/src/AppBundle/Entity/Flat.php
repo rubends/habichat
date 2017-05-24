@@ -49,14 +49,23 @@ class Flat
     protected $zipcode;
 
     /**
-     * @ORM\Column(type="string", length=50, nullable=true)
+     * @ORM\Column(type="string")
+     *
+     * @var string
      */
-    protected $backgroundImage;
+    protected $city;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @var string
+     */
+    protected $country;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    protected $backgroundColor;
+    protected $backgroundImage;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -87,6 +96,11 @@ class Flat
     * @ORM\OneToMany(targetEntity="Invite", mappedBy="flat")
     */
     protected $invites;
+
+    /**
+     * @ORM\Column(type="string")
+     */
+    protected $flatToken;
 
     /**
      * @return int
@@ -187,23 +201,6 @@ class Flat
      * @return string
      *
      */
-    public function getBackgroundColor()
-    {
-        return $this->backgroundColor;
-    }
-
-    /**
-     * @param string $backgroundColor
-     */
-    public function setBackgroundColor($backgroundColor)
-    {
-        $this->backgroundColor = $backgroundColor;
-    }
-
-    /**
-     * @return string
-     *
-     */
     public function getWidgetColor()
     {
         return $this->widgetColor;
@@ -297,5 +294,59 @@ class Flat
     public function setInvites($invites)
     {
         $this->invites = $invites;
+    }
+
+    /**
+     * @return string
+     *
+     * @Validator\NotNull()
+     */
+    public function getFlatToken()
+    {
+        return $this->flatToken;
+    }
+
+    /**
+     * @param string $flatToken
+     */
+    public function setFlatToken($flatToken)
+    {
+        $this->flatToken = $flatToken;
+    }
+
+    /**
+     * @return string
+     *
+     * @Validator\NotNull()
+     */
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    /**
+     * @param string $city
+     */
+    public function setCity($city)
+    {
+        $this->city = $city;
+    }
+
+    /**
+     * @return string
+     *
+     * @Validator\NotNull()
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @param string $country
+     */
+    public function setCountry($country)
+    {
+        $this->country = $country;
     }
 }
