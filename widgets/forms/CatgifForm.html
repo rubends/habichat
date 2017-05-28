@@ -1,9 +1,11 @@
 <p>Add random catgifs</p>
-<form ng-submit="addWidget()">
-    <div class="form-group">
-        <label for="title">title</label>
-        <input type="text" ng-model="$parent.widgetForm.title" class="form-control" id="title">
-    </div>
-    <button type="submit" class="btn btn-default">Add</button>
-    <p ng-click="$parent.widgetForm = []">return</p>
+<form ng-submit="ctrl.addWidget()">
+    <md-content layout-padding>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Title</label>
+            <input ng-model="ctrl.widgetForm.title">
+        </md-input-container>
+        <md-button type='submit' class="md-raised md-primary">Add widget</md-button>
+        <p ng-click="ctrl.widgetForm = []">return</p>
+    </md-content>
 </form>

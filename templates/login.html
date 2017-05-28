@@ -1,16 +1,22 @@
-<div class="container">
-	<div class="login text-center">
+<div class="container page">
+	<div class="login">
 		<h1>Login</h1>
 		<form ng-submit="loginForm.$valid && loginUser()" name="loginForm" novalidate>
-			<div class="form-group">
-				<input type="email" class="form-control" id="loginMail" placeholder="E-mailadress" ng-model="userLogin.email" required>	
-			</div>
-			<div class="form-group">
-				<input type="password" class="form-control" id="loginPass" placeholder="Password" ng-model="userLogin.password" required>
-			</div>
-			<div class="form-group">
-				<button type="submit" class="btn btn-primary" ng-disabled="loginForm.$invalid">Login</button>
-			</div>
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>E-mailadress</label>
+					<input type="email" ng-model="userLogin.email" required>
+					<div ng-messages="userLogin.email.$error">
+						<div ng-message="required">Your e-mailadress is required.</div>
+					</div>
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Password</label>
+					<input ng-model="userLogin.password" required>
+					<div ng-messages="userLogin.password.$error">
+						<div ng-message="required">Your password is required.</div>
+					</div>
+				</md-input-container>
+				<md-button type='submit' class="md-raised md-primary" ng-disabled="loginForm.$invalid">Login</md-button>
 		</form>
 	</div>
 </div>

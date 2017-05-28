@@ -55,6 +55,10 @@ class Poll
      */
     protected $widget;
     
+    public function __construct()
+    {
+        $this->options = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @return int
@@ -115,6 +119,12 @@ class Poll
         $this->until = $until;
     }
 
+    public function addOption(PollOption $option)
+    {
+        $option->setPoll($this);
+        $this->options[] = $option;
+    }
+
     /**
      * @return options
      *
@@ -125,7 +135,7 @@ class Poll
     }
 
     /**
-     * @param $options
+     * @param array $options
      */
     public function setOptions($options)
     {

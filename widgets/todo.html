@@ -20,18 +20,19 @@
             </span>
         </div>
     </form> 
-</div>
-<div class="panel-footer done" ng-style="widgetStyle" ng-show="widget.items.length">
-    <p>done</p>
-    <ul>
-        <li ng-repeat="item in widget.items | filter: {done: '1'} as dones" reload-packery>
-            <div ng-click="toggleTodoDone(widget.id, item.id)">
-            <i class="fa fa-check-square-o checkSquare" aria-hidden="true"></i>
-            <i class="fa fa-square-o hoverSquare" aria-hidden="true"></i>
-            <span href="">{{item.title}}</span>
-            </div>
-            <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i></li>
-    </ul>
-    <p ng-show="!dones.length">You haven't done anything!</p>
+    <div class="done" ng-show="widget.items.length">
+        <hr>
+        <p>done</p>
+        <ul>
+            <li ng-repeat="item in widget.items | filter: {done: '1'} as dones" reload-packery>
+                <div ng-click="toggleTodoDone(widget.id, item.id)">
+                <i class="fa fa-check-square-o checkSquare" aria-hidden="true"></i>
+                <i class="fa fa-square-o hoverSquare" aria-hidden="true"></i>
+                <span href="">{{item.title}}</span>
+                </div>
+                <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i></li>
+        </ul>
+        <p ng-show="!dones.length">You haven't done anything!</p>
+    </div>
 </div>
 </div>

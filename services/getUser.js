@@ -15,7 +15,8 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                     }
                     else{
                         console.log(response.data);
-                        $rootScope.user = response.data;
+                        $rootScope.user = response.data.user;
+                        $rootScope.flat = response.data.flat;
                         $rootScope.user.token = $cookies.get('token');
                         $rootScope.loggedIn = true;
                         $rootScope.user.loggedIn = true;

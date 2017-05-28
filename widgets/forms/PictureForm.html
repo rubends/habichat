@@ -1,11 +1,13 @@
 <p>Add a picture</p>
-<form ng-submit="addWidget()">
-    <div class="form-group">
-        <label for="title">title</label>
-        <input type="text" ng-model="$parent.widgetForm.title" class="form-control" id="title">
-        <label for="addPictureImage">image</label>
-        <input type="file" class="form-control" id="addPictureImage">
-    </div>
-    <button type="submit" class="btn btn-default">Add</button>
-    <p ng-click="$parent.widgetForm = []">return</p>
+<form ng-submit="ctrl.addWidget()">
+    <md-content layout-padding>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Title</label>
+            <input ng-model="ctrl.widgetForm.title">
+        </md-input-container>
+        <input class="ng-hide" id="addPictureImage" multiple type="file" />
+        <label for="addPictureImage" class="md-button md-raised">Add image</label>
+    </md-content>
+    <md-button type='submit' class="md-raised md-primary">Add widget</md-button>
+    <p ng-click="ctrl.widgetForm = []">return</p>
 </form>

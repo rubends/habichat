@@ -1,18 +1,19 @@
 <div class="panel-body bill">
     <p>{{widget.items[0].summary}}</p>
     <p>Total: {{widget.items[0].amount}}€</p>
+    <hr>
     <div ng-show="widget.items[0].unpaid_users.length">
         <p>Still have to pay:</p>
         <ul>
-            <li ng-repeat="unpaidUser in widget.items[0].unpaid_users" class="unpaidUser" ng-click="billPaid(widget.id, widget.items[0].id, unpaidUser.id)"><i class="fa fa-credit-card" aria-hidden="true"></i> {{unpaidUser.username}} {{widget.items[0].amount / widget.items[0].unpaid_users.length}}€</li>
+            <li ng-repeat="unpaidUser in widget.items[0].unpaid_users" class="unpaidUser" ng-click="billPaid(widget.id, widget.items[0].id, unpaidUser.id)"><i class="fa fa-credit-card" aria-hidden="true"></i> {{unpaidUser.username}} <span class="pull-right">{{widget.items[0].amount / widget.items[0].unpaid_users.length}}€</span></li>
         </ul>
         <p>{{widget.items[0].account}}</p>
     </div>
     <p ng-hide="widget.items[0].unpaid_users.length"><strong>Everybody has paid!</strong></p>
-</div>
-<div class="panel-footer done" ng-style="widgetStyle" ng-show="widget.items[0].paid_users.length">
-    <p>Already paid:</p>
-    <ul>
-        <li ng-repeat="paidUser in widget.items[0].paid_users" class="paidUser"<i class="fa fa-credit-card" aria-hidden="true"></i>{{paidUser.username}}</li>
-    </ul>
+    <div class="done" ng-show="widget.items[0].paid_users.length">
+        <p>Already paid:</p>
+        <ul>
+            <li ng-repeat="paidUser in widget.items[0].paid_users" class="paidUser"<i class="fa fa-credit-card" aria-hidden="true"></i>{{paidUser.username}}</li>
+        </ul>
+    </div>
 </div>

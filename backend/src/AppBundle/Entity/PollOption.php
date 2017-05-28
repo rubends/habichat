@@ -42,6 +42,10 @@ class PollOption
      */
     protected $poll;
     
+    public function __construct()
+    {
+        $this->voters = new \Doctrine\Common\Collections\ArrayCollection();
+    }
 
     /**
      * @return int
@@ -71,11 +75,11 @@ class PollOption
     public function addVoter(User $user)
     {
         $user->addPollOption($this);
-        $this->voters[] = $voters;
+        $this->voters[] = $user;
     }
 
     /**
-     * @return voters
+     * @return array voters
      */
     public function getVoters()
     {

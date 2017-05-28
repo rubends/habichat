@@ -1,19 +1,29 @@
 <p>Add your expenses</p>
-<form ng-submit="addWidget()">
-    <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" ng-model="$parent.widgetForm.title" class="form-control" id="title">
-        <label for="summary">Summary</label>
-        <textarea rows="4" ng-model="$parent.addBillForm.summary" class="form-control" id="summary"/>
-        <label for="amount">Amount (in €)</label>
-        <input type="number" ng-model="$parent.addBillForm.amount" class="form-control" id="amount">
-        <label for="amount">Bankaccount</label>
-        <input type="text" ng-model="$parent.addBillForm.account" class="form-control" id="account">
+<form ng-submit="ctrl.addWidget()">
+    <md-content layout-padding>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Title</label>
+            <input ng-model="ctrl.widgetForm.title">
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Summary</label>
+            <textarea ng-model="ctrl.addBillForm.summary"></textarea>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Amount (in €)</label>
+            <input type="number" ng-model="ctrl.addBillForm.amount">
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Bankaccount</label>
+            <input ng-model="ctrl.addBillForm.account">
+        </md-input-container>
         <p>Split between</p>
-        <div ng-repeat="flatmate in user.flat.users">
-            <label for="user{{flatmate.id}}">{{flatmate.username}}</label><input type="checkbox" name="user" ng-model="$parent.addBillForm.users[flatmate.id]" ng-value="flatmate.id" id="user{{flatmate.id}}">
-        </div>
-    </div>
-    <button type="submit" class="btn btn-default">Add</button>
-    <p ng-click="$parent.widgetForm = []">return</p>
+        <md-input-container class="md-block" flex-gt-sm ng-repeat="flatmate in ctrl.flat.users | filter: {id: '!' + ctrl.user.id}">
+            <md-checkbox ng-model="ctrl.addBillForm.users[flatmate.id]" aria-label="pollMultipleVotes" ng-value="flatmate.id">
+                {{flatmate.username}}
+            </md-checkbox>
+        </md-input-container>
+        <md-button type='submit' class="md-raised md-primary">Add widget</md-button>
+        <p ng-click="ctrl.widgetForm = []">return</p>
+    </md-content>
 </form>

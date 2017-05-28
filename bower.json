@@ -28,6 +28,14 @@
     "angular-cookies": "^1.6.1",
     "packery": "^2.1.1",
     "angular-masonry": "^0.17.0",
-    "jquery": "^3.2.1"
+    "jquery": "^3.2.1",
+    "angular-material": "^1.1.4",
+    "mdPickers": "https://github.com/andrea-vega/mdPickers.git#7c8f32fac12a01ad66e6728b603dcf8c7e86c0ce"
+  },
+  "resolutions": {
+    "mdPickers": "^0.7.5",
+    "angular": "^1.6.0",
+    "jquery": ">=1.4.2 <4",
+    "angular-material": "^1.1.4"
   }
 }

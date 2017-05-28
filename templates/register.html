@@ -1,22 +1,38 @@
-<div class="container">
-	<div class="register text-center">
+<div class="container page">
+	<div class="register">
 		<h1>Register</h1>
 		<form ng-submit="registerForm.$valid && registerUser()" name="registerForm" novalidate>
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Username" ng-model="registerFormUser.username" required>
-			</div>
-			<div class="form-group">
-				<input type="email" class="form-control" placeholder="E-mailadress" ng-model="registerFormUser.email" required ng-minlength="3">	
-			</div>
-			<div class="form-group">
-				<input type="password" class="form-control" placeholder="Password" ng-model="registerFormUser.password" required ng-minlength="3">
-			</div>
-			<div class="form-group">
-				<input type="password" class="form-control" placeholder="Repeat password" ng-model="registerFormUser.passwordRepeat" required ng-minlength="3">
-			</div>
-			<div class="form-group">
-				<button type="submit" class="btn btn-primary" ng-disabled="registerForm.$invalid">Register</button>
-			</div>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Username</label>
+				<input ng-model="registerFormUser.username" required>
+				<div ng-messages="registerFormUser.username.$error">
+					<div ng-message="required">A username is required.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>E-mailadress</label>
+				<input ng-model="registerFormUser.email" required>
+				<div ng-messages="registerFormUser.email.$error">
+					<div ng-message="required">An e-mailadress is required.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Password</label>
+				<input ng-model="registerFormUser.password" required md-minlength="5">
+				<div ng-messages="registerFormUser.password.$error">
+					<div ng-message="required">A password is required.</div>
+					<div ng-message="md-maxlength">Your password must be more than 5 characters.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Repeat password</label>
+				<input ng-model="registerFormUser.passwordRepeat" required md-minlength="5">
+				<div ng-messages="registerFormUser.passwordRepeat.$error">
+					<div ng-message="required">You have to repeat your password.</div>
+					<div ng-message="md-maxlength">Your password must be more than 5 characters.</div>
+				</div>
+			</md-input-container>
+			<md-button type='submit' class="md-raised md-primary" ng-disabled="registerForm.$invalid">Register</md-button>
 		</form>
 	</div>
 </div>

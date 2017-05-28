@@ -11,23 +11,40 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<label>Background image</label>
-								<img src="../backend/web/uploads/{{user.flat.flat_token + '/' + user.flat.background_image}}" class="previewBackgroundImg"/>
-								<input type="file" background-change class="form-control" id="backgroundImage">
+								<p>Background image</p>
+								<img src="../backend/web/uploads/{{flat.flat_token + '/' + flat.background_image}}" class="previewBackgroundImg"/>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<input class="ng-hide" id="backgroundImage" multiple type="file" background-change/>
+        					<label for="backgroundImage" class="md-button md-raised">Change backgroundimage</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6" id="widgetPreview">
+							<p>Widget</p>
+							<div class="panel panel-default" ng-style="{'background-color': flat.widget_color, 'color': flat.font_color}">
+								<div class="panel-heading" ng-style="{'background-color': flat.header_color, 'color': flat.font_color}">
+									<h3>This is the title</h3>
+									<div class="resize">
+										<i class="fa fa-window-restore" aria-hidden="true" data-toggle="tooltip" title="Resize widget" onmouseenter="$(this).tooltip()"></i>
+										<i class="fa fa-times" aria-hidden="true" data-toggle="tooltip" title="Delete widget" onmouseenter="$(this).tooltip()"></i>
+									</div>
 								</div>
+								<div class="panel-body">
+									<p>This is the content</p>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-6">
 							<div class="form-group">
-								<label for="widgetColor">widget color</label>
-								<input type="color" ng-change="changeFlatSettings()" ng-model="user.flat.widget_color" class="form-control" id="widgetColor">
+								<div md-color-picker ng-model="flat.widget_color" ng-change="changeFlatSettings()" label="Widget color"></div>
 							</div>
 							<div class="form-group">
-								<label for="headerColor">header color</label>
-								<input type="color" ng-change="changeFlatSettings()" ng-model="user.flat.header_color" class="form-control" id="headerColor">
+								<div md-color-picker ng-model="flat.header_color" ng-change="changeFlatSettings()" label="Header color"></div>
 							</div>
 							<div class="form-group">
-								<label for="fontColor">font color</label>
-								<input type="color" ng-change="changeFlatSettings()" ng-model="user.flat.font_color" class="form-control" id="fontColor">
+								<div md-color-picker ng-model="flat.font_color" ng-change="changeFlatSettings()" label="Font color"></div>
 							</div>
 						</div>
 					</div>
@@ -44,7 +61,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr ng-repeat="flatmate in user.flat.users" ng-if="flatmate.id !== user.id">
+						<tr ng-repeat="flatmate in flat.users" ng-if="flatmate.id !== user.id">
 							<td>{{flatmate.username}}{{flatmate.role === 'ROLE_ADMIN' ? ' | Admin' : ''}}</td>
 							<td>{{flatmate.email}}</td>
 							<td ng-if="user.role === 'ROLE_ADMIN'">
@@ -61,47 +78,50 @@
 					</tbody>
 				</table>
 				<div class="row">
-					<div class="col-md-6">
-						<p ng-init="inviteList.invites = [{email: ''}]">Invite your flatmates</p>
-						<input type="email"  class="form-control" placeholder="Flatmate's e-mailadress" ng-repeat="invite in inviteList.invites" ng-model="invite.email">
-						<div class="inviteBtns">
-							<button class="btn btn-secondary" ng-click="inviteList.invites.push({email: ''})">Add another flatmate</button>
-							<button class="btn btn-primary" ng-click="sendInvites()">Send invites</button>
-						</div>
+					<div class="col-md-6" ng-init="inviteList.invites = [{email: ''}]">
+						<md-input-container class="md-block" flex-gt-sm ng-repeat="invite in inviteList.invites">
+							<label>Invite your flatmate</label>
+							<input type="email" ng-model="invite.email">
+						</md-input-container>
 					</div>
 					<div class="col-md-6">
-						<button class="btn btn-secondary pull-right moveBtn" ng-click="moveOutFlat(user.id)">Move out of this flat</button>
-						<button class="btn btn-secondary pull-right moveBtn" ng-click="moveOutFlat(user.id)">Delete this flat</button>
+						<md-button ng-click="inviteList.invites.push({email: ''})">Add another flatmate</md-button>
+						<md-button class="md-raised md-primary" ng-click="sendInvites()">Send invites</md-button>
 					</div>
 				</div>
+				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">Move out of this flat</md-button>
+				<md-button class="md-raised md-warn moveBtn" ng-click="moveOutFlat(user.id)">Delete this flat</md-button>
 				<div ng-if="user.role === 'ROLE_ADMIN'">
 					<h1>Admin settings</h1>
 					<div class="row">
 						<div class="col-md-6">
-							<div class="form-group">
-								<label for="adressInput">Adress</label>
-								<input type="text" class="form-control" id="adressInput" ng-model="user.flat.street">
-								<input type="text" class="form-control" ng-model="user.flat.number">
-							</div>
-							<div class="form-group">
-								<label for="zipcodeInput">Zipcode</label>
-								<input type="text" class="form-control" id="zipcodeInput" ng-model="user.flat.zipcode">
-							</div>
-							<div class="form-group">
-								<label for="cityInput">City</label>
-								<input type="text" class="form-control" id="cityInput" ng-model="user.flat.city">
-							</div>
-							<div class="form-group">
-								<label for="countryInput">Country</label>
-								<input type="text" class="form-control" id="countryInput" ng-model="user.flat.country">
-							</div>
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Street</label>
+								<input ng-model="flat.street">
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Nummber</label>
+								<input ng-model="flat.number">
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Zipcode</label>
+								<input ng-model="flat.zipcode">
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>City</label>
+								<input ng-model="flat.city">
+							</md-input-container>
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Country</label>
+								<input ng-model="flat.country">
+							</md-input-container>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
-								<label for="flatnameInput">Flatname</label>
-								<input type="text" class="form-control" id="flatnameInput" ng-model="user.flat.name">
-							</div>
-							<button class="btn btn-primary" ng-click="changeFlatSettings()">Save flat</button>
+							<md-input-container class="md-block" flex-gt-sm>
+								<label>Flatname</label>
+								<input ng-model="flat.name">
+							</md-input-container>
+							<md-button class="md-raised md-primary" ng-click="changeFlatSettings()">Save flat</md-button>
 						</div>
 					</div>
 				</div>

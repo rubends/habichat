@@ -32,7 +32,7 @@ class UserController extends FOSRestController
                 }
             }
         }
-        return $user;
+        return [user => $user, flat => $flat];
     }
 
     /**

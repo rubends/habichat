@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default navbar-static-top">
+<nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
 
@@ -18,9 +18,9 @@
 
 		<div class="collapse navbar-collapse" id="app-navbar-collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li ng-show="user.loggedIn"><a href="#dashboard" class="capitalize"><i class="fa fa-btn fa-tachometer"></i> dashboard</a></li>
-                <li ng-show="user.loggedIn"><a href="#settings"><i class="fa fa-btn fa-cog"></i> Settings</a></li>
-                <li ng-show="user.loggedIn"><a href="#logout"><i class="fa fa-btn fa-sign-out"></i>Logout</a></li>
+				<li ng-show="user.loggedIn" id="dashboardLink"><a href="#dashboard"><md-tooltip>Dashboard</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_dashboard_24px.svg" aria-label="Dashboard"></md-icon></a></li>
+                <li ng-show="user.loggedIn" id="settingsLink"><a href="#settings"><md-tooltip>Settings</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_settings_24px.svg" aria-label="Settings"></md-icon> </a></li>
+                <li ng-show="user.loggedIn"><a href="#logout"><md-tooltip>Log out</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_power_settings_new_24px.svg" aria-label="Logout"></md-icon> </a></li>
 
                 <li ng-hide="user.loggedIn"><a href="#login">Login</a></li>
                 <li ng-hide="user.loggedIn"><a href="#register">Register</a></li>

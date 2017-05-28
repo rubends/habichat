@@ -1,7 +1,8 @@
 @backgroundColor: #f8f8f8;
-@mainColor: #42AB9E;
-@secondaryColor: #d4d4d4;
+@mainColor: rgb(0,137,123);
+@secondaryColor: rgba(255,110,64,0.87);
 @darkColor: #2f2f2f;
+@lightColor: #fff;
 @warningColor: #d43f3a;
 @okColor: #4cae4c;
 
@@ -14,27 +15,50 @@
 	color: @mainColor !important;
 }
 
+.md-input-container {
+	margin: 0 !important;
+}
+
+.packery-drop-placeholder {
+  outline: 3px dashed #444;
+  outline-offset: -6px;
+  /* transition position changing */
+  -webkit-transition: -webkit-transform 0.2s;
+          transition: transform 0.2s;
+}
+
 
 // NAVIGATION ****************************************************************************
 .navbar {
 	margin-bottom: 0;
+	background-color: @mainColor;
+	border: none;
+	box-shadow: 0 2px 5px rgba(0,0,0,.26);
 
 	.navbar-brand {
 		font-weight: bold;
-		color: @mainColor;
+		color: @lightColor !important;
 	}
 
 	.navbar-nav {
 		a {
-			color: @mainColor !important;
+			color: @lightColor !important;
 		}
+	}
+
+	.icon {
+		color: @lightColor;
+	}
+
+	.activePage .icon, a:hover .icon, .navbar-brand:hover {
+		color: @secondaryColor !important;
 	}
 }
 
 // PAGE ****************************************************************************
 .page{
-	padding-top: 16px;
-	min-height: calc(~"100vh - 50px");
+	padding-top: 66px;
+	min-height: 100vh;
 }
 
 // HOME **************************************************************************************
@@ -50,7 +74,11 @@
 
 // LOGIN & REGISTER & FLAT ***********************************************************************************
 .login, .register, .flat {
+	width: 30%;
+    margin: auto;
+
 	h1 {
+		text-align: center;
 		font-size: 24px;
 		font-weight: bold;
 	}
@@ -104,6 +132,32 @@
 		width: 100%;
 		padding-bottom: 8px;
 	}
+
+	#widgetPreview{
+		h3 {
+			margin-top: 0;
+			margin-bottom: 0;
+			display: inline-block;
+			max-width: 80%;
+    		font-size: 1.5em;
+		}
+
+		.panel {
+			border: none;
+
+			.panel-heading{
+				padding: 5px 15px;
+				border: none;
+			}
+		}
+		.resize{
+			float: right;
+
+			.fa{
+				cursor: pointer;
+			}
+		}
+	}
 }
 
 // DASHBOARD ****************************************************************************
@@ -114,6 +168,8 @@
 		margin-top: 0;
     	margin-bottom: 0;
     	display: inline-block;
+		max-width: 80%;
+    	font-size: 1.5em;
 	}
 
 	.moveWidget {
@@ -137,7 +193,7 @@
 }
 
 .addWidgetBtn {
-	position: absolute;
+	position: fixed;
 	bottom: 24px;
 	right: 24px;
 }
@@ -226,25 +282,23 @@
 			}
 		}
 	}
+
+	// POLL WIDGET
+	.poll {
+		.voteDate{
+			font-size: 10px;
+		}
+	}
 }
 
 // WIDGETOVERLAY
-#widgets {
-	background-color: rgba(0, 0, 0, 0.38);
-    height: 100vh;
-    position: absolute;
-    width: 100%;
-    top: 50px;
-	z-index: 10;
+#widgetDialog {
+	min-width: 50%;
 
 	.widgetBlock {
-		position: relative;
-		width: 50%;
-		margin: auto;
 		min-height: 50vh;
 		background-color: @backgroundColor;
 		padding: 16px;
-		margin-top: 50px;
 		
 		h1 {
 			color: @mainColor;
@@ -253,22 +307,11 @@
 			margin-top: 0;
 		}
 
-		.closeIcon {
-			position: absolute;
-    		right: 16px;
-    		top: 16px;
-		}
-
-		.closeIcon:hover {
-			cursor: pointer;
-		}
-
 		.typeBlock {
 			float: left;
 			padding: 8px;
 			text-align: center;
 			cursor: pointer;
-			background-color: @secondaryColor;
 			margin-right: 8px;
 			color: @mainColor;
 			border-radius: 3px;

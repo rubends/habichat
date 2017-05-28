@@ -1,0 +1,42 @@
+<md-dialog aria-label="Widget dialog" id="widgetDialog">
+    <md-dialog-content>
+        <div class="widgetBlock">
+            <h1>Widgets</h1>
+            <div ng-hide="ctrl.widgetForm.type">
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Todo'">
+                    <i class="fa fa-list" aria-hidden="true"></i>
+                    <p>Todo</p>
+                </div>
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Grocery'">
+                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                    <p>Grocery</p>
+                </div>
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Text'">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    <p>Text</p>
+                </div>
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Picture'">
+                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    <p>Picture</p>
+                </div>
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Weather'">
+                    <i class="fa fa-sun-o" aria-hidden="true"></i>
+                    <p>Weather</p>
+                </div>
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Bill'">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <p>Expenses</p>
+                </div>
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Catgif'">
+                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <p>Cat gif</p>
+                </div>
+                <div class="typeBlock" ng-click="ctrl.widgetForm.type = 'Poll'">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                    <p>Poll</p>
+                </div>
+            </div>
+            <div ng-include="'widgets/forms/' + ctrl.widgetForm.type + 'Form.html'"></div>
+        </div>
+    </md-dialog-content>
+</md-dialog>

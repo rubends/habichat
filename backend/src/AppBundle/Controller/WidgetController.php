@@ -31,8 +31,10 @@ class WidgetController extends FOSRestController
         $widgets = $flat->getWidgets();
         foreach($widgets as $key => $widget){
             $type = $widget->getWidgetType();
-            $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-            $widget->setItems($items);
+            if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                $widget->setItems($items);
+            }
         }
         return $widgets;
     }
@@ -99,7 +101,7 @@ class WidgetController extends FOSRestController
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $visible = $widget->getVisible();
 
-        if($widget->getUser()->getId() === $user->getId())
+        if($widget->getUser()->getId() === $user->getId() || $user->getRole() === 'ROLE_ADMIN')
         {
             if ($visible==0) {
                 $widget->setVisible(1);
@@ -257,16 +259,26 @@ class WidgetController extends FOSRestController
     {
         $poll = new Poll();
         $poll->setQuestion($request->request->get('question'));
-        $poll->setMultiple($request->request->get('multiple'));
-        $poll->setUntil($request->request->get('until'));
+        if($request->request->get('multiple')){
+            $poll->setMultiple($request->request->get('multiple'));
+        } else {
+            $poll->setMultiple(false);
+        }
+        $date = new \DateTime($request->request->get('until')['date']);
+        $date->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $time = new \DateTime($request->request->get('until')['time']);
+        $time->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $datetime = new \DateTime($date->format('Y-m-d') .' ' .$time->format('H:i:s'));
+        $poll->setUntil($datetime);
     
         $poll->setWidget($widget->getId());
         $this->getDoctrine()->getManager()->persist($poll);
+        $this->getDoctrine()->getManager()->flush();
 
         foreach($request->request->get('options') as $key => $value){
            $option = new PollOption();
-           $option->setName($value);
-           $option->setPoll($poll->getId());
+           $option->setName($value['name']);
+           $poll->addOption($option);
            $this->getDoctrine()->getManager()->persist($option);
         };
 

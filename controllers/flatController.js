@@ -16,7 +16,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				console.log(response.data);
 			}
 			else{
-				$rootScope.user.flat = response.data;
+				$rootScope.flat = response.data;
 				$scope.sendInvites();
 				$location.path('/dashboard');
 			}

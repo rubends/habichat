@@ -2,16 +2,19 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 	if (!$rootScope.user) {
 		$location.path('/login');
 	}
-	else if (!$rootScope.user.flat) {
+	else if (!$rootScope.flat) {
 		$location.path('/flat');
 	};
 
+	$(".nav").find(".activePage").removeClass("activePage");
+   	$("#settingsLink").addClass("activePage");
+
 	$scope.changeFlatSettings = function(){
-        var sUrl = "../backend/web/api/flats/" + $rootScope.user.flat.id;
+        var sUrl = "../backend/web/api/flats/" + $rootScope.flat.id;
         var oConfig = {
             url: sUrl,
             method: "PUT",
-            data: $rootScope.user.flat,
+            data: $rootScope.flat,
 			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
             params: {callback: "JSON_CALLBACK"}
         };
@@ -21,7 +24,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			}
 			else{
 				console.log(response);
-				$rootScope.user.flat = response.data;
+				$rootScope.flat = response.data;
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -41,7 +44,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				console.log(response.data);
 			}
 			else{
-				$rootScope.user.flat = response.data;
+				$rootScope.flat = response.data;
 				if(!response.data){
 					$location.path('/flat');
 				}
@@ -64,9 +67,9 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				console.log(response.data);
 			}
 			else{
-				for(flatmate in $rootScope.user.flat.users){
-					if($rootScope.user.flat.users[flatmate].id === response.data.id){
-						$rootScope.user.flat.users[flatmate] = response.data;
+				for(flatmate in $rootScope.flat.users){
+					if($rootScope.flat.users[flatmate].id === response.data.id){
+						$rootScope.flat.users[flatmate] = response.data;
 					}
 				}
 			}
@@ -107,7 +110,7 @@ app.directive('backgroundChange', ['$rootScope', '$http', function ($rootScope, 
 				reader.readAsDataURL(file);
 				reader.onload = function () {
 					var img = reader.result.replace(/^data:image\/[a-z]+;base64,/, '');
-					var sUrl = "../backend/web/api/flats/" + $rootScope.user.flat.id + "/image";
+					var sUrl = "../backend/web/api/flats/" + $rootScope.flat.id + "/image";
 					var oConfig = {
 						url: sUrl,
 						method: "PUT",
@@ -121,7 +124,7 @@ app.directive('backgroundChange', ['$rootScope', '$http', function ($rootScope, 
 						}
 						else{
 							console.log(response);
-							$rootScope.user.flat = response.data;
+							$rootScope.flat = response.data;
 						}
 					}, function errorCallback(response) {
 						console.log(response);

@@ -1,8 +1,8 @@
-var app = angular.module('habichat', ['ngRoute', 'ngCookies']);
+var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers']);
 
 (function() {
     
-    app.config(function($routeProvider, $locationProvider) {
+    app.config(function($routeProvider, $locationProvider, $mdThemingProvider) {
     	$locationProvider.hashPrefix('');
     	$routeProvider
 		.when("/login", {
@@ -51,6 +51,13 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies']);
 		.otherwise({
 	        templateUrl : "templates/home.html"
 	    });
+
+		$mdThemingProvider.theme('default')
+    		.primaryPalette('teal')
+			.accentPalette('deep-orange')
+			.warnPalette('red')
+			.backgroundPalette('grey', {'default': '50'});
+
 	});
 
     app.controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location','getUserService', 'getFlatService', function($rootScope, $scope, $http, $cookies, $location, getUserService, getFlatService){

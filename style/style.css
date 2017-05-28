@@ -1,22 +1,43 @@
 .btn-primary {
-  background-color: #42AB9E !important;
+  background-color: #00897b !important;
 }
 .btn-secondary {
-  color: #42AB9E !important;
+  color: #00897b !important;
+}
+.md-input-container {
+  margin: 0 !important;
+}
+.packery-drop-placeholder {
+  outline: 3px dashed #444;
+  outline-offset: -6px;
+  /* transition position changing */
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
 }
 .navbar {
   margin-bottom: 0;
+  background-color: #00897b;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
 }
 .navbar .navbar-brand {
   font-weight: bold;
-  color: #42AB9E;
+  color: #fff !important;
 }
 .navbar .navbar-nav a {
-  color: #42AB9E !important;
+  color: #fff !important;
+}
+.navbar .icon {
+  color: #fff;
+}
+.navbar .activePage .icon,
+.navbar a:hover .icon,
+.navbar .navbar-brand:hover {
+  color: rgba(255, 110, 64, 0.87) !important;
 }
 .page {
-  padding-top: 16px;
-  min-height: calc(100vh - 50px);
+  padding-top: 66px;
+  min-height: 100vh;
 }
 .homepage {
   background-size: cover;
@@ -26,9 +47,16 @@
   width: 50%;
   margin: auto;
 }
+.login,
+.register,
+.flat {
+  width: 30%;
+  margin: auto;
+}
 .login h1,
 .register h1,
 .flat h1 {
+  text-align: center;
   font-size: 24px;
   font-weight: bold;
 }
@@ -48,7 +76,7 @@
   margin: auto;
 }
 .settings h1 {
-  color: #42AB9E;
+  color: #00897b;
   font-size: 24px;
   font-weight: bold;
 }
@@ -59,11 +87,11 @@
   cursor: pointer !important;
 }
 .settings .nav-tabs a {
-  color: #42AB9E !important;
+  color: #00897b !important;
 }
 .settings .nav-tabs .active a,
 .settings .nav-tabs a:hover {
-  background-color: #42AB9E !important;
+  background-color: #00897b !important;
   color: #f8f8f8 !important;
 }
 .settings .inviteBtns {
@@ -76,6 +104,26 @@
   width: 100%;
   padding-bottom: 8px;
 }
+.settings #widgetPreview h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  max-width: 80%;
+  font-size: 1.5em;
+}
+.settings #widgetPreview .panel {
+  border: none;
+}
+.settings #widgetPreview .panel .panel-heading {
+  padding: 5px 15px;
+  border: none;
+}
+.settings #widgetPreview .resize {
+  float: right;
+}
+.settings #widgetPreview .resize .fa {
+  cursor: pointer;
+}
 #dashboard {
   background-size: cover;
 }
@@ -83,6 +131,8 @@
   margin-top: 0;
   margin-bottom: 0;
   display: inline-block;
+  max-width: 80%;
+  font-size: 1.5em;
 }
 #dashboard .moveWidget {
   padding-right: 8px;
@@ -100,7 +150,7 @@
   border: none;
 }
 .addWidgetBtn {
-  position: absolute;
+  position: fixed;
   bottom: 24px;
   right: 24px;
 }
@@ -170,44 +220,29 @@
 .widget .bill .unpaidUser:hover .fa {
   color: #4cae4c;
 }
-#widgets {
-  background-color: rgba(0, 0, 0, 0.38);
-  height: 100vh;
-  position: absolute;
-  width: 100%;
-  top: 50px;
-  z-index: 10;
+.widget .poll .voteDate {
+  font-size: 10px;
 }
-#widgets .widgetBlock {
-  position: relative;
-  width: 50%;
-  margin: auto;
+#widgetDialog {
+  min-width: 50%;
+}
+#widgetDialog .widgetBlock {
   min-height: 50vh;
   background-color: #f8f8f8;
   padding: 16px;
-  margin-top: 50px;
 }
-#widgets .widgetBlock h1 {
-  color: #42AB9E;
+#widgetDialog .widgetBlock h1 {
+  color: #00897b;
   font-size: 24px;
   font-weight: bold;
   margin-top: 0;
 }
-#widgets .widgetBlock .closeIcon {
-  position: absolute;
-  right: 16px;
-  top: 16px;
-}
-#widgets .widgetBlock .closeIcon:hover {
-  cursor: pointer;
-}
-#widgets .widgetBlock .typeBlock {
+#widgetDialog .widgetBlock .typeBlock {
   float: left;
   padding: 8px;
   text-align: center;
   cursor: pointer;
-  background-color: #d4d4d4;
   margin-right: 8px;
-  color: #42AB9E;
+  color: #00897b;
   border-radius: 3px;
 }
