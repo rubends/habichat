@@ -1,12 +1,16 @@
 <div class="container page">
 	<div class="settings">
 		<div ng-init="settingsView = 'style'" class="settingsDiv">
-			<ul class="nav nav-tabs">
-				<li role="presentation" class="active"><a ng-click="settingsView = 'style'" data-toggle="pill">Style</a></li>
-				<li role="presentation"><a ng-click="settingsView = 'flat'" data-toggle="pill">Flat</a></li>
-			</ul>
+			<md-nav-bar nav-bar-aria-label="Settings navigation" md-selected-nav-item="settingsView">
+				<md-nav-item md-nav-click="goto('style')" name="style">
+					Style
+				</md-nav-item>
+				<md-nav-item md-nav-click="goto('flat')" name="flat">
+					Flat
+				</md-nav-item>
+			</md-nav-bar>
 			<div id="styleSettings" ng-show="settingsView === 'style'">
-				<h1>Style</h1>
+				<!--<h1>Style</h1>-->
 				<form>
 					<div class="row">
 						<div class="col-md-6">
@@ -37,21 +41,15 @@
 							</div>
 						</div>
 						<div class="col-md-6">
-							<div class="form-group">
 								<div md-color-picker ng-model="flat.widget_color" ng-change="changeFlatSettings()" label="Widget color"></div>
-							</div>
-							<div class="form-group">
 								<div md-color-picker ng-model="flat.header_color" ng-change="changeFlatSettings()" label="Header color"></div>
-							</div>
-							<div class="form-group">
 								<div md-color-picker ng-model="flat.font_color" ng-change="changeFlatSettings()" label="Font color"></div>
-							</div>
 						</div>
 					</div>
 				</form>
 			</div>
 			<div id="userSettings" ng-show="settingsView === 'flat'">
-				<h1>Flat</h1>
+				<!--<h1>Flat</h1>-->
 				<table class="table table-hover">
 					<thead>
 						<tr>
@@ -65,13 +63,11 @@
 							<td>{{flatmate.username}}{{flatmate.role === 'ROLE_ADMIN' ? ' | Admin' : ''}}</td>
 							<td>{{flatmate.email}}</td>
 							<td ng-if="user.role === 'ROLE_ADMIN'">
-								<div ng-click="moveOutFlat(flatmate.id)">
-									<i class="fa fa-times" aria-hidden="true"></i>
-									Delete from this flat
-								</div>
 								<div ng-click="toggleUserRole(flatmate.id)">
-									<i class="fa fa-user-circle" aria-hidden="true"></i>
-									{{flatmate.role === 'ROLE_ADMIN' ? 'Make user' : 'Make admin'}}
+									<md-tooltip>{{flatmate.role === 'ROLE_ADMIN' ? 'Make user' : 'Make admin'}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_supervisor_account_24px.svg" aria-label="Change user"></md-icon>
+								</div>
+								<div ng-click="moveOutFlat(flatmate.id)">
+									<md-tooltip>Delete from this flat</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_delete_24px.svg" aria-label="Delete"></md-icon>
 								</div>
 							</td>
 						</tr>
@@ -83,14 +79,12 @@
 							<label>Invite your flatmate</label>
 							<input type="email" ng-model="invite.email">
 						</md-input-container>
+						<md-button class="md-raised" ng-click="inviteList.invites.push({email: ''})">+</md-button>
 					</div>
 					<div class="col-md-6">
-						<md-button ng-click="inviteList.invites.push({email: ''})">Add another flatmate</md-button>
 						<md-button class="md-raised md-primary" ng-click="sendInvites()">Send invites</md-button>
 					</div>
 				</div>
-				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">Move out of this flat</md-button>
-				<md-button class="md-raised md-warn moveBtn" ng-click="moveOutFlat(user.id)">Delete this flat</md-button>
 				<div ng-if="user.role === 'ROLE_ADMIN'">
 					<h1>Admin settings</h1>
 					<div class="row">
@@ -125,6 +119,8 @@
 						</div>
 					</div>
 				</div>
+				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">Move out of this flat</md-button>
+				<md-button ng-if="user.role === 'ROLE_ADMIN'" class="md-raised md-warn moveBtn" ng-click="moveOutFlat(user.id)">Delete this flat</md-button>
 			</div>
 		</div>
 	</div>

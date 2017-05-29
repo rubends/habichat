@@ -75,24 +75,11 @@
   width: 70%;
   margin: auto;
 }
-.settings h1 {
-  color: #00897b;
-  font-size: 24px;
-  font-weight: bold;
+.settings .md-nav-bar {
+  margin-bottom: 24px;
 }
-.settings .form-control {
-  margin-top: 8px;
-}
-.settings .nav-tabs {
-  cursor: pointer !important;
-}
-.settings .nav-tabs a {
-  color: #00897b !important;
-}
-.settings .nav-tabs .active a,
-.settings .nav-tabs a:hover {
-  background-color: #00897b !important;
-  color: #f8f8f8 !important;
+.settings #userSettings .table td div {
+  display: inline-block;
 }
 .settings .inviteBtns {
   margin-top: 16px;
@@ -124,8 +111,11 @@
 .settings #widgetPreview .resize .fa {
   cursor: pointer;
 }
-#dashboard {
+#dashboardBackground {
   background-size: cover;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
 }
 #dashboard h3 {
   margin-top: 0;
@@ -154,19 +144,10 @@
   bottom: 24px;
   right: 24px;
 }
-.undoDelete {
-  position: absolute;
-  background-color: #2f2f2f;
-  bottom: 0;
-  width: 20%;
-  margin-left: 40%;
-  color: #f8f8f8;
-  padding: 8px;
-  text-align: center;
-  cursor: pointer;
-}
-.undoDelete p {
-  margin-bottom: 0;
+.md-center {
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  position: fixed;
 }
 .widget .resize {
   float: right;
@@ -223,12 +204,17 @@
 .widget .poll .voteDate {
   font-size: 10px;
 }
+.widget .grocery .fa:hover,
+.widget .grocery li span:hover ~ .fa {
+  color: #4cae4c;
+  cursor: pointer;
+}
 #widgetDialog {
   min-width: 50%;
 }
 #widgetDialog .widgetBlock {
   min-height: 50vh;
-  background-color: #f8f8f8;
+  background-color: #fafafa;
   padding: 16px;
 }
 #widgetDialog .widgetBlock h1 {

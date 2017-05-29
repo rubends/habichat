@@ -1,4 +1,4 @@
-app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', '$timeout', '$mdDialog', function($rootScope, $scope, $http, $cookies, $location, $timeout, $mdDialog){
+app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', '$timeout', '$mdDialog', '$mdToast', function($rootScope, $scope, $http, $cookies, $location, $timeout, $mdDialog, $mdToast){
 	if (!$rootScope.user || !$rootScope.user.loggedIn) {
 		$location.path('/login');
 	}
@@ -6,12 +6,10 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$location.path('/flat');
 	};
 
+	$("#dashboardLink").addClass("activePage");
 	$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.user.flat.flat_token+'/'+$rootScope.flat.background_image+')'};
 	$scope.widgetStyle = {'background-color': $rootScope.user.flat.widget_color, 'color': $rootScope.flat.font_color};
 	$scope.headerStyle = {'background-color': $rootScope.user.flat.header_color, 'color': $rootScope.flat.font_color};
-
-	$(".nav").find(".activePage").removeClass("activePage");
-   	$("#dashboardLink").addClass("activePage");
 
 	$scope.showWidgetDialog = function(ev) {
 		$mdDialog.show({
@@ -22,14 +20,18 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		targetEvent: ev,
 		clickOutsideToClose: true
 		})
-		.then(function() {
+		.then(function(answer) {
 		 //show answer or something
 		}, function() {
-		$scope.widgetForm = [];
+			$scope.widgetForm = {};
    		});
+	};
+	$scope.closeDialog = function() {
+		$mdDialog.cancel();
 	};
 
 	$scope.addWidget = function(){
+		console.log($scope.widgetForm);
         var sUrl = "../backend/web/api/widgets";
         var oConfig = {
             url: sUrl,
@@ -45,7 +47,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			else{
 				$mdDialog.cancel();
 				$rootScope.flat.widgets.push(response.data);
-				$scope.widgetForm = {};
 				if($scope.allWidgets){
 					$rootScope.packery.layout();
 				}
@@ -79,6 +80,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$rootScope.flat.widgets.push(response.data);
 					$scope.widgetDeleted = false;
 				} else {
+					deletedToast($widgetId);
 					$scope.widgetDeleted = $widgetId;
 					for(widget in $scope.flat.widgets){
 						if($scope.flat.widgets[widget].id === $widgetId){
@@ -92,6 +94,15 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		    console.log(response);
 		});
     }
+
+	function deletedToast($widgetId) {
+		$mdToast.show($mdToast.simple().textContent('You deleted a widget').action('Undo').position('bottom center'))
+			.then(function(response) {
+				if ( response == 'ok' ) {
+					$scope.deleteWidget($widgetId);
+				}
+			});
+	};
 
 	$scope.changeWidgetSize = function($widgetId, $size){
 		if ($size < 6) {

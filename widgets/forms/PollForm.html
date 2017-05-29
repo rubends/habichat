@@ -1,32 +1,26 @@
 <p>Add a poll</p>
-<form ng-submit="ctrl.addWidget()">
-    <md-content layout-padding>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Title</label>
+    <input ng-model="ctrl.widgetForm.title">
+</md-input-container>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Question</label>
+    <textarea ng-model="ctrl.addPollForm.question"></textarea>
+</md-input-container>
+<div layout-gt-xs="row">
+    <p>Voting ends on</p>
+    <mdp-time-picker mdp-placeholder="Time" ng-model="ctrl.addPollForm.until.time"></mdp-time-picker>
+    <mdp-date-picker mdp-placeholder="Date" ng-model="ctrl.addPollForm.until.date"></mdp-date-picker>
+</div>
+<md-checkbox ng-model="ctrl.addPollForm.multiple" aria-label="pollMultipleVotes">
+    Allow multiple votes
+</md-checkbox>
+<div ng-init="ctrl.addPollForm.options = [{name: ''}, {name: ''}]">
+    <div ng-repeat="option in ctrl.addPollForm.options">
         <md-input-container class="md-block" flex-gt-sm>
-            <label>Title</label>
-            <input ng-model="ctrl.widgetForm.title">
+            <label>Poll option</label>
+            <input ng-model="option.name">
         </md-input-container>
-        <md-input-container class="md-block" flex-gt-sm>
-            <label>Question</label>
-            <textarea ng-model="ctrl.addPollForm.question"></textarea>
-        </md-input-container>
-        <div layout-gt-xs="row">
-            <p>Voting ends on</p>
-            <mdp-time-picker mdp-placeholder="Time" ng-model="ctrl.addPollForm.until.time"></mdp-time-picker>
-            <mdp-date-picker mdp-placeholder="Date" ng-model="ctrl.addPollForm.until.date"></mdp-date-picker>
-        </div>
-        <md-checkbox ng-model="ctrl.addPollForm.multiple" aria-label="pollMultipleVotes">
-            Allow multiple votes
-        </md-checkbox>
-        <div ng-init="ctrl.addPollForm.options = [{name: ''}, {name: ''}]">
-            <div ng-repeat="option in ctrl.addPollForm.options">
-                <md-input-container class="md-block" flex-gt-sm>
-                    <label>Poll option</label>
-                    <input ng-model="option.name">
-                </md-input-container>
-            </div>
-            <md-button type="button" class="md-primary" ng-click="ctrl.addPollForm.options.push({name: ''})">+</md-button>
-        </div>
-        <md-button type='submit' class="md-raised md-primary">Add widget</md-button>
-        <p ng-click="ctrl.widgetForm = []">return</p>
-    </md-content>
-</form>
+    </div>
+    <md-button type="button" class="md-primary" ng-click="ctrl.addPollForm.options.push({name: ''})">+</md-button>
+</div>

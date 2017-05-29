@@ -107,8 +107,10 @@ class WidgetController extends FOSRestController
                 $widget->setVisible(1);
                 $updateVis = 1;
                 $type = $widget->getWidgetType();
-                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-                $widget->setItems($items);
+                if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                    $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                    $widget->setItems($items);
+                }
             }
             else{
                 $widget->setVisible(0);

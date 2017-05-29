@@ -1,4 +1,4 @@
-@backgroundColor: #f8f8f8;
+@backgroundColor: #fafafa;
 @mainColor: rgb(0,137,123);
 @secondaryColor: rgba(255,110,64,0.87);
 @darkColor: #2f2f2f;
@@ -97,26 +97,15 @@
 	width: 70%;
 	margin: auto;
 
-	h1 {
-		color: @mainColor;
-		font-size: 24px;
-		font-weight: bold;
+	.md-nav-bar {
+		margin-bottom: 24px;
 	}
 
-	.form-control {
-		margin-top: 8px;
-	}
-
-	.nav-tabs {
-		cursor: pointer !important;
-
-		a {
-			color: @mainColor !important;
-		}
-
-		.active a, a:hover{
-			background-color: @mainColor !important;
-			color: @backgroundColor !important;
+	#userSettings {
+		.table {
+			td div {
+				display: inline-block;
+			}
 		}
 	}
 
@@ -161,9 +150,13 @@
 }
 
 // DASHBOARD ****************************************************************************
-#dashboard {
+#dashboardBackground {
 	background-size: cover;
-
+	position: fixed;
+	width: 100%;
+	height: 100vh;
+}
+#dashboard {
 	h3 {
 		margin-top: 0;
     	margin-bottom: 0;
@@ -198,21 +191,12 @@
 	right: 24px;
 }
 
-.undoDelete {
-	position: absolute;
-    background-color: @darkColor;
-    bottom: 0;
-    width: 20%;
-    margin-left: 40%;
-    color: @backgroundColor;
-    padding: 8px;
-    text-align: center;
-	cursor: pointer;
-
-	p {
-		margin-bottom: 0;
-	}
+.md-center {
+	left: 50%;
+	transform: translate3d(-50%, 0, 0);
+	position: fixed;
 }
+
 // WIDGETS
 .widget {
 	.resize{
@@ -287,6 +271,14 @@
 	.poll {
 		.voteDate{
 			font-size: 10px;
+		}
+	}
+
+	// GROCERY WIDGET
+	.grocery {
+		.fa:hover, li span:hover ~ .fa {
+			color: @okColor;
+			cursor: pointer;
 		}
 	}
 }

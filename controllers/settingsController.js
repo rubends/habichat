@@ -6,9 +6,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 		$location.path('/flat');
 	};
 
-	$(".nav").find(".activePage").removeClass("activePage");
-   	$("#settingsLink").addClass("activePage");
-
+	$("#settingsLink").addClass("activePage");
 	$scope.changeFlatSettings = function(){
         var sUrl = "../backend/web/api/flats/" + $rootScope.flat.id;
         var oConfig = {

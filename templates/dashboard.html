@@ -1,4 +1,5 @@
-<div class="container-fluid page" id="dashboard" ng-style="dashboardStyle">
+<div id="dashboardBackground" ng-style="dashboardStyle"></div>
+<div class="container-fluid page" id="dashboard">
 	<div class="widgets">
 		<div ng-repeat="widget in flat.widgets | filter: {visible: '1'} | orderBy:'place' as allWidgets" class="moveWidget col-md-{{widget.size}}" id="{{widget.id}}" packery>
 			<div class="move widget" >
@@ -17,8 +18,8 @@
 		<h2 ng-hide="allWidgets.length" class="text-center">There are no widgets set.</h2>
 	</div>
 	<div ng-click="showWidgetDialog($event)" class="addWidgetBtn">
-		<md-button class="md-fab md-mini md-primary" aria-label="Add widget">
-			<md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_24px.svg"></md-icon>
+		<md-button class="md-fab md-medium md-primary" aria-label="Add widget">
+			<md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon>
 		</md-button>
 	</div>
 </div>
@@ -61,8 +62,4 @@
 		</div>
 		<div ng-include="'widgets/forms/' + widgetForm.type + 'Form.html'"></div>
 	</div>
-</div>
-
-<div class="undoDelete" ng-show="widgetDeleted" ng-click="deleteWidget(widgetDeleted)">
-	<p>Undo delete</p>
 </div>

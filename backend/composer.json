@@ -24,7 +24,7 @@
         "incenteev/composer-parameter-handler": "^2.0",
         "friendsofsymfony/rest-bundle": "^2.1",
         "jms/di-extra-bundle": "^1.8",
-        "jms/serializer-bundle": "^1.1",
+        "jms/serializer-bundle": "^2.0",
         "nelmio/api-doc-bundle": "^2.13",
         "lexik/jwt-authentication-bundle": "^2.1"
     },

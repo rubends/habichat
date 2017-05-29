@@ -2,16 +2,30 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 
 (function() {
     
+	app.run(function(getUserService){
+		getUserService.getUser();
+	});
+
     app.config(function($routeProvider, $locationProvider, $mdThemingProvider) {
     	$locationProvider.hashPrefix('');
     	$routeProvider
 		.when("/login", {
 			templateUrl : "templates/login.html",
-			controller : "loginCtrl"
+			controller : "loginCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/register", {
 			templateUrl : "templates/register.html",
-			controller : "registerCtrl"
+			controller : "registerCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/dashboard", {
 			templateUrl : "templates/dashboard.html",
@@ -33,11 +47,21 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 		})
 		.when("/flat", {
 			templateUrl : "templates/flat.html",
-			controller : "flatCtrl"
+			controller : "flatCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/logout", {
 			templateUrl : "templates/home.html",
-			controller : "logoutCtrl"
+			controller : "logoutCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/invite/:key", {
 			templateUrl : "templates/invite.html",
@@ -45,11 +69,19 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 			resolve: {
                 inviteService: ['getInviteService', '$route', function(getInviteService, $route){
                     return getInviteService.getInvite($route.current.params.key);
-                }]
+                }],
+				userService: ['getUserService', function(getUserService){
+					return getUserService.getUser();
+				}]
             }
 		})
 		.otherwise({
-	        templateUrl : "templates/home.html"
+	        templateUrl : "templates/home.html",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 	    });
 
 		$mdThemingProvider.theme('default')
@@ -60,89 +92,97 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 
 	});
 
-    app.controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location','getUserService', 'getFlatService', function($rootScope, $scope, $http, $cookies, $location, getUserService, getFlatService){
- 		// getUserService.getUser();
-		//  getFlatService.getFlat();
+    app.controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
+ 		$rootScope.apiPath = "../backend/web/app_dev.php/api/flats/";
+		 
+		$(document).on("click", ".nav a", function() {
+			$(".nav").find(".activePage").removeClass("activePage");
+			$(this).addClass("activePage");
+		});
     }]);
 
     app.directive('packery', ['$rootScope', '$http', '$timeout', function($rootScope, $http, $timeout) {
         return {
           restrict: 'A',
           link: function(scope, element, attrs) {
-            if ($rootScope.packery === undefined || $rootScope.packery === null) {
-              scope.element = element;
-              $rootScope.packery = new Packery(element[0].parentElement, {
-                isResizeBound: true,
-                columnWidth: 1,
-                itemSelector: '.moveWidget'
-              });
-              $rootScope.packery.bindResize();
-              var draggable1 = new Draggabilly(element[0]);
-              $rootScope.packery.bindDraggabillyEvents(draggable1);
+			if(window.screen.width >= 768) {
+				if ($rootScope.packery === undefined || $rootScope.packery === null) {
+				scope.element = element;
+				$rootScope.packery = new Packery(element[0].parentElement, {
+					isResizeBound: true,
+					columnWidth: 1,
+					itemSelector: '.moveWidget'
+				});
+				$rootScope.packery.bindResize();
+				var draggable1 = new Draggabilly(element[0]);
+				$rootScope.packery.bindDraggabillyEvents(draggable1);
 
-              draggable1.on('dragEnd', function(instance, event, pointer) {
-                savePlace();
-                $timeout(function() {
-                  $rootScope.packery.layout();
-                }, 200);
-              });
+				draggable1.on('dragEnd', function(instance, event, pointer) {
+					savePlace();
+					$timeout(function() {
+					//   $rootScope.packery.layout();
+					}, 200);
+				});
 
-              	var orderItems = function() {
-					var itemElems = $rootScope.packery.getItemElements();
-				};
+					var orderItems = function() {
+						var itemElems = $rootScope.packery.getItemElements();
+					};
 
-              $rootScope.packery.on('layoutComplete', orderItems);
-              $rootScope.packery.on('dragItemPositioned', orderItems);
+				$rootScope.packery.on('layoutComplete', orderItems);
+				$rootScope.packery.on('dragItemPositioned', orderItems);
 
-            } else {
-              var draggable2 = new Draggabilly(element[0]);
-              $rootScope.packery.bindDraggabillyEvents(draggable2);
+				} else {
+				var draggable2 = new Draggabilly(element[0]);
+				$rootScope.packery.bindDraggabillyEvents(draggable2);
 
-              draggable2.on('dragEnd', function(instance, event, pointer) {
-                savePlace();
-                $timeout(function() {
-                  $rootScope.packery.layout();
-                }, 200);
-              });
+				draggable2.on('dragEnd', function(instance, event, pointer) {
+					savePlace();
+					$timeout(function() {
+					//   $rootScope.packery.layout();
+					}, 200);
+				});
 
-            }
-
-            function savePlace(){
-                var itemElems = $rootScope.packery.getItemElements();
-                for (var i = 0; i < itemElems.length; i++) {
-                    var sUrl = "../backend/web/api/widgets/"+itemElems[i].id+"/places/"+i;
-                    var oConfig = {
-                        url: sUrl,
-                        method: "PUT",
-                        params: {callback: "JSON_CALLBACK"},
-                        headers: {Authorization: 'Bearer ' + $rootScope.user.token}
-                    };
-                    $http(oConfig).then(function successCallback(response) {
-                        // console.log(response.data);
-                    }, function errorCallback(response) {
-                         console.log("error");
-                    });
-                };
-            }
-
-            $timeout(function() {
-              $rootScope.packery.reloadItems();
-              $rootScope.packery.layout();
-            }, 100);
-
-            scope.$on('$destroy', function(event) {
-				if($rootScope.packery && $rootScope.packery.remove) {
-					if(event.targetScope.widget){
-						$rootScope.packery.remove(event.targetScope);
-						scope.packery.layout();
-					} else {
-						$rootScope.packery.remove(scope.element[0]);
-						scope.packery.layout();
-						$rootScope.packery = null;
-					}
 				}
-			});
-          }
+
+				function savePlace(){
+					var itemElems = $rootScope.packery.getItemElements();
+					for (var i = 0; i < itemElems.length; i++) {
+						var sUrl = "../backend/web/api/widgets/"+itemElems[i].id+"/places/"+i;
+						var oConfig = {
+							url: sUrl,
+							method: "PUT",
+							params: {callback: "JSON_CALLBACK"},
+							headers: {Authorization: 'Bearer ' + $rootScope.user.token}
+						};
+						$http(oConfig).then(function successCallback(response) {
+							// console.log(response.data);
+						}, function errorCallback(response) {
+							console.log("error");
+						});
+					};
+				}
+
+				$timeout(function() {
+				$rootScope.packery.reloadItems();
+				$rootScope.packery.layout();
+				}, 100);
+
+				scope.$on('$destroy', function(event) {
+					if($rootScope.packery && $rootScope.packery.remove) {
+						if(event.targetScope.widget){
+							$rootScope.packery.remove(event.targetScope);
+							scope.packery.layout();
+						} else {
+							if($rootScope.packery && $rootScope.packery.remove && scope.element) {
+								$rootScope.packery.remove(scope.element[0]);
+							}
+							scope.packery.layout();
+							$rootScope.packery = null;
+						}
+					}
+				});
+          	}
+		  }
         };
 
       }
@@ -151,7 +191,7 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
     
     app.directive('reloadPackery', ['$rootScope', function($rootScope) {
       return function(scope) {
-        if (scope.$last){ //The last item in ng-repeat will relead packery
+        if (scope.$last && window.screen.width >= 768){ //The last item in ng-repeat will relead packery
           $rootScope.packery.layout();
         }
       };
@@ -161,9 +201,11 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
         return {
             restrict: 'A',
             link: function(scope, element, attrs) {
-                element.bind('load', function() { //When the image is loaded, than reload packery
-                    $rootScope.packery.layout();
-                });
+				if(window.screen.width >= 768){
+					element.bind('load', function() { //When the image is loaded, than reload packery
+						$rootScope.packery.layout();
+					});
+				}
             }
         };
     }]);

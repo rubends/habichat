@@ -5,11 +5,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
  * @UniqueEntity(fields="email", message="This email address is already in use")
+ * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -17,6 +19,8 @@ class User implements UserInterface
      * @ORM\Id;
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * Serializer\Expose()
+     * Serializer\Groups({"default"})
      */
     protected $id;
 
