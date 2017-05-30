@@ -48,7 +48,7 @@ class Widget
      *
      * @var int
      */
-    protected $place;
+    protected $x;
 
     /**
      * 
@@ -56,7 +56,23 @@ class Widget
      *
      * @var int
      */
-    protected $size;
+    protected $y;
+
+    /**
+     * 
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    protected $width;
+
+    /**
+     * 
+     * @ORM\Column(type="integer")
+     *
+     * @var int
+     */
+    protected $height;
 
 
     /**
@@ -138,34 +154,67 @@ class Widget
      * @return int
      *
      */
-    public function getPlace()
+    public function getX()
     {
-        return $this->place;
+        return $this->x;
     }
 
     /**
-     * @param int $place
+     * @param int $x
      */
-    public function setPlace($place)
+    public function setX($x)
     {
-        $this->place = $place;
+        $this->x = $x;
     }
 
     /**
      * @return int
      *
      */
-    public function getSize()
+    public function getY()
     {
-        return $this->size;
+        return $this->y;
     }
 
     /**
-     * @param int $size
+     * @param int $y
      */
-    public function setSize($size)
+    public function setY($y)
     {
-        $this->size = $size;
+        $this->y = $y;
+    }
+    /**
+     * @return int
+     *
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
+
+    /**
+     * @param int $width
+     */
+    public function setWidth($width)
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @return int
+     *
+     */
+    public function getHeight()
+    {
+        return $this->height;
+    }
+
+    /**
+     * @param int $height
+     */
+    public function setHeight($height)
+    {
+        $this->height = $height;
     }
 
     /**

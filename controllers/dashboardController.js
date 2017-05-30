@@ -452,4 +452,33 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		    console.log(response);
 		});
 	}
+
+
+
+
+	// GRID STACK
+	$scope.gridOptions = {
+		cellHeight: 400,
+		verticalMargin: 10
+	};
+
+	$scope.onGridChange = function(event, items) {
+		console.log("onChange event: "+event+" items:"+items);
+	};
+
+	$scope.onGridDragStart = function(event, ui) {
+		console.log("onDragStart event: "+event+" ui:"+ui);
+	};
+
+	$scope.onGridDragStop = function(event, ui) {
+		console.log("onDragStop event: "+event+" ui:"+ui);
+	};
+
+	$scope.onGridResizeStart = function(event, ui) {
+		console.log("onResizeStart event: "+event+" ui:"+ui);
+	};
+
+	$scope.onGridResizeStop = function(event, ui) {
+		console.log("onResizeStop event: "+event+" ui:"+ui);
+	};
 }]);

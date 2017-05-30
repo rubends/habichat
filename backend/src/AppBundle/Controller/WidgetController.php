@@ -48,17 +48,17 @@ class WidgetController extends FOSRestController
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $flat = $user->getFlat();
-        $widgetArray = $flat->getWidgets();
-        $place = count($widgetArray) + 1;
 
         $widget = new Widget();
         $widget->setWidgetType($request->request->get('type'));
         $widget->setTitle($request->request->get('title'));
         $widget->setVisible(1);
-        $widget->setPlace($place);
         $widget->setUser($user);
         $widget->setFlat($flat);
-        $widget->setSize(2);
+        $widget->setX(0);
+        $widget->setY(0);
+        $widget->setWidth(1);
+        $widget->setHeight(1);
         $widget->setItems([]);
 
         $this->getDoctrine()->getManager()->persist($widget);
