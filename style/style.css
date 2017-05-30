@@ -1,0 +1,247 @@
+.btn-primary {
+  background-color: #00897b !important;
+}
+.btn-secondary {
+  color: #00897b !important;
+}
+.md-input-container {
+  margin: 0 !important;
+}
+.packery-drop-placeholder {
+  outline: 3px dashed #444;
+  outline-offset: -6px;
+  /* transition position changing */
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+}
+.navbar {
+  margin-bottom: 0;
+  background-color: #00897b;
+  border: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.navbar .navbar-brand {
+  font-weight: bold;
+  color: #fff !important;
+}
+.navbar .navbar-nav a {
+  color: #fff !important;
+}
+.navbar .icon {
+  color: #fff;
+}
+.navbar .activePage .icon,
+.navbar a:hover .icon,
+.navbar .navbar-brand:hover {
+  color: rgba(255, 110, 64, 0.87) !important;
+}
+.page {
+  padding-top: 66px;
+  min-height: 100vh;
+}
+.homepage {
+  background-size: cover;
+  background-image: url('/img/intro.jpg');
+}
+.homepage .intro {
+  width: 50%;
+  margin: auto;
+}
+.login,
+.register,
+.flat {
+  width: 30%;
+  margin: auto;
+}
+.login h1,
+.register h1,
+.flat h1 {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+.login .form-control,
+.register .form-control,
+.flat .form-control {
+  width: 20% !important;
+  margin: auto;
+}
+.login .btn-default,
+.register .btn-default,
+.flat .btn-default {
+  margin-top: 8px;
+}
+.settings {
+  width: 70%;
+  margin: auto;
+}
+.settings .md-nav-bar {
+  margin-bottom: 24px;
+}
+.settings #userSettings .table td div {
+  display: inline-block;
+}
+.settings .inviteBtns {
+  margin-top: 16px;
+}
+.settings .moveBtn {
+  margin-top: 30px;
+}
+.settings .previewBackgroundImg {
+  width: 100%;
+  padding-bottom: 8px;
+}
+.settings #widgetPreview h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  max-width: 80%;
+  font-size: 1.5em;
+}
+.settings #widgetPreview .panel {
+  border: none;
+}
+.settings #widgetPreview .panel .panel-heading {
+  padding: 5px 15px;
+  border: none;
+}
+.settings #widgetPreview .resize {
+  float: right;
+}
+.settings #widgetPreview .resize .fa {
+  cursor: pointer;
+}
+#dashboardBackground {
+  background-size: cover;
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+}
+.addWidgetBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+}
+.md-center {
+  left: 50%;
+  transform: translate3d(-50%, 0, 0);
+  position: fixed;
+}
+.widget {
+  margin: 8px;
+  height: 100%;
+  overflow: hidden;
+}
+.widget .widgetHeader {
+  padding: 5px 15px;
+}
+.widget .widgetHeader h3 {
+  margin-top: 0;
+  margin-bottom: 0;
+  display: inline-block;
+  max-width: 80%;
+  font-size: 1.5em;
+}
+.widget .widgetBody {
+  height: calc(100% - 34px);
+}
+.widget .resize {
+  float: right;
+}
+.widget .resize .fa {
+  cursor: pointer;
+}
+.widget ul {
+  list-style: none;
+  padding-left: 0;
+}
+.widget .todo li {
+  cursor: pointer;
+}
+.widget .todo li div {
+  display: inline-block;
+}
+.widget .todo li .deleteTodo {
+  float: right;
+  display: none;
+}
+.widget .todo li .checkSquare {
+  padding-right: 16px;
+}
+.widget .todo li .hoverSquare {
+  display: none;
+  padding-right: 14px;
+}
+.widget .todo li:hover .deleteTodo {
+  display: block;
+}
+.widget .todo li:hover .checkSquare {
+  display: none;
+}
+.widget .todo li:hover .hoverSquare {
+  display: inline-block;
+}
+.widget .todo .deleteTodo:hover {
+  color: #c70000;
+  font-size: 19px;
+}
+.widget .picture {
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  height: 100%;
+}
+.widget .bill {
+  padding: 8px;
+}
+.widget .bill .unpaidUser:hover {
+  cursor: pointer;
+}
+.widget .bill .unpaidUser:hover .fa {
+  color: #4cae4c;
+}
+.widget .poll {
+  padding: 8px;
+}
+.widget .poll .voteDate {
+  font-size: 10px;
+}
+.widget .grocery {
+  padding: 8px;
+}
+.widget .grocery .fa:hover,
+.widget .grocery li span:hover ~ .fa {
+  color: #4cae4c;
+  cursor: pointer;
+}
+.widget .weather {
+  padding: 8px;
+}
+.widget .text {
+  padding: 8px;
+}
+#widgetDialog {
+  min-width: 50%;
+}
+#widgetDialog .widgetBlock {
+  min-height: 50vh;
+  background-color: #fafafa;
+  padding: 16px;
+}
+#widgetDialog .widgetBlock h1 {
+  color: #00897b;
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 0;
+}
+#widgetDialog .widgetBlock .typeBlock {
+  float: left;
+  padding: 8px;
+  text-align: center;
+  cursor: pointer;
+  margin-right: 8px;
+  color: #00897b;
+  border-radius: 3px;
+}

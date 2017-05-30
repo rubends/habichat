@@ -1,0 +1,72 @@
+<div class="container page">
+	<div class="flat">
+		<h1>Create a dashboard for your flat</h1>
+		<p>Chat with your flatmates, share the bills, create grocery lists, divide the weekly chores and many more in your own personalised dashboard that fits your flat.</p>
+		<form ng-submit="flatForm.$valid && createFlat()" name="flatForm" novalidate>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Flatname</label>
+				<input ng-model="registerFlat.name" required md-minlength="3">
+				<div ng-messages="registerFlat.name.$error">
+					<div ng-message="required">A flatname is required.</div>
+					<div ng-message="md-minlength">The flatname has to be longer than 3 characters.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Street</label>
+				<input ng-model="registerFlat.street" required md-minlength="3">
+				<div ng-messages="registerFlat.street.$error">
+					<div ng-message="required">A street is required.</div>
+					<div ng-message="md-minlength">The street has to be longer than 3 characters.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Street</label>
+				<input ng-model="registerFlat.street" required md-minlength="3">
+				<div ng-messages="registerFlat.street.$error">
+					<div ng-message="required">A street is required.</div>
+					<div ng-message="md-minlength">The street has to be longer than 3 characters.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Number</label>
+				<input type="number" ng-model="registerFlat.number" required>
+				<div ng-messages="registerFlat.number.$error">
+					<div ng-message="required">A street is required.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Zipcode</label>
+				<input ng-model="registerFlat.zipcode" required md-minlength="4">
+				<div ng-messages="registerFlat.zipcode.$error">
+					<div ng-message="required">A zipcode is required.</div>
+					<div ng-message="md-minlength">The zipcode has to be longer than 4 characters.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>City</label>
+				<input ng-model="registerFlat.city" required md-minlength="3">
+				<div ng-messages="registerFlat.city.$error">
+					<div ng-message="required">A city is required.</div>
+					<div ng-message="md-minlength">The city has to be longer than 3 characters.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Country</label>
+				<input ng-model="registerFlat.country" required md-minlength="3">
+				<div ng-messages="registerFlat.country.$error">
+					<div ng-message="required">A country is required.</div>
+					<div ng-message="md-minlength">The country has to be longer than 3 characters.</div>
+				</div>
+			</md-input-container>
+			<div ng-init="inviteList.invites = [{email: ''}]">
+				<p>Invite your flatmate</p>
+				<md-input-container class="md-block" flex-gt-sm ng-repeat="invite in inviteList.invites">
+					<label>A flatmate's e-mail</label>
+					<input type="email" ng-model="invite.email">
+				</md-input-container>
+				<md-button ng-click="inviteList.invites.push({email: ''})">Add another flatmate</md-button>
+			</div>
+			<md-button type='submit' class="md-raised md-primary" ng-disabled="flatForm.$invalid">Create</md-button>
+		</form>
+	</div>
+</div>

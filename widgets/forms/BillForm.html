@@ -1,0 +1,23 @@
+<p>Add your expenses</p>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Title</label>
+    <input ng-model="ctrl.widgetForm.title">
+</md-input-container>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Summary</label>
+    <textarea ng-model="ctrl.addBillForm.summary"></textarea>
+</md-input-container>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Amount (in €)</label>
+    <input type="number" ng-model="ctrl.addBillForm.amount">
+</md-input-container>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Bankaccount</label>
+    <input ng-model="ctrl.addBillForm.account">
+</md-input-container>
+<p>Split between</p>
+<md-input-container class="md-block" flex-gt-sm ng-repeat="flatmate in ctrl.flat.users | filter: {id: '!' + ctrl.user.id}">
+    <md-checkbox ng-model="ctrl.addBillForm.users[flatmate.id]" aria-label="pollMultipleVotes" ng-value="flatmate.id">
+        {{flatmate.username}}
+    </md-checkbox>
+</md-input-container>

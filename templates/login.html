@@ -1,0 +1,22 @@
+<div class="container page">
+	<div class="login">
+		<h1>Login</h1>
+		<form ng-submit="loginForm.$valid && loginUser()" name="loginForm" novalidate>
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>E-mailadress</label>
+					<input type="email" ng-model="userLogin.email" required>
+					<div ng-messages="userLogin.email.$error">
+						<div ng-message="required">Your e-mailadress is required.</div>
+					</div>
+				</md-input-container>
+				<md-input-container class="md-block" flex-gt-sm>
+					<label>Password</label>
+					<input ng-model="userLogin.password" required>
+					<div ng-messages="userLogin.password.$error">
+						<div ng-message="required">Your password is required.</div>
+					</div>
+				</md-input-container>
+				<md-button type='submit' class="md-raised md-primary" ng-disabled="loginForm.$invalid">Login</md-button>
+		</form>
+	</div>
+</div>
