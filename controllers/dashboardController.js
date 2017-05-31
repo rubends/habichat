@@ -471,7 +471,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	};
 
 	$scope.onGridChange = function(event, items) {
-		console.log("onChange event: "+event+" items:"+items);
 	};
 
 	$scope.onGridDragStop = function(event, ui) {

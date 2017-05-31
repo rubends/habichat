@@ -11,21 +11,11 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
     	$routeProvider
 		.when("/login", {
 			templateUrl : "templates/login.html",
-			controller : "loginCtrl",
-			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
-                }]
-            }
+			controller : "loginCtrl"
 		})
 		.when("/register", {
 			templateUrl : "templates/register.html",
-			controller : "registerCtrl",
-			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
-                }]
-            }
+			controller : "registerCtrl"
 		})
 		.when("/dashboard", {
 			templateUrl : "templates/dashboard.html",
@@ -76,12 +66,7 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
             }
 		})
 		.otherwise({
-	        templateUrl : "templates/home.html",
-			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
-                }]
-            }
+	        templateUrl : "templates/home.html"
 	    });
 
 		$mdThemingProvider.theme('default')
@@ -93,7 +78,7 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 	});
 
     app.controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
- 		$rootScope.apiPath = "../backend/web/app_dev.php/api";
+ 		$rootScope.apiPath = "../backend/web/api";
 		 
 		$(document).on("click", ".nav a", function() {
 			$(".nav").find(".activePage").removeClass("activePage");

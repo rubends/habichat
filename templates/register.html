@@ -18,7 +18,7 @@
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>Password</label>
-				<input ng-model="registerFormUser.password" required md-minlength="5">
+				<input type="password" ng-model="registerFormUser.password" required md-minlength="5">
 				<div ng-messages="registerFormUser.password.$error">
 					<div ng-message="required">A password is required.</div>
 					<div ng-message="md-maxlength">Your password must be more than 5 characters.</div>
@@ -26,7 +26,7 @@
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
 				<label>Repeat password</label>
-				<input ng-model="registerFormUser.passwordRepeat" required md-minlength="5">
+				<input type="password" ng-model="registerFormUser.passwordRepeat" required md-minlength="5">
 				<div ng-messages="registerFormUser.passwordRepeat.$error">
 					<div ng-message="required">You have to repeat your password.</div>
 					<div ng-message="md-maxlength">Your password must be more than 5 characters.</div>
