@@ -120,7 +120,7 @@
 					</div>
 				</div>
 				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">Move out of this flat</md-button>
-				<md-button ng-if="user.role === 'ROLE_ADMIN'" class="md-raised md-warn moveBtn" ng-click="moveOutFlat(user.id)">Delete this flat</md-button>
+				<md-button ng-if="user.role === 'ROLE_ADMIN'" class="md-raised md-warn moveBtn" ng-click="deleteFlat(flat.id)">Delete this flat</md-button>
 			</div>
 		</div>
 	</div>

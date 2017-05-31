@@ -22,7 +22,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			}
 			else{
 				console.log(response);
-				$rootScope.flat = response.data;
+				$rootScope.user.flat = response.data;
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -46,6 +46,28 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				if(!response.data){
 					$location.path('/flat');
 				}
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
+		});
+    }
+
+	$scope.deleteFlat = function($flatId){
+        var sUrl = $rootScope.apiPath + "/flats/" + $flatId;
+        var oConfig = {
+            url: sUrl,
+            method: "DELETE",
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				console.log(response.data);
+			}
+			else{
+				$rootScope.user = response.data;
+				$rootScope.user.loggedIn = true;
+				$location.path('/flat');
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -122,7 +144,7 @@ app.directive('backgroundChange', ['$rootScope', '$http', function ($rootScope, 
 						}
 						else{
 							console.log(response);
-							$rootScope.flat = response.data;
+							$rootScope.user.flat = response.data;
 						}
 					}, function errorCallback(response) {
 						console.log(response);

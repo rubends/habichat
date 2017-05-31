@@ -17,9 +17,10 @@ app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
 				$rootScope.user.loggedIn = true;
-				if(response.data.flat || response.data.flat_id){
+				if (response.data.flat) {
 					$location.path('/dashboard');
-				} else {
+				}
+				else{
 					$location.path('/flat');
 				}
 			}

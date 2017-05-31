@@ -117,7 +117,7 @@ class WidgetController extends FOSRestController
                 $updateVis = 0;
             }
         } else {
-            return new JsonResponse(array('error' => "User is not the creator of this widget."));
+            return new JsonResponse(array('error' => "User has no rights to delete this widget."));
         }
 
         $this->getDoctrine()->getManager()->persist($widget);

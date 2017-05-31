@@ -115,12 +115,27 @@ class UserController extends FOSRestController
         // Generate the token
         $token = $this->get('lexik_jwt_authentication.jwt_manager')->create($user);
 
-        $response = array(
-            'token' => $token,
-            'username'  => $user->getUsername(),
-            'email' => $user->getEmail(),
-            'flat' => $user->getFlat()
-        );
+        if($flat){
+            $widgets = $flat->getWidgets();
+            foreach($widgets as $key => $widget){
+                if($widget->getVisible()){
+                    $type = $widget->getWidgetType();
+                    if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                        $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                        $widget->setItems($items);
+                    }
+                } else {
+                   unset($widgets[$key]);
+                }
+            }
+        }
+
+        $response = [
+                'token' => $token,
+                'username'  => $user->getUsername(),
+                'email' => $user->getEmail(),
+                'flat' => $user->getFlat() ? $user->getFlat()->getId() : false
+            ];
 
         return new JsonResponse($response, $statusCode); // Return a 201 Created with the JWT.
     }

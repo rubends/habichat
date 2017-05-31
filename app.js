@@ -1,14 +1,13 @@
 var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular']);
 
 (function() {
-    
-	app.run(function(getUserService){
-		getUserService.getUser();
-	});
 
     app.config(function($routeProvider, $locationProvider, $mdThemingProvider) {
     	$locationProvider.hashPrefix('');
     	$routeProvider
+		.when("/", {
+			templateUrl : "templates/home.html"
+		})
 		.when("/login", {
 			templateUrl : "templates/login.html",
 			controller : "loginCtrl"
@@ -59,10 +58,7 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 			resolve: {
                 inviteService: ['getInviteService', '$route', function(getInviteService, $route){
                     return getInviteService.getInvite($route.current.params.key);
-                }],
-				userService: ['getUserService', function(getUserService){
-					return getUserService.getUser();
-				}]
+                }]
             }
 		})
 		.otherwise({
@@ -80,7 +76,7 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
     app.controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
  		$rootScope.apiPath = "../backend/web/api";
 		 
-		$(document).on("click", ".nav a", function() {
+		$(document).on("click", ".navbar a", function() {
 			$(".nav").find(".activePage").removeClass("activePage");
 			$(this).addClass("activePage");
 		});

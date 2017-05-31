@@ -37,7 +37,7 @@ class User implements UserInterface
 
     /**
      * 
-     * @ORM\ManyToOne(targetEntity="Flat", inversedBy="users")
+     * @ORM\ManyToOne(targetEntity="Flat", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="flat_id", referencedColumnName="id")
      *
      */

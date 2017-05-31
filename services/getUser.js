@@ -2,7 +2,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
 	return {
 		getUser: function(){
             if ($cookies.get('token')) {
-                if(!$rootScope.user) {
+                if(!$rootScope.user || !$rootScope.flat || $rootScope.flat.length == '0') {
                     var sUrl = "../backend/web/api/user";
                     var oConfig = {
                         url: sUrl,
@@ -19,7 +19,6 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                             $rootScope.user = response.data.user;
                             $rootScope.flat = response.data.flat;
                             $rootScope.user.token = $cookies.get('token');
-                            $rootScope.loggedIn = true;
                             $rootScope.user.loggedIn = true;
                         }
                     }, function errorCallback(response) {

@@ -38,18 +38,14 @@
             </div>
             <div ng-show="ctrl.widgetForm.type">
                 <form ng-submit="ctrl.addWidget()">
-                    <md-content layout-padding>
                         <div ng-include="'widgets/forms/' + ctrl.widgetForm.type + 'Form.html'"></div>
                         <md-button type='submit' class="md-raised md-primary">Add widget</md-button>
                         <md-button ng-click="ctrl.widgetForm = {}">return</md-button>
-                    </md-content>
                 </form>
             </div>
-            <md-content layout-padding>
-                <md-button class="md-raised" ng-click="ctrl.closeDialog()">
-                    Cancel
-                </md-button>
-            </md-content>
+            <md-button class="md-raised" ng-click="ctrl.closeDialog()">
+                Cancel
+            </md-button>
         </div>
     </md-dialog-content>
 </md-dialog>

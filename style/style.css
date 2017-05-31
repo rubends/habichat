@@ -1,3 +1,4 @@
+/*  === GENERAL  === */
 .btn-primary {
   background-color: #00897b !important;
 }
@@ -14,6 +15,7 @@
   -webkit-transition: -webkit-transform 0.2s;
   transition: transform 0.2s;
 }
+/*  === NAVIGATION  === */
 .navbar {
   margin-bottom: 0;
   background-color: #00897b;
@@ -32,15 +34,18 @@
 .navbar .icon {
   color: #fff;
 }
+.navbar .activePage,
 .navbar .activePage .icon,
 .navbar a:hover .icon,
-.navbar .navbar-brand:hover {
+.navbar a:hover {
   color: rgba(255, 110, 64, 0.87) !important;
 }
+/*  === PAGE === */
 .page {
   padding-top: 66px;
   min-height: 100vh;
 }
+/*  === HOME  === */
 .homepage {
   background-size: cover;
   background-image: url('/img/intro.jpg');
@@ -49,6 +54,7 @@
   width: 50%;
   margin: auto;
 }
+/* === LOGIN & REGISTER & FLAT  === */
 .login,
 .register,
 .flat {
@@ -73,6 +79,7 @@
 .flat .btn-default {
   margin-top: 8px;
 }
+/* === SETTINGS === */
 .settings {
   width: 70%;
   margin: auto;
@@ -113,6 +120,7 @@
 .settings #widgetPreview .resize .fa {
   cursor: pointer;
 }
+/* === DASHBOARD === */
 #dashboardBackground {
   background-size: cover;
   position: fixed;
@@ -129,10 +137,18 @@
   transform: translate3d(-50%, 0, 0);
   position: fixed;
 }
+/* === WIDGETS === */
 .widget {
   margin: 8px;
   height: 100%;
   overflow: hidden;
+  /* TODO WIDGET */
+  /* PICTURE && GIF WIDGET */
+  /* BILL WIDGET */
+  /* POLL WIDGET */
+  /* GROCERY WIDGET */
+  /* WEATHER WIDGET */
+  /* TEXT WIDGET */
 }
 .widget .widgetHeader {
   padding: 5px 15px;
@@ -222,6 +238,7 @@
 .widget .text {
   padding: 8px;
 }
+/* === WIDGETOVERLAY === */
 #widgetDialog {
   min-width: 50%;
 }

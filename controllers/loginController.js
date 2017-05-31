@@ -12,15 +12,14 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
 				console.log(response.data);
 			}
 			else{
-				console.log(response.data);
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
 				$rootScope.user.loggedIn = true;
-				if (response.data.flat_id == 0) {
-					$location.path('/flat');
+				if (response.data.flat) {
+					$location.path('/dashboard');
 				}
 				else{
-					$location.path('/dashboard');
+					$location.path('/flat');
 				}
 				
 			}

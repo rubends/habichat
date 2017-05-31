@@ -6,7 +6,7 @@
 @warningColor: #d43f3a;
 @okColor: #4cae4c;
 
-// GENERAL ************************************************************
+/*  === GENERAL  === */
 .btn-primary {
 	background-color: @mainColor !important;
 }
@@ -28,7 +28,7 @@
 }
 
 
-// NAVIGATION ****************************************************************************
+/*  === NAVIGATION  === */
 .navbar {
 	margin-bottom: 0;
 	background-color: @mainColor;
@@ -52,18 +52,18 @@
 		color: @lightColor;
 	}
 
-	.activePage .icon, a:hover .icon, .navbar-brand:hover {
+	.activePage, .activePage .icon, a:hover .icon, a:hover {
 		color: @secondaryColor !important;
 	}
 }
 
-// PAGE ****************************************************************************
+/*  === PAGE === */
 .page{
 	padding-top: 66px;
 	min-height: 100vh;
 }
 
-// HOME **************************************************************************************
+/*  === HOME  === */
 .homepage {
 	background-size: cover;
     background-image: url('/img/intro.jpg');
@@ -74,7 +74,7 @@
 	}
 }
 
-// LOGIN & REGISTER & FLAT ***********************************************************************************
+/* === LOGIN & REGISTER & FLAT  === */
 .login, .register, .flat {
 	width: 30%;
     margin: auto;
@@ -94,7 +94,7 @@
 	}
 }
 
-// SETTINGS *******************************************************************
+/* === SETTINGS === */
 .settings {
 	width: 70%;
 	margin: auto;
@@ -151,7 +151,7 @@
 	}
 }
 
-// DASHBOARD ****************************************************************************
+/* === DASHBOARD === */
 #dashboardBackground {
 	background-size: cover;
 	position: fixed;
@@ -171,7 +171,7 @@
 	position: fixed;
 }
 
-// WIDGETS
+/* === WIDGETS === */
 .widget {
 	margin: 8px;
 	height: 100%;
@@ -206,7 +206,7 @@
 		padding-left: 0;
 	}
 
-	//TODO WIDGET
+	/* TODO WIDGET */
 	.todo {
 		li{
 			cursor: pointer;
@@ -242,7 +242,7 @@
 			font-size: 19px;
 		}
 	}
-	// PICTURE && GIF WIDGET
+	/* PICTURE && GIF WIDGET */
 	.picture{
 		overflow: hidden;
 		background-size: cover;
@@ -250,7 +250,7 @@
 		height: 100%;
 	}
 
-	// BILL WIDGET
+	/* BILL WIDGET */
 	.bill {
 		padding: 8px;
 
@@ -262,7 +262,7 @@
 		}
 	}
 
-	// POLL WIDGET
+	/* POLL WIDGET */
 	.poll {
 		padding: 8px;
 
@@ -271,7 +271,7 @@
 		}
 	}
 
-	// GROCERY WIDGET
+	/* GROCERY WIDGET */
 	.grocery {
 		padding: 8px;
 
@@ -281,18 +281,18 @@
 		}
 	}
 
-	// WEATHER WIDGET
+	/* WEATHER WIDGET */
 	.weather {
 		padding: 8px;
 	}
 
-	// TEXT WIDGET
+	/* TEXT WIDGET */
 	.text {
 		padding: 8px;
 	}
 }
 
-// WIDGETOVERLAY
+/* === WIDGETOVERLAY === */
 #widgetDialog {
 	min-width: 50%;
 

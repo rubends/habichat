@@ -20,14 +20,6 @@
 				</div>
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
-				<label>Street</label>
-				<input ng-model="registerFlat.street" required md-minlength="3">
-				<div ng-messages="registerFlat.street.$error">
-					<div ng-message="required">A street is required.</div>
-					<div ng-message="md-minlength">The street has to be longer than 3 characters.</div>
-				</div>
-			</md-input-container>
-			<md-input-container class="md-block" flex-gt-sm>
 				<label>Number</label>
 				<input type="number" ng-model="registerFlat.number" required>
 				<div ng-messages="registerFlat.number.$error">

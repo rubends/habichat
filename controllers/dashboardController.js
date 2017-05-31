@@ -4,12 +4,12 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	}
 	else if (!$rootScope.flat) {
 		$location.path('/flat');
-	};
-
-	$("#dashboardLink").addClass("activePage");
-	$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.user.flat.flat_token+'/'+$rootScope.user.flat.background_image+')'};
-	$scope.widgetStyle = {'background-color': $rootScope.user.flat.widget_color, 'color': $rootScope.user.flat.font_color};
-	$scope.headerStyle = {'background-color': $rootScope.user.flat.header_color, 'color': $rootScope.user.flat.font_color};
+	} else {
+		$("#dashboardLink").addClass("activePage");
+		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.user.flat.flat_token+'/'+$rootScope.user.flat.background_image+')'};
+		$scope.widgetStyle = {'background-color': $rootScope.user.flat.widget_color, 'color': $rootScope.user.flat.font_color};
+		$scope.headerStyle = {'background-color': $rootScope.user.flat.header_color, 'color': $rootScope.user.flat.font_color};
+	}
 
 	$scope.showWidgetDialog = function(ev) {
 		$mdDialog.show({
@@ -46,6 +46,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$mdDialog.cancel();
+				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 				$rootScope.flat.widgets.push(response.data);
 				if(response.data.widget_type === 'Picture'){
 					postPicture(response.data.id);
@@ -75,16 +76,13 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			else{
 				if(response.data.visible) {
 					$rootScope.flat.widgets.push(response.data);
-					$scope.widgetDeleted = false;
 				} else {
 					deletedToast($widgetId);
-					$scope.widgetDeleted = $widgetId;
 					for(widget in $scope.flat.widgets){
 						if($scope.flat.widgets[widget].id === $widgetId){
-							$scope.flat.widgets[widget] = response.data;
+							$scope.flat.widgets.splice(widget, 1);
 						}
 					}
-					$timeout(function() {$scope.widgetDeleted = false}, 2000);
 				}
 			}
 		}, function errorCallback(response) {
@@ -309,14 +307,15 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		}
 	}
 
-	$scope.getWeather = function () {
-		var sUrl = "http://api.openweathermap.org/data/2.5/weather?q="+$rootScope.flat.city+"&units=metric&appid=ad5bf1181d1ab5166d19757241c1511e";
+	$scope.getWeather = function ($id, $title) {
+		var sUrl = "http://api.openweathermap.org/data/2.5/weather?q="+$title+"&units=metric&appid=ad5bf1181d1ab5166d19757241c1511e";
 		var oConfig = {
 			url: sUrl,
 			method: "GET"
 		};
 		$http(oConfig).then(function successCallback(response) {
-			$scope.weather = response.data;
+			$scope.weather = $scope.weather ? $scope.weather : [];
+			$scope.weather[$id] = response.data;
 		}, function errorCallback(response) {
 			console.log(response);
 		});
@@ -478,7 +477,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		for($w in $scope.flat.widgets){
 			$scope.widgetPlaces.push({'id': $scope.flat.widgets[$w].id, 'x': $scope.flat.widgets[$w].x, 'y': $scope.flat.widgets[$w].y});
 		}
-		console.log($scope.widgetPlaces);
 		saveWidgetPlaces();
 	};
 

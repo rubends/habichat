@@ -44,11 +44,14 @@ class FlatController extends FOSRestController
         $flat->setCity($data['city']);
         $flat->setCountry($data['country']);
         // DEFAULT
-        $flat->setBackgroundImage('cork.jpg');
+        $flat->setBackgroundImage('background.jpg?v='.time());
 
         $this->getDoctrine()->getManager()->persist($flat);
         $key = md5(uniqid($flat->getId(), true));
         $flat->setFlatToken($key);
+
+        mkdir('./uploads/'.$key, 0777, true);
+        copy('./cork.jpg', './uploads/'.$key.'/background.jpg');
         
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $user->setFlat($flat);
@@ -56,7 +59,7 @@ class FlatController extends FOSRestController
 
         $this->getDoctrine()->getManager()->flush();
         
-        return $flat;
+        return ['user' => $user, 'flat' => $flat];
     }
 
     /**
@@ -68,10 +71,21 @@ class FlatController extends FOSRestController
      */
     public function deleteFlatAction(Flat $flat)
     {
-        $this->getDoctrine()->getManager()->remove($flat);
-        $this->getDoctrine()->getManager()->flush();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
 
-        return new Response('Flat deleted', Response::HTTP_NO_CONTENT);
+        if(count($flat->getUsers()) <= 1){
+            if ($flat->getUsers()->contains($user)){
+                $user->setFlat(null);
+                $this->getDoctrine()->getManager()->remove($flat);
+                $this->getDoctrine()->getManager()->flush();
+            } else {
+                return new JsonResponse(array('error' => "User is not in this flat."));
+            }
+        } else {
+            return new JsonResponse(array('error' => "There are still other users in this flat."));
+        }
+
+        return $user;
     }
 
     /**
