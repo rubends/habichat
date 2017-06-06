@@ -18,6 +18,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                             console.log(response.data);
                             $rootScope.user = response.data.user;
                             $rootScope.flat = response.data.flat;
+                            $rootScope.calKey = response.data.calKey;
                             $rootScope.user.token = $cookies.get('token');
                             $rootScope.user.loggedIn = true;
                         }

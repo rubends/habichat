@@ -1,0 +1,51 @@
+<md-dialog aria-label="calendar dialog" class="addDialog">
+    <md-dialog-content>
+        <div ng-init="formView = 'event'" class="navView">
+            <md-nav-bar nav-bar-aria-label="Calender form navigation" md-selected-nav-item="formView">
+                <md-nav-item md-nav-click="goto('event')" name="event">
+                    Add an event
+                </md-nav-item>
+                <md-nav-item md-nav-click="goto('url')" name="url">
+                    Import a calendar feed
+                </md-nav-item>
+            </md-nav-bar>
+            <form ng-submit="ctrl.addCalItem(ctrl.calWidgetId)">
+                <div class="navView" ng-show="formView === 'event'">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Title</label>
+                        <input ng-model="ctrl.calItemForm.title">
+                    </md-input-container>
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <md-checkbox ng-model="ctrl.calItemForm.allDay" aria-label="all day">
+                            All day
+                        </md-checkbox>
+                    </md-input-container>
+                    <div layout-gt-xs="row">
+                        <label>Start</label>
+                        <mdp-date-picker mdp-placeholder="Date" ng-model="ctrl.calItemForm.start.date"></mdp-date-picker>
+                        <mdp-time-picker ng-hide="calItem.allDay" mdp-placeholder="Time" ng-model="ctrl.calItemForm.start.time"></mdp-time-picker>
+                    </div>
+                    <div layout-gt-xs="row" ng-hide="ctrl.calItemForm.allDay">
+                        <label>End</label>
+                        <mdp-date-picker mdp-placeholder="Date" ng-model="ctrl.calItemForm.end.date"></mdp-date-picker>
+                        <mdp-time-picker mdp-placeholder="Time" ng-model="ctrl.calItemForm.end.time"></mdp-time-picker>
+                    </div>
+                </div>
+                <div class="navView" ng-show="formView === 'url'">
+                    <md-input-container class="md-block" flex-gt-sm>
+                        <label>Url</label>
+                        <input ng-model="ctrl.calItemForm.url">
+                    </md-input-container>
+                    <p>How to import your google calendar:</p>
+                    <ol>
+                        <li>Get your calendar settings in Google Calendar.</li>
+                        <li>Make your calendar public.</li>
+                        <li>Get your calendar ID in the Calendar Address section.</li>
+                    </ol>
+                </div>
+                <md-button type='submit' class="md-raised md-primary">Add {{formView}}</md-button>
+                <md-button class="md-raised" ng-click="ctrl.closeDialog()">Cancel</md-button>
+            </form>
+        </div>
+    </md-dialog-content>
+</md-dialog>

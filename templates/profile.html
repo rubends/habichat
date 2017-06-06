@@ -1,0 +1,48 @@
+<div class="container page">
+	<div class="col-md-4 col-md-offset-4 profile">
+		<h1>My profile</h1>
+		<form ng-submit="registerForm.$valid && updateProfile(user.id)" name="registerForm" novalidate class="clearfix">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Username</label>
+				<input ng-model="user.username" required>
+				<div ng-messages="user.username.$error">
+					<div ng-message="required">A username is required.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>E-mailadress</label>
+				<input ng-model="user.email" required>
+				<div ng-messages="user.email.$error">
+					<div ng-message="required">An e-mailadress is required.</div>
+				</div>
+			</md-input-container>
+			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="registerForm.$invalid">Update profile</md-button>
+		</form>
+		<form ng-submit="passForm.$valid && updatePassword(user.id)" name="passForm" novalidate class="clearfix">
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>Old password</label>
+				<input type="password" ng-model="passForm.old" required md-minlength="5">
+				<div ng-messages="passForm.old.$error">
+					<div ng-message="required">Your old password is required.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm>
+				<label>New Password</label>
+				<input type="password" ng-model="passForm.new" required md-minlength="5">
+				<div ng-messages="passForm.new.$error">
+					<div ng-message="required">A password is required.</div>
+					<div ng-message="md-minlength">Your password must be more than 5 characters.</div>
+				</div>
+			</md-input-container>
+			<md-input-container class="md-block" flex-gt-sm ng-show="passForm.new">
+				<label>Repeat new password</label>
+				<input type="password" ng-model="passForm.repeat" required md-minlength="5">
+				<div ng-messages="passForm.repeat.$error">
+					<div ng-message="required">You have to repeat your password.</div>
+					<div ng-message="md-minlength">Your password must be more than 5 characters.</div>
+				</div>
+			</md-input-container>
+			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="passForm.$invalid">Change password</md-button>
+		</form>
+	</div>
+</div>

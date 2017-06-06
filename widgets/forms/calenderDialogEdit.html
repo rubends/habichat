@@ -1,0 +1,53 @@
+<md-dialog aria-label="calendar dialog" class="addDialog">
+    <md-dialog-content ng-init="editView = calItem.type" class="navView">
+            <md-nav-bar nav-bar-aria-label="Calender edit navigation" md-selected-nav-item="editView">
+                <md-nav-item md-nav-click="goto('event')" name="event" ng-hide="calItem.url">
+                    Edit event
+                </md-nav-item>
+                <md-nav-item md-nav-click="goto('feed')" name="feed" ng-show="calItem.url">
+                    Event
+                </md-nav-item>
+                <md-nav-item md-nav-click="goto('delete')" name="delete">
+                    Delete {{calItem.type}}
+                </md-nav-item>
+            </md-nav-bar>
+            <div class="navView" ng-show="editView === 'event'">
+                <form ng-submit="saveCalItem()">
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <label>Title</label>
+                            <input ng-model="calItem.title">
+                        </md-input-container>
+                        <md-input-container class="md-block" flex-gt-sm>
+                            <md-checkbox ng-model="calItem.allDay" aria-label="all day">
+                                All day
+                            </md-checkbox>
+                        </md-input-container>
+                        <div layout-gt-xs="row">
+                            <label>Start</label>
+                            <mdp-date-picker mdp-placeholder="Date" ng-model="calItem.start.date"></mdp-date-picker>
+                            <mdp-time-picker mdp-placeholder="Time" ng-model="calItem.start.time" ng-hide="calItem.allDay"></mdp-time-picker>
+                        </div>
+                        <div layout-gt-xs="row" ng-hide="calItem.allDay">
+                            <label>End</label>
+                            <mdp-date-picker mdp-placeholder="Date" ng-model="calItem.end.date"></mdp-date-picker>
+                            <mdp-time-picker mdp-placeholder="Time" ng-model="calItem.end.time"></mdp-time-picker>
+                        </div>
+                    <md-button type='submit' class="md-raised md-primary">Save</md-button>
+                    <md-button class="md-raised" ng-click="cancel()">Cancel</md-button>
+                </form>
+            </div>
+            <div class="navView" ng-show="editView === 'feed'">
+                <h2>Title</h2>
+                <p>{{calItem.title}}</p>
+                <h2>Start</h2>
+                <p>{{moment(calItem.start).format("YYYY-MM-DD HH:mm")}}</p>
+                <h2>End</h2>
+                <p>{{calItem.allDay ? 'All day' : moment(calItem.end).format("YYYY-MM-DD HH:mm")}}</p>
+            </div>
+            <div class="navView" ng-show="editView === 'delete'">
+                <p ng-show="calItem.url">Feed: "{{calItem.source.googleCalendarId}}"</p>
+                <md-button ng-click="deleteCalItem()" class="md-raised md-warn">Delete this {{calItem.type}}</md-button>
+                <md-button class="md-raised" ng-click="cancel()">Cancel</md-button>
+            </div>
+    </md-dialog-content>
+</md-dialog>

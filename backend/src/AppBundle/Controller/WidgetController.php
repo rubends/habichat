@@ -10,6 +10,8 @@ use AppBundle\Entity\Picture;
 use AppBundle\Entity\Bill;
 use AppBundle\Entity\Poll;
 use AppBundle\Entity\PollOption;
+use AppBundle\Entity\Calender;
+use AppBundle\Entity\Chore;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -293,5 +295,75 @@ class WidgetController extends FOSRestController
 
         $this->getDoctrine()->getManager()->flush();
         return $poll;
+    }
+
+    /**
+     * @ApiDoc()
+     *
+     * @param Widget $widget
+     * @param Request $request
+     *
+     * @return Calender[]
+     */
+    public function postWidgetCalendersAction(Widget $widget, Request $request)
+    {
+        $calender = new Calender();
+        if($request->request->get('title')){
+            $calender->setTitle($request->request->get('title'));
+        } else {
+            $calender->setTitle('url');
+        }
+        if($request->request->get('allDay')){
+            $calender->setAllDay($request->request->get('allDay'));
+        } else {
+            $calender->setAllDay(false);
+        }
+        $calender->setUrl($request->request->get('url'));
+        $calender->setWidget($widget->getId());
+        
+        $startDate = new \DateTime($request->request->get('start')['date']);
+        $startDate->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $startTime = new \DateTime($request->request->get('start')['time']);
+        $startTime->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $start = new \DateTime($startDate->format('Y-m-d') .' ' .$startTime->format('H:i:s'));
+        $calender->setStart($start);
+
+        $endDate = new \DateTime($request->request->get('end')['date']);
+        $endDate->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $endTime = new \DateTime($request->request->get('end')['time']);
+        $endTime->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $end = new \DateTime($endDate->format('Y-m-d') .' ' .$endTime->format('H:i:s'));
+        $calender->setEnd($end);
+
+        $this->getDoctrine()->getManager()->persist($calender);
+        $this->getDoctrine()->getManager()->flush();
+        return $calender;
+    }
+
+    /**
+     * @ApiDoc()
+     *
+     * @param Widget $widget
+     * @param Request $request
+     *
+     * @return Chore[]
+     */
+    public function postWidgetChoreAction(Widget $widget, Request $request)
+    {
+        $chore = new Chore();
+        $chore->setTitle($request->request->get('title'));
+        $chore->setWidget($widget->getId());
+        $chore->setOccurance($request->request->get('occurance'));
+
+        $user =  $this->getDoctrine()->getRepository('AppBundle:User')->findOneById($request->request->get('user'));
+        $chore->setUser($user);
+
+        $lastDate = new \DateTime($request->request->get('last'));
+        $lastDate->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $chore->setLast($lastDate);
+
+        $this->getDoctrine()->getManager()->persist($chore);
+        $this->getDoctrine()->getManager()->flush();
+        return $chore;
     }
 }

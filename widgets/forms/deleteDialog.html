@@ -1,0 +1,10 @@
+<md-dialog aria-label="Delete dialog" class="smallDialog">
+    <md-dialog-content>
+        <div>
+            <p>You are trying to delete widget "{{ctrl.deleteWidgetTitle}}".</p>
+            <p>Are you sure?</p>
+            <md-button class="md-raised md-warn" ng-click="ctrl.deleteWidget(ctrl.deleteWidgetId)">Yes, delete.</md-button>
+            <md-button class="md-raised" ng-click="ctrl.closeDialog()">Cancel</md-button>
+        </div>
+    </md-dialog-content>
+</md-dialog>

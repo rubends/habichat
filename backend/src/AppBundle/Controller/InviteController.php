@@ -28,7 +28,7 @@ class InviteController extends FOSRestController
             return new JsonResponse(array('error' => "This invite is not valid."));
         } else if($invite->getAccepted()){
             return new JsonResponse(array('error' => "This invite is already used."));
-        } else if(strtotime($invite->getSendDate()) >= strtotime('-2 day')){  //////////////////// WTF
+        } else if($invite->getSendDate()->getTimestamp() >= strtotime('-2 day')){
             return new JsonResponse(array('error' => "This invite is not valid anymore."));
         } else {
             $user = $this->getDoctrine()
@@ -66,7 +66,6 @@ class InviteController extends FOSRestController
                     ->setTo($invited)
                     ->setBody(
                         $this->renderView(
-                            // app/Resources/views/Emails/registration.html.twig
                             'Emails/invite.html.twig',
                             array('name' => $invited, 'owner' => $user->getUsername(), 'key' => $key)
                         ),

@@ -1,4 +1,9 @@
 /*  === GENERAL  === */
+html,
+body {
+  min-height: 100%;
+  height: auto;
+}
 .btn-primary {
   background-color: #00897b !important;
 }
@@ -28,6 +33,13 @@
   font-weight: bold;
   color: #fff !important;
 }
+.navbar .flatname {
+  font-size: 25px;
+  text-align: center;
+  width: 50%;
+  left: 25%;
+  position: absolute;
+}
 .navbar .navbar-nav a {
   color: #fff !important;
 }
@@ -40,50 +52,33 @@
 .navbar a:hover {
   color: rgba(255, 110, 64, 0.87) !important;
 }
+.navbar .userMenu button {
+  height: 54px;
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 /*  === PAGE === */
 .page {
   padding-top: 66px;
   min-height: 100vh;
+  padding-bottom: 24px;
 }
 /*  === HOME  === */
 .homepage {
   background-size: cover;
   background-image: url('/img/intro.jpg');
 }
-.homepage .intro {
-  width: 50%;
-  margin: auto;
-}
-/* === LOGIN & REGISTER & FLAT  === */
-.login,
-.register,
-.flat {
-  width: 30%;
-  margin: auto;
-}
+/* === LOGIN & REGISTER & FLAT & PROFILE  === */
 .login h1,
 .register h1,
-.flat h1 {
+.flat h1,
+.profile h1 {
   text-align: center;
   font-size: 24px;
   font-weight: bold;
-}
-.login .form-control,
-.register .form-control,
-.flat .form-control {
-  width: 20% !important;
-  margin: auto;
-}
-.login .btn-default,
-.register .btn-default,
-.flat .btn-default {
-  margin-top: 8px;
+  color: #00897b;
 }
 /* === SETTINGS === */
-.settings {
-  width: 70%;
-  margin: auto;
-}
 .settings .md-nav-bar {
   margin-bottom: 24px;
 }
@@ -125,7 +120,7 @@
   background-size: cover;
   position: fixed;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 .addWidgetBtn {
   position: fixed;
@@ -149,9 +144,10 @@
   /* GROCERY WIDGET */
   /* WEATHER WIDGET */
   /* TEXT WIDGET */
+  /* CALENDER WIDGET */
 }
 .widget .widgetHeader {
-  padding: 5px 15px;
+  padding: 5px 8px 5px 16px;
 }
 .widget .widgetHeader h3 {
   margin-top: 0;
@@ -162,6 +158,7 @@
 }
 .widget .widgetBody {
   height: calc(100% - 34px);
+  padding: 16px;
 }
 .widget .resize {
   float: right;
@@ -207,10 +204,10 @@
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  height: 100%;
-}
-.widget .bill {
-  padding: 8px;
+  height: calc(100% - 18px);
+  margin: -16px;
+  position: absolute;
+  width: 100%;
 }
 .widget .bill .unpaidUser:hover {
   cursor: pointer;
@@ -218,30 +215,42 @@
 .widget .bill .unpaidUser:hover .fa {
   color: #4cae4c;
 }
-.widget .poll {
-  padding: 8px;
-}
 .widget .poll .voteDate {
   font-size: 10px;
-}
-.widget .grocery {
-  padding: 8px;
 }
 .widget .grocery .fa:hover,
 .widget .grocery li span:hover ~ .fa {
   color: #4cae4c;
   cursor: pointer;
 }
-.widget .weather {
-  padding: 8px;
+.widget .calender .newCalItem {
+  background-color: black;
+  color: white;
+  border-color: black;
 }
-.widget .text {
-  padding: 8px;
+/* === DIALOGS === */
+.md-dialog-container {
+  height: 100vh !important;
+  position: fixed;
 }
-/* === WIDGETOVERLAY === */
-#widgetDialog {
+.addDialog {
   min-width: 50%;
 }
+.addDialog .navView {
+  padding: 16px;
+  min-height: 50vh;
+}
+.addDialog .navView h2 {
+  color: #00897b;
+  font-weight: bold;
+  font-size: 18px;
+  margin-top: 10px;
+}
+.smallDialog {
+  text-align: center;
+  padding: 16px;
+}
+/* === WIDGET DIALOG === */
 #widgetDialog .widgetBlock {
   min-height: 50vh;
   background-color: #fafafa;
@@ -261,4 +270,13 @@
   margin-right: 8px;
   color: #00897b;
   border-radius: 3px;
+}
+#widgetDialog .widgetBlock .restoreTable tr:first-child td {
+  border: none;
+}
+#widgetDialog .widgetBlock .restoreTable p {
+  margin-top: 10px;
+}
+#widgetDialog .widgetBlock .restoreTable .md-accent {
+  margin: 0 8px;
 }

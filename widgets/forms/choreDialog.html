@@ -1,0 +1,30 @@
+<md-dialog aria-label="chore dialog" class="addDialog">
+    <md-dialog-content>
+        <form ng-submit="ctrl.addChore(ctrl.choreWidgetId)">
+            <div class="navView"> 
+                <h2>Add a chore</h2>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Title</label>
+                    <input ng-model="ctrl.choreForm.title">
+                </md-input-container>
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Occurance (every X days)</label>
+                    <input type="number" min="1" ng-model="ctrl.choreForm.occurance">
+                </md-input-container>
+                <div layout-gt-xs="row">                    
+                    <md-input-container>
+                        <label>User</label>
+                        <md-select ng-model="ctrl.choreForm.user">
+                            <md-option ng-repeat="flatmate in ctrl.flat.users" ng-value="flatmate.id">
+                                {{flatmate.username}}
+                            </md-option>
+                        </md-select>
+                    </md-input-container>
+                    <mdp-date-picker mdp-placeholder="Start on" ng-model="ctrl.choreForm.last"></mdp-date-picker>
+                </div>
+                <md-button type='submit' class="md-raised md-primary">Add chore</md-button>
+                <md-button class="md-raised" ng-click="ctrl.closeDialog()">Cancel</md-button>
+            </div>
+        </form>
+    </md-dialog-content>
+</md-dialog>

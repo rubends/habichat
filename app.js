@@ -1,4 +1,4 @@
-var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular']);
+var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular', 'ui.calendar']);
 
 (function() {
 
@@ -60,6 +60,19 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
                     return getInviteService.getInvite($route.current.params.key);
                 }]
             }
+		})
+		.when("/profile", {
+			templateUrl : "templates/profile.html",
+			controller : "profileCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
+		})
+		.when("/passwordreset/:resetKey", {
+			templateUrl : "templates/reset.html",
+			controller : "resetCtrl"
 		})
 		.otherwise({
 	        templateUrl : "templates/home.html"

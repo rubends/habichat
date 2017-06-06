@@ -1,5 +1,5 @@
 <div class="container page">
-	<div class="settings">
+	<div class="col-md-8 col-md-offset-2 settings">
 		<div ng-init="settingsView = 'style'" class="settingsDiv">
 			<md-nav-bar nav-bar-aria-label="Settings navigation" md-selected-nav-item="settingsView">
 				<md-nav-item md-nav-click="goto('style')" name="style">
@@ -31,7 +31,6 @@
 								<div class="panel-heading" ng-style="{'background-color': flat.header_color, 'color': flat.font_color}">
 									<h3>This is the title</h3>
 									<div class="resize">
-										<i class="fa fa-window-restore" aria-hidden="true" data-toggle="tooltip" title="Resize widget" onmouseenter="$(this).tooltip()"></i>
 										<i class="fa fa-times" aria-hidden="true" data-toggle="tooltip" title="Delete widget" onmouseenter="$(this).tooltip()"></i>
 									</div>
 								</div>

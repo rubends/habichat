@@ -73,6 +73,16 @@ class User implements UserInterface
      */
     protected $pollOptions;
 
+    /*
+    * @ORM\OneToMany(targetEntity="Widget", mappedBy="user")
+    */
+    protected $chores;
+
+    /*
+    * @ORM\OneToMany(targetEntity="Reset", mappedBy="user")
+    */
+    protected $reset;
+
     public function eraseCredentials()
     {
         return null;
@@ -269,5 +279,41 @@ class User implements UserInterface
     {
         $this->pollOptions[] = $pollOption;
     }
+
+    /**
+     * @return widget
+     *
+     */
+    public function getWidget()
+    {
+        return $this->widget;
+    }
+
+    /**
+     * @param $widget
+     */
+    public function setWidget($widget)
+    {
+        $this->widget = $widget;
+    }
+
+
+    /**
+     * @return chores
+     *
+     */
+    public function getChores()
+    {
+        return $this->chores;
+    }
+
+    /**
+     * @param $chores
+     */
+    public function setChores($chores)
+    {
+        $this->chores = $chores;
+    }
+
 
 }

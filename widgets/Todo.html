@@ -1,5 +1,4 @@
 <div class="todo">
-<div class="panel-body">
     <p ng-hide="widget.items.length">You have no todo's</p>
     <ul>
         <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone" reload-packery>

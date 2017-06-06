@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Reset;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -25,19 +26,17 @@ class UserController extends FOSRestController
         if($flat){
             $widgets = $flat->getWidgets();
             foreach($widgets as $key => $widget){
-                if($widget->getVisible()){
-                    $type = $widget->getWidgetType();
-                    if(class_exists('\\AppBundle\\Entity\\'.$type)) {
-                        $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-                        $widget->setItems($items);
-                    }
-                } else {
-                   unset($widgets[$key]);
+                $type = $widget->getWidgetType();
+                if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                    $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                    $widget->setItems($items);
                 }
             }
         }
 
-        return ['user' => $user, 'flat' => $flat];
+        $calKey =  $this->getParameter('google_cal_key');
+
+        return ['user' => $user, 'flat' => $flat, 'calKey' => $calKey];
     }
 
     /**
@@ -114,21 +113,6 @@ class UserController extends FOSRestController
     {
         // Generate the token
         $token = $this->get('lexik_jwt_authentication.jwt_manager')->create($user);
-
-        if($flat){
-            $widgets = $flat->getWidgets();
-            foreach($widgets as $key => $widget){
-                if($widget->getVisible()){
-                    $type = $widget->getWidgetType();
-                    if(class_exists('\\AppBundle\\Entity\\'.$type)) {
-                        $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-                        $widget->setItems($items);
-                    }
-                } else {
-                   unset($widgets[$key]);
-                }
-            }
-        }
 
         $response = [
                 'token' => $token,
@@ -235,5 +219,130 @@ class UserController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         return $user;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param User $user
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function putUserUpdateAction(User $user, Request $request)
+    {
+        $userDb = $this->get('security.token_storage')->getToken()->getUser();
+        if($user->getId() === $userDb->getId()){
+            $user->setEmail($request->request->get('email'));
+            $user->setUsername($request->request->get('username'));
+        }
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $user;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param User $user
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function putUserPasswordAction(User $user, Request $request)
+    {
+        $userDb = $this->get('security.token_storage')->getToken()->getUser();
+        if($user->getId() === $userDb->getId()){
+            $data = $request->request->all();
+            $encoder = $this->container->get('security.password_encoder');
+
+            if($encoder->isPasswordValid($user, $data['old'])) {
+                if ($data['new']==$data['repeat']) {
+                    $encoded = $encoder->encodePassword($user, $data['new']);
+                    $user->setPassword($encoded);
+                } else {
+                    return new JsonResponse(array('error' => "passwords don't match"));
+                }
+            } else {
+                return new JsonResponse(array('error' => "Password is not valid."));
+            }
+        }
+
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $user;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function postUserPasswordResetAction(Request $request)
+    {
+        $email = $request->request->get('email');
+        $repository = $this->getDoctrine()->getRepository('AppBundle:User');
+        $user = $repository->findOneByEmail($email);
+        if($user) {
+            $reset = new Reset();
+            $reset->setUser($user);
+            $reset->setSendDate(new \DateTime('now'));
+            $key = md5(uniqid($email, true));
+            $reset->setResetKey($key);
+            $this->getDoctrine()->getManager()->persist($reset);
+            $this->getDoctrine()->getManager()->flush();
+
+            $message = \Swift_Message::newInstance()
+                ->setSubject('Password reset')
+                ->setFrom('invite@habichat.com')
+                ->setTo($email)
+                ->setBody(
+                    $this->renderView(
+                        'Emails/reset.html.twig',
+                        array('name' => $user->getUsername(), 'key' => $key)
+                    ),
+                    'text/html'
+                )
+                ;
+            $this->get('mailer')->send($message);
+        }
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Request $request
+     *
+     * @return Response
+     */
+    public function putUsersResetAction(Request $request)
+    {
+        $email = $request->request->get('email');
+        $password = $request->request->get('password');
+        if(is_null($email) || is_null($password)) {
+            return new JsonResponse(array('error' => "Not all fields are filled."));
+        }
+        if($password != $request->request->get('passwordRepeat')) {
+            return new JsonResponse(array('error' => "passwords do not match."));
+        }
+
+        $reset = $this->getDoctrine()->getRepository('AppBundle:Reset')->findOneByResetKey($request->request->get('resetKey'));
+        $user = $reset->getUser();
+
+        if($reset->getSendDate()->getTimestamp() >= strtotime('-1 day')){
+            if($user->getEmail() === $email){
+                $encoder = $this->container->get('security.password_encoder');
+                $encoded = $encoder->encodePassword($user, $password);
+                $user->setPassword($encoded);
+                $this->getDoctrine()->getManager()->persist($user);
+                $this->getDoctrine()->getManager()->flush();
+                return $this->generateToken($user, 201);
+            } else {
+                return new JsonResponse(array('error' => "Email and reset key do not belong together."));
+            }
+        } else {
+            return new JsonResponse(array('error' => "Reset key is too old."));
+        }
     }
 }

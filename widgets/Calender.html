@@ -1,0 +1,6 @@
+<div class="calender" ng-init="toCalItems(widget)">
+    <div ui-calendar="uiConfig.calendar" ng-model="widget.calItems"></div>
+    <md-button ng-click="showCalendertDialog($event, widget.id)" class="md-fab md-mini pull-right" aria-label="Add calendar item">
+        <md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon>
+    </md-button>
+</div

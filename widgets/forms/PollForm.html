@@ -7,8 +7,8 @@
     <label>Question</label>
     <textarea ng-model="ctrl.addPollForm.question"></textarea>
 </md-input-container>
+<p>Voting ends on</p>
 <div layout-gt-xs="row">
-    <p>Voting ends on</p>
     <mdp-time-picker mdp-placeholder="Time" ng-model="ctrl.addPollForm.until.time"></mdp-time-picker>
     <mdp-date-picker mdp-placeholder="Date" ng-model="ctrl.addPollForm.until.date"></mdp-date-picker>
 </div>

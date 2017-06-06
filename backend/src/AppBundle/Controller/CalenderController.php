@@ -39,57 +39,58 @@ class CalenderController extends FOSRestController
     /**
      * @ApiDoc()
      *
-     * @param Request $request
-     *
-     * @return Calender[]
-     */
-    public function postCalendersAction(Request $request)
-    {
-        $calender = new Calender();
-        $calender->setTitle($request->request->get('title'));
-        $time = new \DateTime($request->request->get('time'));
-        $date = new \DateTime($request->request->get('date'));
-        $calender->setTime($time);
-        $calender->setDate($date);
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $calender->setUserID($user->getId());
-
-
-        $errors = $this->get('validator')->validate($calender);
-        if (count($errors) > 0) {
-            $errorStrings = [];
-            foreach ($errors as $error) {
-                $errorStrings[] = $error->getMessage();
-            }
-            return $this->view(
-                [
-                    'error' => implode(',', $errorStrings)
-                ],
-                Response::HTTP_BAD_REQUEST
-            );
-        }
-
-        $this->getDoctrine()->getManager()->persist($calender);
-        $this->getDoctrine()->getManager()->flush();
-
-        // return $this->getDoctrine()->getRepository('AppBundle:Calender')->findByUserID($user->getId());
-        return $calender;
-    }
-
-    /**
-     * @ApiDoc()
-     *
      * @param Calender $calender
      *
      * @return Calender[]
      */
     public function deleteCalenderAction(Calender $calender)
     {
+        $widget = $calender->getWidget();
         $this->getDoctrine()->getManager()->remove($calender);
         $this->getDoctrine()->getManager()->flush();
 
         // $user = $this->get('security.token_storage')->getToken()->getUser();
         // return $this->getDoctrine()->getRepository('AppBundle:Calender')->findByUserID($user->getId());
-        return new JsonResponse(array('deleted' => $calender));
+        return $widget;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Calender $calender
+     * @param Request $request
+     * @return Poll[]
+     */
+    public function putCalenderAction(Calender $calender, Request $request)
+    {
+        if($request->request->get('title')){
+            $calender->setTitle($request->request->get('title'));
+        } else {
+            $calender->setTitle('url');
+        }
+        if($request->request->get('allDay')){
+            $calender->setAllDay($request->request->get('allDay'));
+        } else {
+            $calender->setAllDay(false);
+        }
+        $calender->setUrl($request->request->get('url'));
+        
+        $startDate = new \DateTime($request->request->get('start')['date']);
+        $startDate->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $startTime = new \DateTime($request->request->get('start')['time']);
+        $startTime->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $start = new \DateTime($startDate->format('Y-m-d') .' ' .$startTime->format('H:i:s'));
+        $calender->setStart($start);
+
+        $endDate = new \DateTime($request->request->get('end')['date']);
+        $endDate->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $endTime = new \DateTime($request->request->get('end')['time']);
+        $endTime->setTimezone( new \DateTimeZone('Europe/Berlin') );
+        $end = new \DateTime($endDate->format('Y-m-d') .' ' .$endTime->format('H:i:s'));
+        $calender->setEnd($end);
+
+        $this->getDoctrine()->getManager()->persist($calender);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $calender;
     }
 }

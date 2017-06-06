@@ -1,0 +1,33 @@
+<div class="chore">
+    <div>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Mon</th>
+                    <th>Tue</th>
+                    <th>Wed</th>
+                    <th>Thu</th>
+                    <th>Fri</th>
+                    <th>Sat</th>
+                    <th>Sun</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="flatmate in flat.users">
+                    <th>{{flatmate.username}}</th>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:1">{{item.title}}</div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:2">{{item.title}}</div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:3">{{item.title}}</div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:4">{{item.title}}</div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:5">{{item.title}}</div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:6">{{item.title}}</div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:7">{{item.title}}</div></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <md-button ng-click="showChoreDialog($event, widget.id)" class="md-fab md-mini pull-right" aria-label="Add chore">
+        <md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon>
+    </md-button>
+</div>

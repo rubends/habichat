@@ -28,18 +28,30 @@ class Calender
     protected $title;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string", nullable=true)
      *
-     * @var date
+     * @var string
      */
-    protected $date;
+    protected $url;
 
     /**
-     * @ORM\Column(type="time")
+     * @ORM\Column(type="datetime")
      *
-     * @var time
+     * @var datetime
      */
-    protected $time;
+    protected $start;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @var datetime
+     */
+    protected $end;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $allDay;
 
     /**
      * @ORM\Column(type="integer")
@@ -57,8 +69,6 @@ class Calender
 
     /**
      * @return string
-     *
-     * @Validator\NotNull()
      */
     public function getTitle()
     {
@@ -73,41 +83,70 @@ class Calender
         $this->title = $title;
     }
 
+    /**
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
 
     /**
-     * @return time
+     * @param string $url
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+    }
+
+
+    /**
+     * @return datetime
+     */
+    public function getStart()
+    {
+        return $this->start;
+    }
+
+    /**
+     * @param datetime $start
+     */
+    public function setStart($start)
+    {
+        $this->start = $start;
+    }
+
+    /**
+     * @return datetime
+     */
+    public function getEnd()
+    {
+        return $this->end;
+    }
+
+    /**
+     * @param datetime $end
+     */
+    public function setEnd($end)
+    {
+        $this->end = $end;
+    }
+
+    /**
+     * @param bool $allDay
+     */
+    public function setAllDay($allDay)
+    {
+        $this->allDay = $allDay;
+    }
+
+    /**
+     * @return bool
      *
-     * @Validator\NotNull()
      */
-    public function getTime()
+    public function getAllDay()
     {
-        return $this->time;
-    }
-
-    /**
-     * @param time $time
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-    }
-
-    /**
-     * @return date
-     *
-     * @Validator\NotNull()
-     */
-    public function getDate()
-    {
-        return $this->date;
-    }
-
-    /**
-     * @param date $date
-     */
-    public function setDate($date)
-    {
-        $this->date = $date;
+        return $this->allDay;
     }
 
     /**
