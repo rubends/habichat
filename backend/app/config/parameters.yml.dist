@@ -23,3 +23,7 @@ parameters:
     jwt_token_ttl:        3600
 
     google_cal_key: ~
+
+    pusher_app_id: ~
+    pusher_key: ~
+    pusher_secret: ~

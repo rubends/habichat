@@ -14,7 +14,7 @@ app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$lo
                 $rootScope.error = response.data.error;
             }
             else{
-                console.log(response.data);
+                $rootScope.error = "";
                 for(user in $rootScope.flat.users){
                     if($rootScope.flat.users[user].id === response.data.id){
                         $rootScope.flat.users[user] = response.data;
@@ -40,6 +40,7 @@ app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$lo
                 $rootScope.error = response.data.error;
             }
             else{
+                $rootScope.error = "";
                 for(user in $rootScope.flat.users){
                     if($rootScope.flat.users[user].id === response.data.id){
                         $rootScope.flat.users[user] = response.data;

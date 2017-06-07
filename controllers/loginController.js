@@ -13,6 +13,7 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
 				$rootScope.user.loggedIn = true;
@@ -42,6 +43,7 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				console.log(response.data);
 				
 			}

@@ -14,6 +14,7 @@ app.controller("resetCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
 				$rootScope.user.loggedIn = true;

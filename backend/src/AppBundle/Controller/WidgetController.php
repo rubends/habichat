@@ -76,6 +76,9 @@ class WidgetController extends FOSRestController
             $widget->setItems(array($text));
         }
 
+        $data = ['user' => $user, 'reason' => 'postWidget', 'widget' => [$widget]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$flat->getId(), $data);
         return $widget;
     }
 
@@ -118,6 +121,11 @@ class WidgetController extends FOSRestController
                 $widget->setVisible(0);
                 $updateVis = 0;
             }
+
+            $data = ['user' => $user, 'reason' => 'toggle', 'id' => $widget->getId(), 'visible' => $updateVis];
+            $pusher = $this->get('pusher');
+            $pusher->trigger('flat-'.$user->getFlat()->getId(), $data);
+
         } else {
             return new JsonResponse(array('error' => "User has no rights to delete this widget."));
         }
@@ -145,7 +153,14 @@ class WidgetController extends FOSRestController
         };
 
         $this->getDoctrine()->getManager()->flush();
-        return new JsonResponse(array('API' => "Places saved"));
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user, 'reason' => 'place', 'widgets' => $widgets];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getId(), $data);
+
+        
+        return new JsonResponse(array('API' => "Saved widget places."));
     }
 
     /**
@@ -165,6 +180,12 @@ class WidgetController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($widget);
         $this->getDoctrine()->getManager()->flush();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user, 'reason' => 'size', 'widget' => ['id' => $widget->getId(), 'width' => (int)$width, 'heigth' => (int)$height]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getId(), $data);
+
         return new JsonResponse(array('API' => "Changed widget " . $widget->getId() . " to width " . $width . " - height " . $height));
     }
 

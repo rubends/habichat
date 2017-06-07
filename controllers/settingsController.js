@@ -22,7 +22,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = response.data.error;
 			}
 			else{
-				console.log(response);
+				$rootScope.error = "";
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -42,6 +42,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$rootScope.flat = response.data;
 				if(!response.data){
 					$location.path('/flat');
@@ -65,6 +66,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$rootScope.user = response.data;
 				$rootScope.user.loggedIn = true;
 				$location.path('/flat');
@@ -87,6 +89,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				for(flatmate in $rootScope.flat.users){
 					if($rootScope.flat.users[flatmate].id === response.data.id){
 						$rootScope.flat.users[flatmate] = response.data;
@@ -112,6 +115,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$scope.inviteList.invites = [{email: ''}];
 			}
 		}, function errorCallback(response) {
@@ -142,6 +146,7 @@ app.directive('backgroundChange', ['$rootScope', '$http', function ($rootScope, 
 							$rootScope.error = response.data.error;
 						}
 						else{
+							$rootScope.error = "";
 							$rootScope.user.flat = response.data;
 						}
 					}, function errorCallback(response) {

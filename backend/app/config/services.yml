@@ -4,6 +4,6 @@ parameters:
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    pusher:
+        class:  Appbundle\Service\TriggerPusher
+        arguments: ["%pusher_key%", "%pusher_secret%", "%pusher_app_id%"]

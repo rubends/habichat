@@ -90,6 +90,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$rootScope.error = response.data.error;
 				}
 				else{
+					$rootScope.error = "";
 					$mdDialog.cancel();
 					for(widget in $rootScope.flat.widgets){
 						if($rootScope.flat.widgets[widget].id === response.data.widget){
@@ -127,6 +128,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$rootScope.error = response.data.error;
 				}
 				else{
+					$rootScope.error = "";
 					$mdDialog.cancel();
 					for(widget in $rootScope.flat.widgets){
 						if($rootScope.flat.widgets[widget].id === response.data){
@@ -256,6 +258,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$mdDialog.cancel();
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 				$rootScope.flat.widgets.push(response.data);
@@ -285,16 +288,15 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$mdDialog.cancel();
-				if(response.data.visible) {
-					$rootScope.flat.widgets.push(response.data);
-				} else {
-					deletedToast($widgetId);
-					for(widget in $scope.flat.widgets){
-						if($scope.flat.widgets[widget].id === $widgetId){
-							$scope.flat.widgets.splice(widget, 1);
-						}
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === $widgetId){
+						$rootScope.flat.widgets[widget].visible = response.data.visible;
 					}
+				}
+				if (!response.data.visible){	
+					deletedToast($widgetId);
 				}
 			}
 		}, function errorCallback(response) {
@@ -325,6 +327,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				console.log(response.data);
 			}
 		}, function errorCallback(response) {
@@ -346,6 +349,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				console.log(response.data);
 			}
 		}, function errorCallback(response) {
@@ -368,6 +372,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				console.log(response.data);
 			}
 			else{
+				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
@@ -392,6 +397,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						for(item in $rootScope.flat.widgets[widget].items){
@@ -420,6 +426,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						for(item in $rootScope.flat.widgets[widget].items){
@@ -449,6 +456,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
@@ -473,6 +481,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						for(item in $rootScope.flat.widgets[widget].items){
@@ -507,6 +516,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$rootScope.error = response.data.error;
 				}
 				else{
+					$rootScope.error = "";
 					for(widget in $rootScope.flat.widgets){
 						if($rootScope.flat.widgets[widget].id === $widgetId){
 							$rootScope.flat.widgets[widget].items.push(response.data);
@@ -548,6 +558,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$scope.addBillForm = [];
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
@@ -573,6 +584,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items[0] = response.data;
@@ -598,6 +610,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$scope.addPollForm = [];
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
@@ -659,6 +672,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items[0] = response.data;
@@ -684,6 +698,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$mdDialog.cancel();
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
@@ -718,6 +733,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$mdDialog.cancel();
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
@@ -743,8 +759,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 
 	$scope.onGridDragStop = function(event, ui) {
 		$scope.widgetPlaces = [];
-		for($w in $scope.flat.widgets){
-			$scope.widgetPlaces.push({'id': $scope.flat.widgets[$w].id, 'x': $scope.flat.widgets[$w].x, 'y': $scope.flat.widgets[$w].y});
+		for($w in $rootScope.flat.widgets){
+			$scope.widgetPlaces.push({'id': $rootScope.flat.widgets[$w].id, 'x': $rootScope.flat.widgets[$w].x, 'y': $rootScope.flat.widgets[$w].y});
 		}
 		saveWidgetPlaces();
 	};
@@ -752,6 +768,55 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	$scope.onGridResizeStop = function(event, ui) {
 		changeWidgetSize(ui.element[0].id, ui.element[0].dataset.gsWidth, ui.element[0].dataset.gsHeight);
 	};
+
+	// PUSHER
+	Pusher.logToConsole = true;
+	var pusher = new Pusher('9da7e6891a9c5a3c8896', {
+		cluster: 'eu',
+		encrypted: true
+	});
+	
+	var channel = pusher.subscribe('habichannel');
+	channel.bind('flat-'+$rootScope.flat.id, function(data) {
+		if(data.user && data.user.id != $rootScope.user.id){
+			if(data.reason === 'place'){
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.widgets[widget].id) {
+						if($rootScope.flat.widgets[widget].x != data.widgets[widget].x || $rootScope.flat.widgets[widget].y != data.widgets[widget].y){
+							$rootScope.flat.widgets[widget].x = data.widgets[widget].x;
+							$rootScope.flat.widgets[widget].y = data.widgets[widget].y;
+							$widget = $('.grid-stack #'+$rootScope.flat.widgets[widget].id);
+							$grid = $('.grid-stack').data('gridstack');
+							$grid.update($widget, data.widgets[widget].x, data.widgets[widget].y);
+						}
+					}
+				}
+			} else if (data.reason === 'size') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.widget.id){
+						$rootScope.flat.widgets[widget].width = data.widget.width;
+						$rootScope.flat.widgets[widget].height = data.widget.height;
+						$widget = $('.grid-stack #'+data.widget.id);
+						$grid = $('.grid-stack').data('gridstack');
+						$grid.update($widget, null, null, data.widget.width, data.widget.height);
+						break;
+					}
+				}
+			} else if(data.reason === 'toggle') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.id){
+						$rootScope.flat.widgets[widget].visible = data.visible;
+						break;
+					}
+				}
+			} else if(data.reason === 'postWidget') {
+				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
+				$rootScope.flat.widgets.push(data.widget);
+			}
+
+		}
+		console.log(data);
+	});
 }]);
 
 app.filter('choreDay', function() {

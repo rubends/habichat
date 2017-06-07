@@ -10,9 +10,10 @@ app.factory('getFlatService', ['$rootScope','$http', '$cookies', function($rootS
             };
             var promise = $http(oConfig).then(function successCallback(response) {
                 if (response.data.hasOwnProperty('error')){
-                    console.log(response.data);
+                    $rootScope.error = response.data.error;
                 }
                 else{
+                    $rootScope.error = "";
                     $rootScope.flat = response.data;
                 }
             }, function errorCallback(response) {

@@ -12,10 +12,11 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                     };
                     var promise = $http(oConfig).then(function successCallback(response) {
                         if (response.data.hasOwnProperty('error')){
-                            console.log(response.data);
+                            $rootScope.error = response.data.error;
                         }
                         else{
                             console.log(response.data);
+                            $rootScope.error = "";
                             $rootScope.user = response.data.user;
                             $rootScope.flat = response.data.flat;
                             $rootScope.calKey = response.data.calKey;

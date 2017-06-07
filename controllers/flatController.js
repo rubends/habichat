@@ -16,6 +16,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$token = $rootScope.user.token;
 				$rootScope.flat = response.data.flat;
 				$rootScope.user = response.data.user;
@@ -43,6 +44,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$scope.inviteList.invites = [{email: ''}];
 			}
 		}, function errorCallback(response) {

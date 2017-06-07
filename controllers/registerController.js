@@ -12,6 +12,7 @@ app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.error = "";
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
 				$rootScope.user.loggedIn = true;

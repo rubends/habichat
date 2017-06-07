@@ -9,10 +9,10 @@ app.factory('getInviteService', ['$rootScope','$http', '$cookies', function($roo
             };
             var promise = $http(oConfig).then(function successCallback(response) {
                 if (response.data.hasOwnProperty('error')){
-                    console.log(response.data);
+                    $rootScope.error = response.data.error;
                 }
                 else{
-                    console.log(response.data);
+                    $rootScope.error = "";
                     $rootScope.invitation = response.data;
                 }
             }, function errorCallback(response) {
