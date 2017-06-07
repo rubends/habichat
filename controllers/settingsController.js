@@ -19,7 +19,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				console.log(response);
@@ -39,7 +39,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$rootScope.flat = response.data;
@@ -62,7 +62,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$rootScope.user = response.data;
@@ -84,7 +84,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				for(flatmate in $rootScope.flat.users){
@@ -109,11 +109,10 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$scope.inviteList.invites = [{email: ''}];
-				console.log(response.data);
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -140,10 +139,9 @@ app.directive('backgroundChange', ['$rootScope', '$http', function ($rootScope, 
 					};
 					$http(oConfig).then(function successCallback(response) {
 						if (response.data.hasOwnProperty('error')){
-							console.log(response.data);
+							$rootScope.error = response.data.error;
 						}
 						else{
-							console.log(response);
 							$rootScope.user.flat = response.data;
 						}
 					}, function errorCallback(response) {

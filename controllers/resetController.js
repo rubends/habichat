@@ -11,7 +11,7 @@ app.controller("resetCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$cookies.put('token', response.data.token);

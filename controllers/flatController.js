@@ -13,10 +13,9 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
-				console.log(response.data);
 				$token = $rootScope.user.token;
 				$rootScope.flat = response.data.flat;
 				$rootScope.user = response.data.user;
@@ -41,7 +40,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$scope.inviteList.invites = [{email: ''}];

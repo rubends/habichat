@@ -1,4 +1,4 @@
-var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular', 'ui.calendar']);
+var app = angular.module('habichat', ['ngAnimate', 'ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular', 'ui.calendar']);
 
 (function() {
 

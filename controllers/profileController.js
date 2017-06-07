@@ -11,7 +11,7 @@ app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$lo
         };
         $http(oConfig).then(function successCallback(response) {
             if (response.data.hasOwnProperty('error')){
-                console.log(response.data);
+                $rootScope.error = response.data.error;
             }
             else{
                 console.log(response.data);
@@ -37,7 +37,7 @@ app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$lo
         };
         $http(oConfig).then(function successCallback(response) {
             if (response.data.hasOwnProperty('error')){
-                console.log(response.data);
+                $rootScope.error = response.data.error;
             }
             else{
                 for(user in $rootScope.flat.users){

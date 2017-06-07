@@ -31,7 +31,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	};
 
 	$scope.onCalItemClick = function (date, jsEvent, view){
-		console.log(date);
 		if(date.url){
 			date.type = 'feed';
 		} else {
@@ -88,7 +87,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			};
 			$http(oConfig).then(function successCallback(response) {
 				if (response.data.hasOwnProperty('error')){
-					console.log(response.data);
+					$rootScope.error = response.data.error;
 				}
 				else{
 					$mdDialog.cancel();
@@ -125,7 +124,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			};
 			$http(oConfig).then(function successCallback(response) {
 				if (response.data.hasOwnProperty('error')){
-					console.log(response.data);
+					$rootScope.error = response.data.error;
 				}
 				else{
 					$mdDialog.cancel();
@@ -244,7 +243,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 
 
 	$scope.addWidget = function(){
-		console.log($scope.widgetForm);
         var sUrl = $rootScope.apiPath + "/widgets";
         var oConfig = {
             url: sUrl,
@@ -255,7 +253,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$mdDialog.cancel();
@@ -284,7 +282,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$mdDialog.cancel();
@@ -324,7 +322,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				console.log(response.data);
@@ -345,7 +343,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		};
 		 $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				console.log(response.data);
@@ -391,7 +389,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				for(widget in $rootScope.flat.widgets){
@@ -419,7 +417,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				for(widget in $rootScope.flat.widgets){
@@ -448,7 +446,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				for(widget in $rootScope.flat.widgets){
@@ -472,7 +470,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				for(widget in $rootScope.flat.widgets){
@@ -506,7 +504,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			};
 			$http(oConfig).then(function successCallback(response) {
 				if (response.data.hasOwnProperty('error')){
-					console.log(response.data);
+					$rootScope.error = response.data.error;
 				}
 				else{
 					for(widget in $rootScope.flat.widgets){
@@ -547,7 +545,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$scope.addBillForm = [];
@@ -572,7 +570,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				for(widget in $rootScope.flat.widgets){
@@ -597,11 +595,10 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$scope.addPollForm = [];
-				console.log(response.data);
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
@@ -659,10 +656,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
-				console.log(response.data);
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items[0] = response.data;
@@ -685,10 +681,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
-				console.log(response.data);
 				$mdDialog.cancel();
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
@@ -720,10 +715,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
-				console.log(response.data);
 				$mdDialog.cancel();
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
