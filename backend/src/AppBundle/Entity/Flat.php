@@ -4,10 +4,13 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="flat")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class Flat
 {
@@ -15,6 +18,8 @@ class Flat
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      *
      * @var int
      */
@@ -22,6 +27,8 @@ class Flat
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      *
      * @var string
      */
@@ -29,6 +36,8 @@ class Flat
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      *
      * @var string
      */
@@ -36,6 +45,8 @@ class Flat
 
     /**
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      *
      * @var int
      */
@@ -43,6 +54,8 @@ class Flat
 
     /**
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      *
      * @var int
      */
@@ -50,6 +63,8 @@ class Flat
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      *
      * @var string
      */
@@ -57,6 +72,8 @@ class Flat
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      *
      * @var string
      */
@@ -64,31 +81,43 @@ class Flat
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      */
     protected $backgroundImage;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      */
     protected $widgetColor;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      */
     protected $headerColor;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      */
     protected $fontColor;
 
     /**
     * @ORM\OneToMany(targetEntity="User", mappedBy="flat")
+    * @Serializer\Expose
+    * @Serializer\Groups({"Flat"})
     */
     protected $users;
 
     /**
     * @ORM\OneToMany(targetEntity="Widget", mappedBy="flat")
+    * @Serializer\Expose
+    * @Serializer\Groups({"Flat", "Widget"})
     */
     private $widgets;
 
@@ -99,11 +128,15 @@ class Flat
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
      */
     protected $flatToken;
 
     /**
     * @ORM\OneToMany(targetEntity="Chat", mappedBy="flat")
+    * @Serializer\Expose
+    * @Serializer\Groups({"Flat"})
     */
     protected $chats;
 

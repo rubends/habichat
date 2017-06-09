@@ -925,7 +925,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				}
 			} else if(data.reason === 'flatUpdate') {
 				for($property in data.flat){
-					$rootScope.user.flat[$property] = data.flat[$property];
+					$rootScope.flat[$property] = data.flat[$property];
 				}
 				$scope.widgetStyle = {'background-color': data.flat.widget_color, 'color': data.flat.font_color};
 				$scope.headerStyle = {'background-color': data.flat.header_color, 'color': data.flat.font_color};

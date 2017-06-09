@@ -5,11 +5,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
  * @UniqueEntity(fields="email", message="This email address is already in use")
+ *
+ * @Serializer\ExclusionPolicy("all")
  */
 class User implements UserInterface
 {
@@ -17,21 +20,29 @@ class User implements UserInterface
      * @ORM\Id;
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      */
     protected $id;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Serializer\Expose
+     * @Serializer\Groups({"User"})
      */
     protected $email;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      */
     protected $username;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Serializer\Expose
+     * @Serializer\Groups({"User", "Flat"})
      */
     protected $role;
 
@@ -39,6 +50,8 @@ class User implements UserInterface
      * 
      * @ORM\ManyToOne(targetEntity="Flat", inversedBy="users", cascade={"persist"})
      * @ORM\JoinColumn(name="flat_id", referencedColumnName="id")
+     * @Serializer\Expose
+     * @Serializer\Groups({"User"})
      *
      */
     protected $flat;

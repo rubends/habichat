@@ -22,7 +22,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			}
 			else{
 				$rootScope.error = "";
-				$rootScope.user.flat = response.data;
+				$rootScope.flat = response.data;
 			}
 		}, function errorCallback(response) {
 		    console.log(response);

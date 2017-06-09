@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class UserController extends FOSRestController
 {
@@ -34,9 +35,10 @@ class UserController extends FOSRestController
             }
         }
 
+        $serialiseUser = $this->container->get('jms_serializer')->serialize($user, 'json', SerializationContext::create()->setGroups(array('Default', 'User')));
+        $serialiseFlat = $this->container->get('jms_serializer')->serialize($flat, 'json', SerializationContext::create()->setGroups(array('Default', 'Flat')));
         $calKey =  $this->getParameter('google_cal_key');
-
-        return ['user' => $user, 'flat' => $flat, 'calKey' => $calKey];
+        return ['user' => $serialiseUser, 'flat' => $serialiseFlat, 'calKey' => $calKey];
     }
 
     /**

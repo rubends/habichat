@@ -15,11 +15,11 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                             $rootScope.error = response.data.error;
                         }
                         else{
-                            console.log(response.data);
                             $rootScope.error = "";
-                            $rootScope.user = response.data.user;
-                            $rootScope.flat = response.data.flat;
+                            $rootScope.user = JSON.parse(response.data.user);
+                            $rootScope.flat = JSON.parse(response.data.flat);
                             $rootScope.calKey = response.data.calKey;
+                            console.log($rootScope.user, $rootScope.flat);
                             $rootScope.user.token = $cookies.get('token');
                             $rootScope.user.loggedIn = true;
                         }
