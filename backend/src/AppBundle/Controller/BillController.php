@@ -35,6 +35,21 @@ class BillController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($bill);
         $this->getDoctrine()->getManager()->flush();
 
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $unpaidUsers = [];
+        foreach($bill->getUnpaidUsers() as $key => $unpaidUser){
+            $userInfo = ['id' => $unpaidUser->getId(), 'username' => $unpaidUser->getUsername()];
+            $unpaidUsers[] = $userInfo;
+        }
+        $paidUsers = [];
+        foreach($bill->getPaidUsers() as $key => $paidUser){
+            $userInfo = ['id' => $paidUser->getId(), 'username' => $paidUser->getUsername()];
+            $paidUsers[] = $userInfo;
+        }
+        $data = ['user' => $user->getId(), 'reason' => 'updateItem', 'item' => ['id' => $bill->getId(), 'unpaid_users' => $unpaidUsers, 'paid_users' => $paidUsers, 'widget' => ['id' => $bill->getWidget()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
         return $bill;
     }
 }

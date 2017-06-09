@@ -5,5 +5,5 @@ parameters:
 
 services:
     pusher:
-        class:  Appbundle\Service\TriggerPusher
+        class:  AppBundle\Service\TriggerPusher
         arguments: ["%pusher_key%", "%pusher_secret%", "%pusher_app_id%"]

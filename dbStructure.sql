@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 31 mei 2017 om 13:21
+-- Gegenereerd op: 09 jun 2017 om 15:30
 -- Serverversie: 10.1.13-MariaDB
 -- PHP-versie: 7.0.6
 
@@ -65,8 +65,39 @@ CREATE TABLE `bills_unpaid_users` (
 CREATE TABLE `calender` (
   `id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `date` date NOT NULL,
-  `time` time NOT NULL,
+  `widget` int(11) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
+  `all_day` tinyint(1) NOT NULL,
+  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `chat`
+--
+
+CREATE TABLE `chat` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `flat_id` int(11) DEFAULT NULL,
+  `text` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `send` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tabelstructuur voor tabel `chore`
+--
+
+CREATE TABLE `chore` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `occurance` int(11) NOT NULL,
+  `last` datetime NOT NULL,
   `widget` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
@@ -171,6 +202,19 @@ CREATE TABLE `poll_option` (
 -- --------------------------------------------------------
 
 --
+-- Tabelstructuur voor tabel `reset`
+--
+
+CREATE TABLE `reset` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `reset_key` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `send_date` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tabelstructuur voor tabel `text`
 --
 
@@ -260,6 +304,21 @@ ALTER TABLE `calender`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexen voor tabel `chat`
+--
+ALTER TABLE `chat`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_659DF2AAA76ED395` (`user_id`),
+  ADD KEY `IDX_659DF2AAD3331C94` (`flat_id`);
+
+--
+-- Indexen voor tabel `chore`
+--
+ALTER TABLE `chore`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_857827D2A76ED395` (`user_id`);
+
+--
 -- Indexen voor tabel `flat`
 --
 ALTER TABLE `flat`
@@ -307,6 +366,13 @@ ALTER TABLE `poll_option`
   ADD KEY `IDX_B68343EB3C947C0F` (`poll_id`);
 
 --
+-- Indexen voor tabel `reset`
+--
+ALTER TABLE `reset`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `IDX_509DBF4DA76ED395` (`user_id`);
+
+--
 -- Indexen voor tabel `text`
 --
 ALTER TABLE `text`
@@ -342,27 +408,37 @@ ALTER TABLE `widget`
 -- AUTO_INCREMENT voor een tabel `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT voor een tabel `calender`
 --
 ALTER TABLE `calender`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+--
+-- AUTO_INCREMENT voor een tabel `chat`
+--
+ALTER TABLE `chat`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT voor een tabel `chore`
+--
+ALTER TABLE `chore`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT voor een tabel `flat`
 --
 ALTER TABLE `flat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- AUTO_INCREMENT voor een tabel `grocery`
 --
 ALTER TABLE `grocery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT voor een tabel `invite`
 --
 ALTER TABLE `invite`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT voor een tabel `picture`
 --
@@ -372,12 +448,17 @@ ALTER TABLE `picture`
 -- AUTO_INCREMENT voor een tabel `poll`
 --
 ALTER TABLE `poll`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 --
 -- AUTO_INCREMENT voor een tabel `poll_option`
 --
 ALTER TABLE `poll_option`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=63;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=91;
+--
+-- AUTO_INCREMENT voor een tabel `reset`
+--
+ALTER TABLE `reset`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT voor een tabel `text`
 --
@@ -387,17 +468,17 @@ ALTER TABLE `text`
 -- AUTO_INCREMENT voor een tabel `todo`
 --
 ALTER TABLE `todo`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT voor een tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT voor een tabel `widget`
 --
 ALTER TABLE `widget`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=145;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
 --
 -- Beperkingen voor geëxporteerde tabellen
 --
@@ -415,6 +496,19 @@ ALTER TABLE `bills_paid_users`
 ALTER TABLE `bills_unpaid_users`
   ADD CONSTRAINT `FK_2A3519CA1A8C12F5` FOREIGN KEY (`bill_id`) REFERENCES `bill` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `FK_2A3519CAA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE;
+
+--
+-- Beperkingen voor tabel `chat`
+--
+ALTER TABLE `chat`
+  ADD CONSTRAINT `FK_659DF2AAA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `FK_659DF2AAD3331C94` FOREIGN KEY (`flat_id`) REFERENCES `flat` (`id`);
+
+--
+-- Beperkingen voor tabel `chore`
+--
+ALTER TABLE `chore`
+  ADD CONSTRAINT `FK_857827D2A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Beperkingen voor tabel `invite`
@@ -435,6 +529,12 @@ ALTER TABLE `options_users`
 --
 ALTER TABLE `poll_option`
   ADD CONSTRAINT `FK_B68343EB3C947C0F` FOREIGN KEY (`poll_id`) REFERENCES `poll` (`id`);
+
+--
+-- Beperkingen voor tabel `reset`
+--
+ALTER TABLE `reset`
+  ADD CONSTRAINT `FK_509DBF4DA76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
 
 --
 -- Beperkingen voor tabel `user`

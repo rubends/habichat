@@ -43,6 +43,23 @@ class WidgetController extends FOSRestController
 
     /**
      * @ApiDoc()
+     * @param Widget $widget
+     *
+     * @return Widget[]
+     */
+    public function getWidgetAction(Widget $widget)
+    {
+        $type = $widget->getWidgetType();
+        if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+            $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+            $widget->setItems($items);
+        }
+
+        return $widget;
+    }
+
+    /**
+     * @ApiDoc()
      * @param Request $request
      * @return Widget[]
      */
@@ -76,7 +93,9 @@ class WidgetController extends FOSRestController
             $widget->setItems(array($text));
         }
 
-        $data = ['user' => $user, 'reason' => 'postWidget', 'widget' => [$widget]];
+        // $data = ['user' => $user->getId(), 'reason' => 'postWidget', 'widget' => $widget->getId()];
+        $data = ['user' => $user->getId(), 'reason' => 'postWidget', 'widget' => ['id' => $widget->getId(), 'widget_type' => $request->request->get('type'), 'title' => $request->request->get('title'),'visible' => 1,'user' => ['id' => $user->getId(), 'username' => $user->getUsername()],'flat' => ['id' => $flat->getId()], 'x' => 0, 'y' => 0, 'width' => 2, 'height' => 4, 'items' => []]];
+        // $data = ['user' => $user->getId(), 'reason' => 'postWidget', 'widget' => $this->container->get('serializer')->serialize($widget, 'json')];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$flat->getId(), $data);
         return $widget;
@@ -106,29 +125,26 @@ class WidgetController extends FOSRestController
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $visible = $widget->getVisible();
 
-        if($widget->getUser()->getId() === $user->getId() || $user->getRole() === 'ROLE_ADMIN')
-        {
-            if ($visible==0) {
-                $widget->setVisible(1);
-                $updateVis = 1;
-                $type = $widget->getWidgetType();
-                if(class_exists('\\AppBundle\\Entity\\'.$type)) {
-                    $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-                    $widget->setItems($items);
-                }
+        if ($visible==0) {
+            $widget->setVisible(1);
+            $updateVis = 1;
+            $type = $widget->getWidgetType();
+            if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                $widget->setItems($items);
             }
-            else{
+        } else {
+            if($widget->getUser()->getId() === $user->getId() || $user->getRole() === 'ROLE_ADMIN') {
                 $widget->setVisible(0);
                 $updateVis = 0;
+            }  else {
+                return new JsonResponse(array('error' => "User has no rights to delete this widget."));
             }
-
-            $data = ['user' => $user, 'reason' => 'toggle', 'id' => $widget->getId(), 'visible' => $updateVis];
-            $pusher = $this->get('pusher');
-            $pusher->trigger('flat-'.$user->getFlat()->getId(), $data);
-
-        } else {
-            return new JsonResponse(array('error' => "User has no rights to delete this widget."));
         }
+
+        $data = ['user' => $user->getId(), 'reason' => 'toggle', 'id' => $widget->getId(), 'visible' => $updateVis];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         $this->getDoctrine()->getManager()->persist($widget);
         $this->getDoctrine()->getManager()->flush();
@@ -155,9 +171,9 @@ class WidgetController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $data = ['user' => $user, 'reason' => 'place', 'widgets' => $widgets];
+        $data = ['user' => $user->getId(), 'reason' => 'place', 'widgets' => $widgets];
         $pusher = $this->get('pusher');
-        $pusher->trigger('flat-'.$user->getFlat()->getId(), $data);
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         
         return new JsonResponse(array('API' => "Saved widget places."));
@@ -182,9 +198,9 @@ class WidgetController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $data = ['user' => $user, 'reason' => 'size', 'widget' => ['id' => $widget->getId(), 'width' => (int)$width, 'heigth' => (int)$height]];
+        $data = ['user' => $user->getId(), 'reason' => 'size', 'widget' => ['id' => $widget->getId(), 'width' => (int)$width, 'height' => (int)$height]];
         $pusher = $this->get('pusher');
-        $pusher->trigger('flat-'.$user->getFlat()->getId(), $data);
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         return new JsonResponse(array('API' => "Changed widget " . $widget->getId() . " to width " . $width . " - height " . $height));
     }
@@ -205,6 +221,11 @@ class WidgetController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($todo);
         $this->getDoctrine()->getManager()->flush();
 
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'addItem', 'item' => ['id' => $todo->getId(), 'title' => $request->request->get('title'), 'done' => 0, 'widget' => ['id' => $widget->getId()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
         return $todo;
     }
 
@@ -222,6 +243,11 @@ class WidgetController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($grocery);
         $this->getDoctrine()->getManager()->flush();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'addItem', 'item' => ['id' => $grocery->getId(), 'item' => $request->request->get('item'), 'widget' => ['id' => $widget->getId()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         return $grocery;
     }
@@ -250,6 +276,11 @@ class WidgetController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($picture);
         $this->getDoctrine()->getManager()->flush();
 
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'addItem', 'item' => ['id' => $picture->getId(), 'image' => $file, 'widget' => ['id' => $widget->getId()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
         return $picture;
     }
 
@@ -277,6 +308,16 @@ class WidgetController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($bill);
         $this->getDoctrine()->getManager()->flush();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $unpaidUsers = [];
+        foreach($bill->getUnpaidUsers() as $key => $unpaidUser){
+            $userInfo = ['id' => $unpaidUser->getId(), 'username' => $unpaidUser->getUsername()];
+            $unpaidUsers[] = $userInfo;
+        }
+        $data = ['user' => $user->getId(), 'reason' => 'addItem', 'item' => ['id' => $bill->getId(), 'summary' => $request->request->get('summary'), 'amount' => $request->request->get('amount'), 'account' => $request->request->get('account'), 'unpaid_users' => $unpaidUsers, 'widget' => ['id' => $widget->getId()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         return $bill;
     }
@@ -307,14 +348,22 @@ class WidgetController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($poll);
         $this->getDoctrine()->getManager()->flush();
 
+        $options = [];
         foreach($request->request->get('options') as $key => $value){
            $option = new PollOption();
            $option->setName($value['name']);
            $poll->addOption($option);
            $this->getDoctrine()->getManager()->persist($option);
+           $this->getDoctrine()->getManager()->flush();
+           $options[] = ['id' => $option->getId(), 'name' => $value['name']];
         };
 
-        $this->getDoctrine()->getManager()->flush();
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'addItem', 'item' => ['id' => $poll->getId(), 'question' => $request->request->get('question'), 'multiple' => $request->request->get('multiple'), 'until' => ($datetime->getTimestamp()*1000), 'options' => $options, 'widget' => ['id' => $widget->getId()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
+
         return $poll;
     }
 
@@ -358,6 +407,12 @@ class WidgetController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($calender);
         $this->getDoctrine()->getManager()->flush();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'addCalItem', 'item' => ['id' => $calender->getId(), 'title' => $calender->getTitle(), 'all_day' => $calender->getAllDay(), 'url' => $request->request->get('url'), 'end' => $end->getTimestamp()*1000, 'start' => $start->getTimestamp()*1000, 'widget' => ['id' => $widget->getId()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
         return $calender;
     }
 
@@ -385,6 +440,12 @@ class WidgetController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($chore);
         $this->getDoctrine()->getManager()->flush();
+
+        $userLoggedin = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $userLoggedin->getId(), 'reason' => 'addItem', 'item' => ['id' => $chore->getId(), 'title' => $request->request->get('title'), 'occurance' => $request->request->get('occurance'), 'last' => $lastDate->getTimestamp()*1000, 'user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'widget' => ['id' => $widget->getId()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$userLoggedin->getFlat()->getId(), $data);
+
         return $chore;
     }
 }

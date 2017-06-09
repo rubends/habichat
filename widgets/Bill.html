@@ -9,7 +9,7 @@
         </ul>
         <p>{{widget.items[0].account}}</p>
     </div>
-    <p ng-hide="widget.items[0].unpaid_users.length"><strong>Everybody has paid!</strong></p>
+    <p ng-hide="widget.items[0].unpaid_users.length && !widget.items[0].paid_users.length"><strong>Everybody has paid!</strong></p>
     <div class="done" ng-show="widget.items[0].paid_users.length">
         <p>Already paid:</p>
         <ul>

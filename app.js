@@ -80,7 +80,7 @@ var app = angular.module('habichat', ['ngAnimate', 'ngRoute', 'ngCookies', 'ngMa
 
 		$mdThemingProvider.theme('default')
     		.primaryPalette('teal')
-			.accentPalette('deep-orange')
+			.accentPalette('grey')
 			.warnPalette('red')
 			.backgroundPalette('grey', {'default': '50'});
 

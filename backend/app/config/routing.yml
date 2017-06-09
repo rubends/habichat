@@ -42,3 +42,7 @@ bill:
     resource: "@AppBundle/Controller/BillController.php"
     type:     rest
     prefix: /api
+chat:
+    resource: "@AppBundle/Controller/ChatController.php"
+    type:     rest
+    prefix: /api

@@ -8,7 +8,6 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 
 	$("#settingsLink").addClass("activePage");
 	$scope.changeFlatSettings = function(){
-		$rootScope.user.flat = $rootScope.flat;
         var sUrl = $rootScope.apiPath + "/flats/" + $rootScope.flat.id;
         var oConfig = {
             url: sUrl,
@@ -23,6 +22,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			}
 			else{
 				$rootScope.error = "";
+				$rootScope.user.flat = response.data;
 			}
 		}, function errorCallback(response) {
 		    console.log(response);

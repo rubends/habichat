@@ -19,9 +19,37 @@
 			</div>
 		</div>
 	</div>
-	<div ng-click="showWidgetDialog($event)" class="addWidgetBtn">
-		<md-button class="md-fab md-medium md-primary" aria-label="Add widget">
+	<md-card id="chat" ng-show="chat">
+        <md-card-content>
+			<!--<h3>You are now chatting with your flatmates.</h3>-->
+			<div class="msgs">
+				<div class="clearfix" ng-repeat="chat in flat.chats" id="chat{{chat.id}}" scroll-down>
+					<div class="msg" ng-class="chat.user.id == user.id ? 'pull-right text-right' : 'pull-left'">
+						<md-tooltip md-direction="left">{{chat.send | date:"MM/dd/yyyy 'at' h:mma"}}</md-tooltip>
+						<p class="sender" ng-if="flat.chats[$index-1].user.id != chat.user.id">{{chat.user.username}}</p>
+						<p class="text">{{chat.text}}</p>
+					</div>
+				</div>
+			</div>
+		</md-card-content>
+		<div class="sendMsg">
+			<md-divider></md-divider>
+			<md-input-container md-no-float class="md-block">
+				<textarea ng-enter="sendMsg(); chatForm= ''" ng-model="chatForm.message" placeholder="Type a message..." md-select-on-focus></textarea>
+				<md-icon ng-click="chatForm= ''" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_send_24px.svg"></md-icon>
+			</md-input-container>
+		</div>
+		<div class="chatArrow">
+			<div class="arrow"></div>
+			<div class="shadow"></div>
+		</div>
+    </md-card>
+	<div class="addWidgetBtn">
+		<md-button ng-click="showWidgetDialog($event)" class="md-fab md-medium md-primary" aria-label="Add widget">
 			<md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon>
+		</md-button>
+		<md-button ng-click="chat = !chat" class="md-fab md-medium md-primary" aria-label="open chat">
+			<md-icon md-svg-src="bower_components/material-design-icons/communication/svg/design/ic_chat_48px.svg"></md-icon>
 		</md-button>
 	</div>
 </div>

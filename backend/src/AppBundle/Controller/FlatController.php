@@ -111,6 +111,11 @@ class FlatController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($flat);
         $this->getDoctrine()->getManager()->flush();
 
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'flatUpdate', 'flat' => ['widget_color' => $flat->getWidgetColor(), 'header_color' => $flat->getHeaderColor(), 'font_color' => $flat->getFontColor(), 'street' => $flat->getStreet(), 'number' => $flat->getNumber(), 'zipcode' => $flat->getZipcode(), 'city' => $flat->getCity(), 'country' => $flat->getCountry(), 'name' => $flat->getName()]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
         return $flat;
     }
 
@@ -135,6 +140,11 @@ class FlatController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($flat);
         $this->getDoctrine()->getManager()->flush();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'backgroundUpdate', 'background_image' => $flat->getBackgroundImage()];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         return $flat;
     }

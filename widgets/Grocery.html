@@ -1,16 +1,16 @@
 <div class="grocery">
     <p ng-hide="widget.items.length">No groceries on your list</p>
     <ul>
-        <li ng-repeat="grocery in widget.items" reload-packery>
+        <li ng-repeat="grocery in widget.items">
             <i class="fa fa-shopping-basket" aria-hidden="true"></i>
             <span ng-click="deleteGrocery(widget.id, grocery.id)">{{grocery.item}}</span>
         </li>
     </ul>
     <form ng-submit="postGrocery(widget.id, groceryForm.item); groceryForm.item = ''">
         <div class="input-group">
-            <input type="text" ng-model="groceryForm.item" id="addGrocery" name="grocery" class="form-control" placeholder="Add a grocery">
-            <span class="input-group-btn">
-            <button class="btn btn-secondary" type="submit" ng-style="buttonStyle"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+            <input type="text" ng-style="inputTextStyle" ng-model="groceryForm.item" id="addGrocery" name="grocery" class="form-control" placeholder="Add a grocery">
+            <span class="input-group-btn" ng-show="groceryForm.item">
+                <button ng-style="inputBtnStyle" class="btn btn-secondary" type="submit" ng-style="buttonStyle"><md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon></button>
             </span>
     </div>
     </form> 

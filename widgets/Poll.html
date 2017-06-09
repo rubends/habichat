@@ -4,28 +4,28 @@
         <p class="voteDate">Voting ends on {{widget.items[0].until | date:"MM/dd/yyyy 'at' h:mma"}}</p>
         <hr>
         <div ng-if="widget.items[0].multiple">
-            <div ng-repeat="option in widget.items[0].options" reload-packery>
+            <div ng-repeat="option in widget.items[0].options">
                 <md-checkbox ng-model="isPollOptionChecked" aria-label="pollCheck" ng-click="votePoll(widget.id, option.id)" ng-checked="getChecked(option)">
                     {{option.name}}
                 </md-checkbox>
-                <p class="pull-right">{{option.voters.length}} vote{{option.voters.length == '1' ? '' : 's'}}</p>
+                <p class="pull-right"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} vote{{option.voters.length == '1' ? '' : 's'}}</p>
             </div>
         </div>
         <div ng-if="!widget.items[0].multiple">
             <md-radio-group ng-init="selected = getSelected(widget.items[0].options)" ng-model="selected">
-                <div ng-repeat="option in widget.items[0].options" class="clearfix" reload-packery>
+                <div ng-repeat="option in widget.items[0].options" class="clearfix">
                     <md-radio-button class="pull-left" ng-value="option.id" aria-label="pollRadio" ng-click="votePoll(widget.id, option.id)">
                         {{option.name}}
                     </md-radio-button>
-                    <p class="pull-right">{{option.voters.length}} vote{{option.voters.length == '1' ? '' : 's'}}</p>
+                    <p class="pull-right"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} vote{{option.voters.length == '1' ? '' : 's'}}</p>
                 </div>
             </md-radio-group>
         </div>
     </div>
     <div ng-hide="getPassed(widget.items[0].until)">
-        <p>Voting has ended</p>
+        <p>Voting has ended on {{widget.items[0].until | date:"MM/dd/yyyy 'at' h:mma"}}</p>
         <hr>
-        <div ng-repeat="option in widget.items[0].options" reload-packery>
+        <div ng-repeat="option in widget.items[0].options">
             <p>{{option.name}} <span class="pull-right">{{option.voters.length}} vote{{option.voters.length == '1' ? '' : 's'}}</span></p>
         </div>
     </div>

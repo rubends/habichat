@@ -4,6 +4,11 @@ body {
   min-height: 100%;
   height: auto;
 }
+h1,
+h2,
+h3 {
+  font-family: 'Allerta', sans-serif;
+}
 .btn-primary {
   background-color: #00897b !important;
 }
@@ -13,32 +18,37 @@ body {
 .md-input-container {
   margin: 0 !important;
 }
-.packery-drop-placeholder {
-  outline: 3px dashed #444;
-  outline-offset: -6px;
-  /* transition position changing */
-  -webkit-transition: -webkit-transform 0.2s;
-  transition: transform 0.2s;
-}
-.transition {
-  -webkit-transition: all linear 1s;
-  -moz-transition: all linear 1s;
-  -o-transition: all linear 1s;
-  -ms-transition: all linear 1s;
-  transition: all linear 1s;
-}
-.showTrans {
-  opacity: 1;
-  height: 44px;
-}
 .showTrans.ng-hide {
+  transition: all linear 1s;
   opacity: 0;
-  height: 0;
+}
+.input-group {
+  padding-bottom: 16px;
+  width: 100%;
+}
+.input-group input[type=text] {
+  background-color: transparent;
+  border: none;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-radius: 0px;
+  outline: none;
+  box-shadow: none;
+}
+.input-group .input-group-btn {
+  outline: none;
+  box-shadow: none;
+}
+.input-group .input-group-btn button {
+  border-radius: 18px !important;
+  padding: 4px 4px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+  outline: none;
 }
 /*  === NAVIGATION  === */
 .navbar {
   margin-bottom: 0;
-  background-color: #00897b;
+  background-color: #2f2f2f;
   border: none;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
   padding-left: 10px;
@@ -47,6 +57,11 @@ body {
 .navbar .navbar-brand {
   font-weight: bold;
   color: #fff !important;
+  font-family: 'Allerta', sans-serif;
+  text-transform: uppercase;
+}
+.navbar .navbar-brand img {
+  width: 30px;
 }
 .navbar .flatname {
   font-size: 25px;
@@ -65,7 +80,7 @@ body {
 .navbar .activePage .icon,
 .navbar a:hover .icon,
 .navbar a:hover {
-  color: rgba(255, 110, 64, 0.87) !important;
+  color: #00897b !important;
 }
 .navbar .userMenu button {
   height: 54px;
@@ -96,6 +111,21 @@ body {
 .homepage {
   background-size: cover;
   background-image: url('/img/intro.jpg');
+}
+.homepage .intro {
+  text-align: center;
+}
+.homepage .intro h1 {
+  margin-top: 0;
+  text-transform: uppercase;
+  color: #00897b;
+  font-family: 'Allerta Stencil', sans-serif;
+}
+.homepage .intro img {
+  width: 35%;
+}
+.homepage p {
+  font-family: 'Allerta', sans-serif;
 }
 /* === LOGIN & REGISTER & FLAT & PROFILE  === */
 .login h1,
@@ -166,6 +196,7 @@ body {
   margin: 8px;
   height: 100%;
   overflow: hidden;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
   /* TODO WIDGET */
   /* PICTURE && GIF WIDGET */
   /* BILL WIDGET */
@@ -186,7 +217,7 @@ body {
   font-size: 1.5em;
 }
 .widget .widgetBody {
-  height: calc(100% - 34px);
+  height: calc(100% - 35px);
   padding: 16px;
 }
 .widget .resize {
@@ -233,7 +264,7 @@ body {
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  height: calc(100% - 18px);
+  height: calc(100% - 34px);
   margin: -16px;
   position: absolute;
   width: 100%;
@@ -308,4 +339,66 @@ body {
 }
 #widgetDialog .widgetBlock .restoreTable .md-accent {
   margin: 0 8px;
+}
+/* === CHAT POPUP === */
+#chat {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 255px;
+  height: 290px;
+}
+#chat h3 {
+  font-size: 12px;
+  color: #00897b;
+  margin-top: 0;
+}
+#chat .msgs {
+  padding-bottom: 8px;
+  height: 203px;
+  overflow-y: scroll;
+}
+#chat .msgs .msg .sender {
+  margin-bottom: 0;
+  font-size: 12px;
+  color: grey;
+}
+#chat .msgs .msg .text {
+  font-size: 12px;
+  margin-bottom: 1px;
+  background-color: #00897b;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 12px;
+}
+#chat .sendMsg {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+#chat .sendMsg md-input-container {
+  margin-top: 16px !important;
+  margin-bottom: 0;
+  width: 85%;
+  margin: auto;
+}
+#chat .sendMsg md-input-container md-icon {
+  cursor: pointer;
+}
+.chatArrow div {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-left: 30px solid transparent;
+  border-right: 30px solid transparent;
+  right: 0px;
+}
+.chatArrow .arrow {
+  border-top: 20px solid #fafafa;
+  bottom: -19px;
+  z-index: 5;
+}
+.chatArrow .shadow {
+  border-top: 20px solid rgba(0, 0, 0, 0.27);
+  bottom: -21px;
 }

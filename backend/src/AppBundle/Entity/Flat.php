@@ -103,6 +103,11 @@ class Flat
     protected $flatToken;
 
     /**
+    * @ORM\OneToMany(targetEntity="Chat", mappedBy="flat")
+    */
+    protected $chats;
+
+    /**
      * @return int
      */
     public function getId()
@@ -348,5 +353,21 @@ class Flat
     public function setCountry($country)
     {
         $this->country = $country;
+    }
+
+     /**
+     * @return chats
+     */
+    public function getChats()
+    {
+        return $this->chats;
+    }
+
+    /**
+     * @param $chats
+     */
+    public function setChats($chats)
+    {
+        $this->chats = $chats;
     }
 }

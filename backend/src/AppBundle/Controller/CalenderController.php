@@ -46,11 +46,20 @@ class CalenderController extends FOSRestController
     public function deleteCalenderAction(Calender $calender)
     {
         $widget = $calender->getWidget();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        if($calender->getUrl()){
+            $type = 'feed';
+        } else {
+            $type = 'event';
+        }
+        $data = ['user' => $user->getId(), 'reason' => 'deleteCalItem', 'item' => ['id' => $calender->getId(), 'type' => $type, 'widget' => ['id' => $calender->getWidget()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
         $this->getDoctrine()->getManager()->remove($calender);
         $this->getDoctrine()->getManager()->flush();
 
-        // $user = $this->get('security.token_storage')->getToken()->getUser();
-        // return $this->getDoctrine()->getRepository('AppBundle:Calender')->findByUserID($user->getId());
         return $widget;
     }
 
@@ -90,6 +99,11 @@ class CalenderController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($calender);
         $this->getDoctrine()->getManager()->flush();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => $user->getId(), 'reason' => 'updateCalItem', 'item' => ['id' => $calender->getId(), 'title' => $calender->getTitle(), 'all_day' => $calender->getAllDay(), 'url' => $request->request->get('url'), 'end' => $end->getTimestamp()*1000, 'start' => $start->getTimestamp()*1000, 'widget' => ['id' => $calender->getWidget()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         return $calender;
     }

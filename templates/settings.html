@@ -6,7 +6,7 @@
 					Style
 				</md-nav-item>
 				<md-nav-item md-nav-click="goto('flat')" name="flat">
-					Flat
+					Household
 				</md-nav-item>
 			</md-nav-bar>
 			<div id="styleSettings" ng-show="settingsView === 'style'">
@@ -66,7 +66,7 @@
 									<md-tooltip>{{flatmate.role === 'ROLE_ADMIN' ? 'Make user' : 'Make admin'}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_supervisor_account_24px.svg" aria-label="Change user"></md-icon>
 								</div>
 								<div ng-click="moveOutFlat(flatmate.id)">
-									<md-tooltip>Delete from this flat</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_delete_24px.svg" aria-label="Delete"></md-icon>
+									<md-tooltip>Delete from this household</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_delete_24px.svg" aria-label="Delete"></md-icon>
 								</div>
 							</td>
 						</tr>
@@ -75,7 +75,7 @@
 				<div class="row">
 					<div class="col-md-6" ng-init="inviteList.invites = [{email: ''}]">
 						<md-input-container class="md-block" flex-gt-sm ng-repeat="invite in inviteList.invites">
-							<label>Invite your flatmate</label>
+							<label>Invite your roommates</label>
 							<input type="email" ng-model="invite.email">
 						</md-input-container>
 						<md-button class="md-raised" ng-click="inviteList.invites.push({email: ''})">+</md-button>
@@ -111,14 +111,14 @@
 						</div>
 						<div class="col-md-6">
 							<md-input-container class="md-block" flex-gt-sm>
-								<label>Flatname</label>
+								<label>Household name</label>
 								<input ng-model="flat.name">
 							</md-input-container>
-							<md-button class="md-raised md-primary" ng-click="changeFlatSettings()">Save flat</md-button>
+							<md-button class="md-raised md-primary" ng-click="changeFlatSettings()">Save household</md-button>
 						</div>
 					</div>
 				</div>
-				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">Move out of this flat</md-button>
+				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">Move out of this household</md-button>
 				<md-button ng-if="user.role === 'ROLE_ADMIN'" class="md-raised md-warn moveBtn" ng-click="deleteFlat(flat.id)">Delete this flat</md-button>
 			</div>
 		</div>

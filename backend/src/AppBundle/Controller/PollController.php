@@ -64,6 +64,20 @@ class PollController extends FOSRestController
         $this->getDoctrine()->getManager()->persist($option);
         $this->getDoctrine()->getManager()->flush();
 
+        $optionArray = [];
+        $options = $poll->getOptions();
+        foreach($options as $key => $option){
+            $voters = [];
+            foreach($option->getVoters() as $key => $voter){
+                $voters[] = ['id' => $voter->getId(), 'username' => $voter->getUsername()];
+            }
+            $optionArray[] = ['id' => $option->getId(), 'name' => $option->getName(), 'voters' => $voters];
+        }
+
+        $data = ['user' => $user->getId(), 'reason' => 'updateItem', 'item' => ['id' => $poll->getId(), 'options' => $optionArray, 'widget' => ['id' => $poll->getWidget()]]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+
         return $poll;
     }
 }

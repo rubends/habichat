@@ -6,9 +6,11 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$location.path('/flat');
 	} else {
 		$("#dashboardLink").addClass("activePage");
-		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.user.flat.flat_token+'/'+$rootScope.user.flat.background_image+')'};
-		$scope.widgetStyle = {'background-color': $rootScope.user.flat.widget_color, 'color': $rootScope.user.flat.font_color};
-		$scope.headerStyle = {'background-color': $rootScope.user.flat.header_color, 'color': $rootScope.user.flat.font_color};
+		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+$rootScope.flat.background_image+')'};
+		$scope.widgetStyle = {'background-color': $rootScope.flat.widget_color, 'color': $rootScope.flat.font_color};
+		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.font_color};
+		$scope.inputTextStyle = {"border-bottom-color": $rootScope.flat.font_color, "color": $rootScope.flat.font_color};
+		$scope.inputBtnStyle = {"background-color": $rootScope.flat.font_color};
 	}
 
 	$scope.showWidgetDialog = function(ev) {
@@ -276,6 +278,13 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
     }
 
 	$scope.deleteWidget = function($widgetId){
+		for(widget in $rootScope.flat.widgets){
+			if($rootScope.flat.widgets[widget].id === $widgetId){
+				$rootScope.flat.widgets[widget].visible = !$rootScope.flat.widgets[widget].visible;
+				$mdDialog.cancel();
+				break;
+			}
+		}
         var sUrl = $rootScope.apiPath + "/widgets/" + $widgetId + "/toggle";
         var oConfig = {
             url: sUrl,
@@ -289,10 +298,10 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$rootScope.error = "";
-				$mdDialog.cancel();
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].visible = response.data.visible;
+						break;
 					}
 				}
 				if (!response.data.visible){	
@@ -588,6 +597,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items[0] = response.data;
+						break;
 					}
 				}
 			}
@@ -746,6 +756,26 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		});
 	}
 
+	$scope.sendMsg = function (){
+		var sUrl = $rootScope.apiPath + "/chats/"+$rootScope.user.id+"/messages";
+        var oConfig = {
+            url: sUrl,
+            method: "POST",
+			data: $scope.chatForm,
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				$rootScope.error = response.data.error;
+			}
+			else{
+				$rootScope.flat.chats.push(response.data);
+			}
+		}, function errorCallback(response) {
+		    console.log(response);
+		});
+	}
 
 	// GRID STACK
 	$scope.gridOptions = {
@@ -777,8 +807,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	});
 	
 	var channel = pusher.subscribe('habichannel');
-	channel.bind('flat-'+$rootScope.flat.id, function(data) {
-		if(data.user && data.user.id != $rootScope.user.id){
+	channel.bind('flat-'+$rootScope.flat.flat_token, function(data) {
+		console.log(data);
+		if(data.user != $rootScope.user.id){
 			if(data.reason === 'place'){
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === data.widgets[widget].id) {
@@ -812,10 +843,100 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			} else if(data.reason === 'postWidget') {
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 				$rootScope.flat.widgets.push(data.widget);
-			}
 
+			} else if(data.reason === 'addItem') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
+						$rootScope.flat.widgets[widget].items.push(data.item);
+						break;
+					}
+				}
+			} else if(data.reason === 'updateItem') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
+						if($rootScope.flat.widgets[widget].items.length <= 0){
+							for($property in data.item){
+								$rootScope.flat.widgets[widget].items[0][$property] = data.item[$property];
+							}
+						} else {
+							for(item in $rootScope.flat.widgets[widget].items){
+								if($rootScope.flat.widgets[widget].items[item].id === data.item.id){
+									for($property in data.item){
+										$rootScope.flat.widgets[widget].items[item][$property] = data.item[$property];
+									}
+									break;
+								}
+							}
+						}
+						break;
+					}
+				}
+			} else if(data.reason === 'addCalItem') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
+						$rootScope.flat.widgets[widget].items.push(data.item);
+						data.item.className = ['newCalItem'];
+						data.item.itemId = data.item.id;
+						if(!data.item.url){
+							data.item.allDay = data.item.all_day;
+							$rootScope.flat.widgets[widget].calItems[0].events.push(data.item);
+						} else {
+							$rootScope.flat.widgets[widget].calItems.push(data.item);
+						}
+						break;
+					}
+				}
+			} else if(data.reason === 'updateCalItem') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
+						for(item in $rootScope.flat.widgets[widget].calItems[0].events){
+							if($rootScope.flat.widgets[widget].calItems[0].events[item].itemId === data.item.id){
+								$rootScope.flat.widgets[widget].calItems[0].events.splice(item,1);
+								data.item.className = ['newCalItem'];
+								data.item.itemId = data.item.id;
+								data.item.allDay = data.item.all_day;
+								data.item.start = moment(data.item.start);
+								data.item.end = moment(data.item.end);
+								$rootScope.flat.widgets[widget].calItems[0].events.push(data.item);
+								break;
+							}
+						}
+					}
+				}
+			} else if(data.reason === 'deleteCalItem') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
+						if(data.item.type === 'feed'){
+							for(item in $rootScope.flat.widgets[widget].calItems){
+								if($rootScope.flat.widgets[widget].calItems[item].itemId === data.item.id){
+									$rootScope.flat.widgets[widget].calItems.splice(item,1);
+									break;
+								}
+							}
+						} else {
+							for(item in $rootScope.flat.widgets[widget].calItems[0].events){
+								if($rootScope.flat.widgets[widget].calItems[0].events[item].itemId === data.item.id){
+									$rootScope.flat.widgets[widget].calItems[0].events.splice(item,1);
+									break;
+								}
+							}
+						}
+					}
+				}
+			} else if(data.reason === 'flatUpdate') {
+				for($property in data.flat){
+					$rootScope.user.flat[$property] = data.flat[$property];
+				}
+				$scope.widgetStyle = {'background-color': data.flat.widget_color, 'color': data.flat.font_color};
+				$scope.headerStyle = {'background-color': data.flat.header_color, 'color': data.flat.font_color};
+			} else if(data.reason === 'backgroundUpdate') {
+				$rootScope.flat.background_image = data.background_image;
+				$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+data.background_image+')'};
+			} else if(data.reason === 'chat') {
+				$rootScope.flat.chats.push(data.chat);
+			}
+			$scope.$apply();
 		}
-		console.log(data);
 	});
 }]);
 
@@ -837,4 +958,28 @@ app.filter('choreDay', function() {
 	  }
 	  return $validItems;
   }
+});
+
+app.directive('ngEnter', function() {
+    return function(scope, element, attrs) {
+        element.bind("keydown", function(e) {
+            if(e.which === 13) {
+                scope.$apply(function(){
+                    scope.$eval(attrs.ngEnter, {'e': e});
+                });
+                e.preventDefault();
+            }
+        });
+    };
+});
+
+app.directive('scrollDown', function() {
+    return function(scope, element, attrs) {
+        if(scope.$last){
+			// $timeout(function() {$('.msgs').scrollTop($('.msgs')[0].scrollHeight)}, 0, false);
+			// window.setInterval(function() {
+			// 	$('.msgs').scrollTop($('.msgs')[0].scrollHeight);
+			// }, 0);
+		}
+    };
 });

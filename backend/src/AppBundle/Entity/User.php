@@ -83,6 +83,11 @@ class User implements UserInterface
     */
     protected $reset;
 
+    /*
+    * @ORM\OneToMany(targetEntity="Chat", mappedBy="user")
+    */
+    protected $chats;
+
     public function eraseCredentials()
     {
         return null;
@@ -313,6 +318,23 @@ class User implements UserInterface
     public function setChores($chores)
     {
         $this->chores = $chores;
+    }
+
+     /**
+     * @return chats
+     *
+     */
+    public function getChats()
+    {
+        return $this->chats;
+    }
+
+    /**
+     * @param $chats
+     */
+    public function setChats($chats)
+    {
+        $this->chats = $chats;
     }
 
 

@@ -1,7 +1,7 @@
 <div class="todo">
     <p ng-hide="widget.items.length">You have no todo's</p>
     <ul>
-        <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone" reload-packery>
+        <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone">
             <div ng-click="toggleTodoDone(widget.id, item.id)">
                 <i class="fa fa-square-o checkSquare" aria-hidden="true"></i>
                 <i class="fa fa-check-square-o hoverSquare" aria-hidden="true"></i>
@@ -13,17 +13,16 @@
     <p ng-show="widget.items.length && !notDone.length">Congrats, you have done everything!</p>
     <form ng-submit="postTodo(widget.id, todoForm.title); todoForm.title = ''">
         <div class="input-group">
-            <input type="text" ng-model="todoForm.title" id="addTodo" name="todo" class="form-control" placeholder="Add a todo">
-            <span class="input-group-btn">
-            <button class="btn btn-secondary" type="submit" ng-style="widgetHeader"><i class="fa fa-plus-circle" aria-hidden="true"></i></button>
+            <input ng-style="inputTextStyle" type="text" ng-model="todoForm.title" id="addTodo" name="todo" class="form-control" placeholder="Add a todo">
+            <span class="input-group-btn" ng-show="todoForm.title">
+                <button ng-style="inputBtnStyle" class="btn btn-secondary" type="submit" ng-style="widgetHeader"><md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon></button>
             </span>
         </div>
     </form> 
     <div class="done" ng-show="widget.items.length">
-        <hr>
         <p>done</p>
         <ul>
-            <li ng-repeat="item in widget.items | filter: {done: '1'} as dones" reload-packery>
+            <li ng-repeat="item in widget.items | filter: {done: '1'} as dones">
                 <div ng-click="toggleTodoDone(widget.id, item.id)">
                 <i class="fa fa-check-square-o checkSquare" aria-hidden="true"></i>
                 <i class="fa fa-square-o hoverSquare" aria-hidden="true"></i>
