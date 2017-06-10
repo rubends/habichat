@@ -1,0 +1,15 @@
+{
+  "name": "simplebar",
+  "homepage": "https://github.com/Grsmto/simplebar",
+  "version": "2.4.1",
+  "_release": "2.4.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.4.1",
+    "commit": "b5b19ba162f438773bead20b710c8ac8d0f14d44"
+  },
+  "_source": "https://github.com/Grsmto/simplebar.git",
+  "_target": "^2.4.1",
+  "_originalSource": "simplebar",
+  "_direct": true
+}

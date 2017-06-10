@@ -18,6 +18,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                             $rootScope.error = "";
                             $rootScope.user = JSON.parse(response.data.user);
                             $rootScope.flat = JSON.parse(response.data.flat);
+                            $rootScope.flat.chats.new = 0;
                             $rootScope.calKey = response.data.calKey;
                             console.log($rootScope.user, $rootScope.flat);
                             $rootScope.user.token = $cookies.get('token');

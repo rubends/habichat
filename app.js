@@ -1,4 +1,4 @@
-var app = angular.module('habichat', ['ngAnimate', 'ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular', 'ui.calendar']);
+var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular', 'ui.calendar']);
 
 (function() {
 
@@ -6,15 +6,30 @@ var app = angular.module('habichat', ['ngAnimate', 'ngRoute', 'ngCookies', 'ngMa
     	$locationProvider.hashPrefix('');
     	$routeProvider
 		.when("/", {
-			templateUrl : "templates/home.html"
+			templateUrl : "templates/home.html",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/login", {
 			templateUrl : "templates/login.html",
-			controller : "loginCtrl"
+			controller : "loginCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/register", {
 			templateUrl : "templates/register.html",
-			controller : "registerCtrl"
+			controller : "registerCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/dashboard", {
 			templateUrl : "templates/dashboard.html",
@@ -75,7 +90,12 @@ var app = angular.module('habichat', ['ngAnimate', 'ngRoute', 'ngCookies', 'ngMa
 			controller : "resetCtrl"
 		})
 		.otherwise({
-	        templateUrl : "templates/home.html"
+	        templateUrl : "templates/home.html",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 	    });
 
 		$mdThemingProvider.theme('default')

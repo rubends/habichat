@@ -83,8 +83,8 @@ h1, h2, h3{
 	.flatname {
 		font-size: 25px;
 		text-align: center;
-		width: 50%;
-		left: 25%;
+		width: 68%;
+    	left: 16%;
     	position: absolute;
 	}
 
@@ -130,7 +130,8 @@ h1, h2, h3{
     	border-radius: 6px;
 		border: 1px solid @warningColor;
     	color: @warningColor;
-    	background-color: rgba(255, 255, 255, 0.85)
+    	background-color: rgba(255, 255, 255, 0.85);
+		font-size: 20px;
 	}
 }
 
@@ -138,6 +139,13 @@ h1, h2, h3{
 .homepage {
 	background-size: cover;
     background-image: url('/img/intro.jpg');
+
+	.homediv {
+		background-color: rgba(255, 255, 255, 0.77);
+		box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
+		margin-top: 5%;
+		padding: 16px;
+	}
 
 	.intro {
 		text-align: center;
@@ -231,10 +239,36 @@ h1, h2, h3{
 	min-height: 100vh;
 }
 
+#notification{
+	position: absolute;
+    z-index: 20;
+    width: 50%;
+    margin-left: 25%;
+    text-align: center;
+	background-color: rgba(255, 255, 255, 0.8);
+    padding: 16px;
+    top: 49px;
+    border-radius: 5px;
+    color: @mainColor;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
 .addWidgetBtn {
 	position: fixed;
 	bottom: 24px;
 	right: 24px;
+
+	.badge1{
+		position: absolute;
+		right: 5px;
+		top: 0;
+		z-index: 25;
+		padding: 2px 8px;
+		border-radius: 15px;
+		color: white;
+		background-color: red;
+	}
 }
 
 .md-center {
@@ -247,7 +281,7 @@ h1, h2, h3{
 .widget {
 	margin: 8px;
 	height: 100%;
-	overflow: hidden;
+	overflow: hidden !important;
 	box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
 
 	.widgetHeader{
@@ -263,7 +297,7 @@ h1, h2, h3{
 	}
 
 	.widgetBody {
-		height: calc(~'100% - 35px');
+		height: 100%;
 		padding: 16px;
 	}
 	
@@ -329,6 +363,9 @@ h1, h2, h3{
 
 	/* BILL WIDGET */
 	.bill {
+		li {
+			margin-bottom: 4px;
+		}
 		.unpaidUser:hover {
 			cursor: pointer;
 			.fa {
@@ -416,9 +453,15 @@ h1, h2, h3{
 			padding: 8px;
 			text-align: center;
 			cursor: pointer;
-			margin-right: 8px;
+			margin: 8px;
 			color: @mainColor;
+			border: 1px solid @mainColor;
 			border-radius: 3px;
+		}
+
+		.typeBlock:hover {
+			color: @backgroundColor;
+			background-color: @mainColor;
 		}
 
 		.restoreTable{
@@ -452,7 +495,6 @@ h1, h2, h3{
 	.msgs {
 		padding-bottom: 8px;
     	height: 203px;
-		overflow-y: scroll;
 
 		.msg {
 			.sender{
@@ -510,4 +552,33 @@ h1, h2, h3{
     	border-top: 20px solid rgba(0, 0, 0, 0.27);
 		bottom: -21px;
 	}
+}
+
+
+/* === TRANSITIONS === */
+.showTrans {
+  	transition:0.3s linear all;
+	-moz-transition:0.3s linear all;
+ 	-o-transition:0.3s linear all;
+  	-webkit-transition:0.3s linear all;
+  	opacity:1;
+}
+.showTrans.ng-hide {
+  	opacity:0;
+}
+
+.flipTrans {
+  	transition:0.3s linear all;
+	-moz-transition:0.3s linear all;
+ 	-o-transition:0.3s linear all;
+  	-webkit-transition:0.3s linear all;
+  	height:initial;
+	padding: 16px;
+}
+.flipTrans.ng-hide {
+  	height:0;
+	padding: 0 !important;
+}
+
+@media screen and (min-width: 768px) {
 }

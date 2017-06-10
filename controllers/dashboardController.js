@@ -770,11 +770,31 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$scope.chatForm.message= '';
 				$rootScope.flat.chats.push(response.data);
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
 		});
+	}
+
+	function showNotification(element, action, user, type, title) {
+		if(element === 'item'){
+			if(action === 'add') {
+				$rootScope.flat.notification = user + " added " + type + " item '" + title + "'.";
+			} else if(action === 'edit') {
+				$rootScope.flat.notification = user + " edited " + type + " item '" + title + "'.";
+			}
+		} else if(element === 'widget'){
+			if(action === 'add') {
+				$rootScope.flat.notification = user + " added " + type + " widget '" + title + "'.";
+			} else if(action === 'edit') {
+				$rootScope.flat.notification = user + " edited " + type + " widget '" + item + "'.";
+			}
+		}
+		$audio = new Audio('/audio/pop_drip.wav');
+		$audio.play();
+		$timeout(function () { $rootScope.flat.notification = null; }, 3000);   
 	}
 
 	// GRID STACK
@@ -809,7 +829,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	var channel = pusher.subscribe('habichannel');
 	channel.bind('flat-'+$rootScope.flat.flat_token, function(data) {
 		console.log(data);
-		if(data.user != $rootScope.user.id){
+		if(data.user.id != $rootScope.user.id){
 			if(data.reason === 'place'){
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === data.widgets[widget].id) {
@@ -843,11 +863,16 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			} else if(data.reason === 'postWidget') {
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 				$rootScope.flat.widgets.push(data.widget);
+				showNotification('widget', 'add', data.user.username, data.widget.widget_type, data.widget.title);
 
 			} else if(data.reason === 'addItem') {
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
 						$rootScope.flat.widgets[widget].items.push(data.item);
+						if(!data.item.title){
+							data.item.title = data.item.item;
+						}
+						showNotification('item', 'add', data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
 						break;
 					}
 				}
@@ -934,6 +959,11 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+data.background_image+')'};
 			} else if(data.reason === 'chat') {
 				$rootScope.flat.chats.push(data.chat);
+				if(!$scope.chat){
+					$audio = new Audio('/audio/music_marimba_chord.wav');
+					$audio.play();
+					$rootScope.flat.chats.new++;
+				}
 			}
 			$scope.$apply();
 		}
@@ -975,11 +1005,10 @@ app.directive('ngEnter', function() {
 
 app.directive('scrollDown', function() {
     return function(scope, element, attrs) {
-        if(scope.$last){
-			// $timeout(function() {$('.msgs').scrollTop($('.msgs')[0].scrollHeight)}, 0, false);
-			// window.setInterval(function() {
-			// 	$('.msgs').scrollTop($('.msgs')[0].scrollHeight);
-			// }, 0);
-		}
+        // if(scope.$last){
+		// 	window.setInterval(function() {
+		// 		$('.msgs').scrollTop($('.msgs')[0].scrollHeight);
+		// 	}, 0);
+		// }
     };
 });
