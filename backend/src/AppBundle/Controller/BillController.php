@@ -46,7 +46,7 @@ class BillController extends FOSRestController
             $userInfo = ['id' => $paidUser->getId(), 'username' => $paidUser->getUsername()];
             $paidUsers[] = $userInfo;
         }
-        $data = ['user' => $user->getId(), 'reason' => 'updateItem', 'item' => ['id' => $bill->getId(), 'unpaid_users' => $unpaidUsers, 'paid_users' => $paidUsers, 'widget' => ['id' => $bill->getWidget()]]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => ['id' => $bill->getId(), 'unpaid_users' => $unpaidUsers, 'paid_users' => $paidUsers, 'widget' => ['id' => $bill->getWidget()]]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 

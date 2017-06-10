@@ -53,7 +53,7 @@ class CalenderController extends FOSRestController
         } else {
             $type = 'event';
         }
-        $data = ['user' => $user->getId(), 'reason' => 'deleteCalItem', 'item' => ['id' => $calender->getId(), 'type' => $type, 'widget' => ['id' => $calender->getWidget()]]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'deleteCalItem', 'item' => ['id' => $calender->getId(), 'type' => $type, 'widget' => ['id' => $calender->getWidget()]]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
@@ -101,7 +101,7 @@ class CalenderController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $data = ['user' => $user->getId(), 'reason' => 'updateCalItem', 'item' => ['id' => $calender->getId(), 'title' => $calender->getTitle(), 'all_day' => $calender->getAllDay(), 'url' => $request->request->get('url'), 'end' => $end->getTimestamp()*1000, 'start' => $start->getTimestamp()*1000, 'widget' => ['id' => $calender->getWidget()]]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateCalItem', 'item' => ['id' => $calender->getId(), 'title' => $calender->getTitle(), 'all_day' => $calender->getAllDay(), 'url' => $request->request->get('url'), 'end' => $end->getTimestamp()*1000, 'start' => $start->getTimestamp()*1000, 'widget' => ['id' => $calender->getWidget()]]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
