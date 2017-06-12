@@ -1,5 +1,11 @@
 <div class="weather" ng-init="getWeather(widget.id, widget.title)">
-    <p>{{weather[widget.id].weather[0].description}}</p>
-	<p>max: {{weather[widget.id].main.temp_max}}°C</p>
-	<p>min: {{weather[widget.id].main.temp_min}}°C</p>
+	<div>
+		<i ng-class="'wi wi-owm-'+weather[widget.id].weather[0].id"></i>
+    	<p>{{weather[widget.id].weather[0].description}}</p>
+	</div>
+	<div>
+		<p class="col-md-4">min: {{weather[widget.id].main.temp_min}}°C</p>
+		<p class="col-md-4">max: {{weather[widget.id].main.temp_max}}°C</p>
+		<p class="col-md-4">hum: {{weather[widget.id].main.humidity}}%</p>
+	</div>
 </div>

@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity()
@@ -15,6 +16,8 @@ class Widget
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      *
      * @var int
      */
@@ -22,6 +25,8 @@ class Widget
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
      *
      * @var string
      */
@@ -29,6 +34,8 @@ class Widget
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
      *
      * @var string
      */
@@ -37,6 +44,8 @@ class Widget
     /**
      * 
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
      *
      * @var int
      */
@@ -45,6 +54,8 @@ class Widget
     /**
      * 
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
      *
      * @var int
      */
@@ -53,6 +64,8 @@ class Widget
     /**
      * 
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
      *
      * @var int
      */
@@ -61,6 +74,8 @@ class Widget
     /**
      * 
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
      *
      * @var int
      */
@@ -69,24 +84,44 @@ class Widget
     /**
      * 
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat","Widget"})
      *
      * @var int
      */
     protected $height;
 
+    /**
+     * 
+     * @ORM\Column(type="datetime")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat","Widget"})
+     *
+     * @var datetime
+     */
+    protected $added;
+
 
     /**
      * @ORM\ManyToOne(targetEntity="Flat", inversedBy="widgets")
      * @ORM\JoinColumn(name="flat_id", referencedColumnName="id")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Widget"})
      */
     protected $flat;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="widgets")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
      */
     protected $user;
 
+    /*
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat", "Widget"})
+     */
     protected $items;
 
     /**
@@ -215,6 +250,23 @@ class Widget
     public function setHeight($height)
     {
         $this->height = $height;
+    }
+
+    /**
+     * @return datetime
+     *
+     */
+    public function getAdded()
+    {
+        return $this->added;
+    }
+
+    /**
+     * @param datetime $added
+     */
+    public function setAdded($added)
+    {
+        $this->added = $added;
     }
 
     /**

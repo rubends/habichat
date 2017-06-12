@@ -5,18 +5,18 @@
 		<div class="col-md-12">
 			<div class="widgets grid-stack" gridstack options="gridOptions" on-change="onGridChange(event,items)" on-drag-stop="onGridDragStop(event,ui)" on-resize-stop="onGridResizeStop(event,ui)">
 				<div ng-repeat="widget in flat.widgets | filter:{visible:1}" class="stackwidget" id="{{widget.id}}" gridstack-item gs-item-x="widget.x" gs-item-y="widget.y" gs-item-width="widget.width" gs-item-height="widget.height" data-gs-min-height="2" data-gs-min-width="2">
-					<div ng-style="widgetStyle" class="widget grid-stack-item-content">
+					<div ng-style="widgetStyle" class="widget grid-stack-item-content" recently-added data-added="{{widget.added}}">
 						<div class="widgetHeader" ng-style="headerStyle">
 							<h3>{{widget.title}}</h3>
 							<div class="resize" ng-if="!widget.user || widget.user.id === user.id || user.role === 'ROLE_ADMIN'">
 								<!--<i ng-if="!widget.user || widget.user.id === user.id || user.role === 'ROLE_ADMIN'" class="fa fa-times" aria-hidden="true" ng-click="deleteWidget(widget.id)" data-toggle="tooltip" title="Delete widget" onmouseenter="$(this).tooltip()"></i>-->
-								<md-tooltip>Delete widget</md-tooltip><md-icon ng-click="showDeleteDialog(ev, widget.id, widget.title)" class="icon" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_clear_24px.svg" aria-label="Delete widget"></md-icon>
+								<md-tooltip>{{'DELETE' | translate}} widget</md-tooltip><md-icon ng-click="showDeleteDialog(ev, widget.id, widget.title)" class="icon" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_clear_24px.svg" aria-label="Delete widget"></md-icon>
 							</div>
 						</div>
 						<div class="widgetBody" ng-include="'widgets/' + widget.widget_type + '.html'"></div>
 					</div>
 				</div>
-				<h2 ng-hide=" flat.widgets.length" class="text-center">There are no widgets set.</h2>
+				<h2 ng-hide=" flat.widgets.length" class="text-center">{{'NO_WIDGETS' | translate}}</h2>
 			</div>
 		</div>
 	</div>
@@ -26,7 +26,7 @@
 			<div class="msgs" scroll-down data-simplebar>
 				<div class="clearfix" ng-repeat="chat in flat.chats" id="chat{{chat.id}}" scroll-down>
 					<div class="msg" ng-class="chat.user.id == user.id ? 'pull-right text-right' : 'pull-left'">
-						<md-tooltip md-direction="left">{{chat.send | date:"MM/dd/yyyy 'at' h:mma"}}</md-tooltip>
+						<md-tooltip md-direction="left">{{chat.send | date:"HH:mm dd/MM/yy"}}</md-tooltip>
 						<p class="sender" ng-if="flat.chats[$index-1].user.id != chat.user.id">{{chat.user.username}}</p>
 						<p class="text">{{chat.text}}</p>
 					</div>
@@ -36,7 +36,7 @@
 		<div class="sendMsg">
 			<md-divider></md-divider>
 			<md-input-container md-no-float class="md-block">
-				<textarea ng-enter="sendMsg()" ng-model="chatForm.message" placeholder="Type a message..." md-select-on-focus></textarea>
+				<textarea ng-enter="sendMsg()" ng-model="chatForm.message" placeholder="{{'TYPE_MSG' | translate}}" md-select-on-focus></textarea>
 				<md-icon ng-click="sendMsg()" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_send_24px.svg"></md-icon>
 			</md-input-container>
 		</div>

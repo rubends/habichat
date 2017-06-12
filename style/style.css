@@ -93,6 +93,36 @@ h3 {
   min-height: 100vh;
   padding-bottom: 24px;
 }
+/* === LOADSCREEN === */
+#loadScreen {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: #fafafa;
+  z-index: 100;
+  padding-top: 10%;
+}
+#loadScreen md-progress-circular {
+  margin-left: auto;
+  margin-right: auto;
+}
+/* === TRANSLATE === */
+#translate {
+  position: fixed;
+  bottom: 0;
+  background-color: #2f2f2f;
+  color: #fafafa;
+  padding: 8px;
+  left: 25px;
+}
+#translate p {
+  margin-bottom: 0;
+  font-size: 0.7em;
+}
+#translate p span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
 /*  === ERROR === */
 #error {
   padding-top: 50px;
@@ -127,6 +157,7 @@ h3 {
   text-transform: uppercase;
   color: #00897b;
   font-family: 'Allerta Stencil', sans-serif;
+  font-size: 50px;
 }
 .homepage .intro img {
   width: 35%;
@@ -223,6 +254,9 @@ h3 {
   position: fixed;
 }
 /* === WIDGETS === */
+.widget.recentlyAdded {
+  border: 3px solid #d43f3a;
+}
 .widget {
   margin: 8px;
   height: 100%;
@@ -316,6 +350,16 @@ h3 {
 .widget .grocery li span:hover ~ .fa {
   color: #4cae4c;
   cursor: pointer;
+}
+.widget .weather div {
+  text-align: center;
+}
+.widget .weather div i {
+  font-size: 7em;
+}
+.widget .weather div p {
+  margin-top: 8px;
+  margin-bottom: 0;
 }
 .widget .calender .newCalItem {
   background-color: black;
@@ -462,4 +506,9 @@ h3 {
 .flipTrans.ng-hide {
   height: 0;
   padding: 0 !important;
+}
+@media screen and (max-width: 768px) {
+  #loadScreen {
+    padding-top: 20%;
+  }
 }

@@ -9,27 +9,27 @@
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Grocery'">
                     <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                    <p>Grocery</p>
+                    <p>{{'GROCERY' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Text'">
                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                    <p>Text</p>
+                    <p>{{'TEXT' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Picture'">
                     <i class="fa fa-picture-o" aria-hidden="true"></i>
-                    <p>Picture</p>
+                    <p>{{'PICTURE' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Weather'">
                     <i class="fa fa-sun-o" aria-hidden="true"></i>
-                    <p>Weather</p>
+                    <p>{{'WEATHER' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Bill'">
                     <i class="fa fa-money" aria-hidden="true"></i>
-                    <p>Expenses</p>
+                    <p>{{'EXPENSES' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Catgif'">
                     <i class="fa fa-heart" aria-hidden="true"></i>
-                    <p>Cat gif</p>
+                    <p>{{'CAT' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Poll'">
                     <i class="fa fa-question-circle" aria-hidden="true"></i>
@@ -37,20 +37,20 @@
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Calender'">
                     <i class="fa fa-calendar" aria-hidden="true"></i>
-                    <p>Calender</p>
+                    <p>{{'CALENDER' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Chore'">
                     <i class="fa fa-list-alt" aria-hidden="true"></i>
-                    <p>Chores</p>
+                    <p>{{'CHORES' | translate}}</p>
                 </div>
             </div>
             <div ng-show="ctrl.widgetForm.type">
                 <md-nav-bar nav-bar-aria-label="Add widget navbar" md-selected-nav-item="addView"  ng-init="addView = 'add'">
                     <md-nav-item md-nav-click="goto('add')" name="add">
-                        Add
+                        {{'ADD' | translate}}
                     </md-nav-item>
                     <md-nav-item md-nav-click="goto('restore')" name="restore">
-                       Restore
+                       {{'RESTORE' | translate}}
                     </md-nav-item>
                 </md-nav-bar>
                 <div ng-show="addView === 'add'" class="navView">
@@ -66,16 +66,16 @@
                             <tr ng-repeat="widget in ctrl.flat.widgets | filter:{visible:0} | filter:{widget_type:ctrl.widgetForm.type} as typeWidgets">
                                 <td><h2>{{widget.title}}</h2></td>
                                 <td><p>{{widget.items.length}} item{{widget.items.length != '1' ? 's' : ''}}</p></td>
-                                <td><md-button class="md-accent" ng-click="ctrl.deleteWidget(widget.id)">Restore</md-button></td>
+                                <td><md-button class="md-accent" ng-click="ctrl.deleteWidget(widget.id)">{{'RESTORE' | translate}}</md-button></td>
                             </tr>
                         </table>
                     </div>
                     <p ng-hide="typeWidgets.length">There are no deleted widgets of this type.</p>
-                    <md-button ng-click="ctrl.widgetForm = {}; addView = 'add'">return</md-button>
+                    <md-button ng-click="ctrl.widgetForm = {}; addView = 'add'">{{'RETURN' | translate}}</md-button>
                 </div>
             </div>
             <md-button class="md-raised" ng-click="ctrl.closeDialog()">
-                Cancel
+                {{'CANCEL' | translate}}
             </md-button>
         </div>
     </md-dialog-content>

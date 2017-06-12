@@ -1,31 +1,31 @@
 <div class="container page">
 	<div class="col-md-4 col-md-offset-4 login">
-		<h1>Reset password</h1>
+		<h1>{{'RESET' | translate}} {{'PASSWORD' | translate}}</h1>
 		<form ng-submit="resetPassForm.$valid && resetPassword()" name="resetPassForm" novalidate>
 			<md-input-container class="md-block" flex-gt-sm>
-				<label>E-mailadress</label>
+				<label>{{'EMAIL' | translate}}{{'ADRESS' | translate}}</label>
 				<input ng-model="resetPassForm.email" required>
 				<div ng-messages="resetPassForm.email.$error">
-					<div ng-message="required">An e-mailadress is required.</div>
+					<div ng-message="required">{{'EMAILREQUIRED' | translate}}</div>
 				</div>
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
-				<label>New password</label>
+				<label>{{'NEW' | translate}} {{'PASSWORD' | translate}}</label>
 				<input type="password" ng-model="resetPassForm.password" required md-minlength="5">
 				<div ng-messages="resetPassForm.password.$error">
-					<div ng-message="required">A password is required.</div>
-					<div ng-message="md-minlength">Your password must be more than 5 characters.</div>
+					<div ng-message="required">{{'PASSWORDREQUIRED' | translate}}</div>
+					<div ng-message="md-minlength">{{'PASSWORDLONGER' | translate}}</div>
 				</div>
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm ng-show="resetPassForm.password">
-				<label>Repeat new password</label>
+				<label>{{'REPEAT' | translate}}</label>
 				<input type="password" ng-model="resetPassForm.passwordRepeat" required md-minlength="5">
 				<div ng-messages="resetPassForm.passwordRepeat.$error">
-					<div ng-message="required">You have to repeat your password.</div>
-					<div ng-message="md-minlength">Your password must be more than 5 characters.</div>
+					<div ng-message="required">{{'PASSWORDREQUIRED' | translate}}</div>
+					<div ng-message="md-minlength">{{'PASSWORDLONGER' | translate}}</div>
 				</div>
 			</md-input-container>
-			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="resetPassForm.$invalid">Reset & login</md-button>
+			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="resetPassForm.$invalid">{{'RESET' | translate}} & {{'LOGIN' | translate}}</md-button>
 		</form>
 	</div>
 </div>

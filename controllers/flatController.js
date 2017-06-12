@@ -3,6 +3,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 		$location.path('/login');
 	};
 	$scope.createFlat = function(){
+		$rootScope.loadScreen = true;
         var sUrl = $rootScope.apiPath + "/flats";
         var oConfig = {
             url: sUrl,
@@ -24,6 +25,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				$rootScope.user.token = $token;
 				$scope.sendInvites();
 				$location.path('/dashboard');
+				$rootScope.loadScreen = false;
 			}
 		}, function errorCallback(response) {
 		    console.log("error on create flat");

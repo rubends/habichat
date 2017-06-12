@@ -12,7 +12,7 @@
 
 			<!-- appName -->
             <a class="navbar-brand" href="#/">
-                <img alt="Habichat" src="habichat.png">
+                <img alt="Habichat" src="img/habichat.png">
             </a>
 		</div>
 		<div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -21,11 +21,11 @@
             </div>
 			<ul class="nav navbar-nav navbar-right">
 				<li ng-show="user.loggedIn" id="dashboardLink"><a href="#dashboard"><md-tooltip>Dashboard</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_dashboard_24px.svg" aria-label="Dashboard"></md-icon></a></li>
-                <li ng-show="user.loggedIn" id="settingsLink"><a href="#settings"><md-tooltip>Settings</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_settings_24px.svg" aria-label="Settings"></md-icon> </a></li>
-                <li ng-show="user.loggedIn"><a href="#profile"><md-tooltip>Profile</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_account_circle_24px.svg" aria-label="Profile"></md-icon> </a></li>
-                <li ng-show="user.loggedIn"><a href="#logout"><md-tooltip>Log out</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_power_settings_new_24px.svg" aria-label="Logout"></md-icon> </a></li>
-                <li ng-hide="user.loggedIn"><a href="#login">Login</a></li>
-                <li ng-hide="user.loggedIn"><a href="#register">Register</a></li>
+                <li ng-show="user.loggedIn" id="settingsLink"><a href="#settings"><md-tooltip>{{'SETTINGS' | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_settings_24px.svg" aria-label="Settings"></md-icon> </a></li>
+                <li ng-show="user.loggedIn"><a href="#profile"><md-tooltip>{{'PROFILE' | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_account_circle_24px.svg" aria-label="Profile"></md-icon> </a></li>
+                <li ng-show="user.loggedIn"><a href="#logout"><md-tooltip>{{'LOGOUT' | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_power_settings_new_24px.svg" aria-label="Logout"></md-icon> </a></li>
+                <li ng-hide="user.loggedIn"><a href="#login">{{'LOGIN' | translate}}</a></li>
+                <li ng-hide="user.loggedIn"><a href="#register">{{'REGISTER' | translate}}</a></li>
             </ul>
 		</div>
 	</div>

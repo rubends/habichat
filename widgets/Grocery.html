@@ -1,5 +1,5 @@
 <div class="grocery">
-    <p ng-hide="widget.items.length">No groceries on your list</p>
+    <p ng-hide="widget.items.length">{{'NO_GROCERIES' | translate}}.</p>
     <ul>
         <li ng-repeat="grocery in widget.items">
             <i class="fa fa-shopping-basket" aria-hidden="true"></i>

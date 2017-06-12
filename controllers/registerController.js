@@ -1,5 +1,6 @@
 app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
 	$scope.registerUser = function(){
+		$rootScope.loadScreen = true;
         var sUrl = $rootScope.apiPath + "/users";
         var oConfig = {
             url: sUrl,
@@ -12,6 +13,7 @@ app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = response.data.error;
 			}
 			else{
+				console.log(response.data);
 				$rootScope.error = "";
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
@@ -22,6 +24,7 @@ app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				else{
 					$location.path('/flat');
 				}
+				$rootScope.loadScreen = false;
 			}
 		}, function errorCallback(response) {
 		    console.log("error on register");

@@ -118,6 +118,41 @@ h1, h2, h3{
 	padding-bottom: 24px;
 }
 
+/* === LOADSCREEN === */
+#loadScreen{
+	position: fixed;
+    width: 100%;
+    height: 100vh;
+    background-color: @backgroundColor;
+    z-index: 100;
+	padding-top: 10%;
+
+	md-progress-circular {
+		margin-left: auto;
+    	margin-right: auto;
+	}
+}
+
+/* === TRANSLATE === */
+#translate {
+	position: fixed;
+    bottom: 0;    
+	background-color: @darkColor;
+    color: @backgroundColor;
+    padding: 8px;
+	left: 25px;
+
+	p{
+		margin-bottom: 0;
+		font-size: 0.7em;
+
+		span:hover {
+			cursor: pointer;
+			text-decoration: underline;
+		}
+	}
+}
+
 /*  === ERROR === */
 #error {
 	padding-top: 50px;
@@ -155,6 +190,7 @@ h1, h2, h3{
    			text-transform: uppercase;
 			color: @mainColor;
 			font-family: 'Allerta Stencil', sans-serif;
+			font-size: 50px;
 		}
 
 		img {
@@ -278,6 +314,9 @@ h1, h2, h3{
 }
 
 /* === WIDGETS === */
+.widget.recentlyAdded {
+	border: 3px solid @warningColor;
+}
 .widget {
 	margin: 8px;
 	height: 100%;
@@ -391,6 +430,16 @@ h1, h2, h3{
 
 	/* WEATHER WIDGET */
 	.weather {
+		div{
+			text-align: center;
+			i{
+				font-size: 7em;
+			}
+			p {
+				margin-top: 8px;
+				margin-bottom: 0;
+			}
+		}
 	}
 
 	/* TEXT WIDGET */
@@ -580,5 +629,8 @@ h1, h2, h3{
 	padding: 0 !important;
 }
 
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 768px) {
+	#loadScreen {
+		padding-top: 20%;
+	}
 }

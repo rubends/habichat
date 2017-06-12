@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>HabiChat</title>
-    <link rel="icon" href="habichat.png">
+    <link rel="icon" href="img/habichat.png">
 	<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
@@ -15,15 +15,19 @@
     <link rel="stylesheet" href="bower_components/simplebar/dist/simplebar.css"/>
     <link href="https://fonts.googleapis.com/css?family=Allerta+Stencil" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Allerta" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="style/weather-icons.min.css" />
     <link rel="stylesheet" type="text/css" href="style/style.css" />
 </head>
 <body ng-app="habichat" ng-controller="mainCtrl" ng-init="getUser()">
 
 	<header ng-include="'fragments/header.html'"></header>
 
+    <div ng-include="'fragments/loadScreen.html'" ng-show="loadScreen"></div>
     <div ng-include="'fragments/error.html'"></div>
 
 	<ng-view></ng-view>
+
+    <div id="translate"><p><span ng-click="setLanguage('en')">EN</span> | <span ng-click="setLanguage('nl')">NL</span></p></div>
 
 	<script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
@@ -31,6 +35,8 @@
     <script src="bower_components/angular-route/angular-route.min.js"></script>
     <script src="bower_components/angular-cookies/angular-cookies.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <script src="bower_components/angular-translate/angular-translate.min.js"></script>
+    <script src="bower_components/angular-translate-loader-static-files/angular-translate-loader-static-files.min.js"></script>
     <script src="bower_components/simplebar/dist/simplebar.js"></script>
     <!--MATERIAL-->
     <script src="bower_components/angular-material/angular-material.min.js"></script>
@@ -51,6 +57,8 @@
     <!--Calender-->
     <script type="text/javascript" src="bower_components/angular-ui-calendar/src/calendar.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
+    <script type="text/javascript" src="bower_components/fullcalendar/dist/lang/en-gb.js"></script>
+    <script type="text/javascript" src="bower_components/fullcalendar/dist/lang/nl.js"></script>
     <script type="text/javascript" src="bower_components/fullcalendar/dist/gcal.js"></script>
 
     <script src="https://js.pusher.com/4.0/pusher.min.js"></script>

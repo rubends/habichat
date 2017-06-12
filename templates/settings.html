@@ -3,10 +3,10 @@
 		<div ng-init="settingsView = 'style'" class="settingsDiv">
 			<md-nav-bar nav-bar-aria-label="Settings navigation" md-selected-nav-item="settingsView">
 				<md-nav-item md-nav-click="goto('style')" name="style">
-					Style
+					{{'STYLE' | translate}}
 				</md-nav-item>
 				<md-nav-item md-nav-click="goto('flat')" name="flat">
-					Household
+					{{'HOUSEHOLD' | translate}}
 				</md-nav-item>
 			</md-nav-bar>
 			<div id="styleSettings" ng-show="settingsView === 'style'">
@@ -15,13 +15,13 @@
 					<div class="row">
 						<div class="col-md-6">
 							<div class="form-group">
-								<p>Background image</p>
+								<p>{{'BACKGROUNDIMAGE' | translate}}</p>
 								<img src="../backend/web/uploads/{{flat.flat_token + '/' + flat.background_image}}" class="previewBackgroundImg"/>
 							</div>
 						</div>
 						<div class="col-md-6">
 							<input class="ng-hide" id="backgroundImage" multiple type="file" background-change/>
-        					<label for="backgroundImage" class="md-button md-raised">Change backgroundimage</label>
+        					<label for="backgroundImage" class="md-button md-raised">{{'CHANGE' | translate}} {{'BACKGROUNDIMAGE' | translate}}</label>
 						</div>
 					</div>
 					<div class="row">
@@ -29,32 +29,33 @@
 							<p>Widget</p>
 							<div class="panel panel-default" ng-style="{'background-color': flat.widget_color, 'color': flat.font_color}">
 								<div class="panel-heading" ng-style="{'background-color': flat.header_color, 'color': flat.font_color}">
-									<h3>This is the title</h3>
+									<h3>{{'THISISTITLE' | translate}}</h3>
 									<div class="resize">
 										<i class="fa fa-times" aria-hidden="true" data-toggle="tooltip" title="Delete widget" onmouseenter="$(this).tooltip()"></i>
 									</div>
 								</div>
 								<div class="panel-body">
-									<p>This is the content</p>
+									<p>{{'THISISCONTENT' | translate}}</p>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-6">
-								<div md-color-picker ng-model="flat.widget_color" ng-change="changeFlatSettings()" label="Widget color"></div>
-								<div md-color-picker ng-model="flat.header_color" ng-change="changeFlatSettings()" label="Header color"></div>
-								<div md-color-picker ng-model="flat.font_color" ng-change="changeFlatSettings()" label="Font color"></div>
+								<div md-color-picker ng-model="flat.widget_color" ng-change="changeFlatSettings()" label="Widget {{'COLOR' | translate}}"></div>
+								<div md-color-picker ng-model="flat.header_color" ng-change="changeFlatSettings()" label="Header {{'COLOR' | translate}}"></div>
+								<div md-color-picker ng-model="flat.font_color" ng-change="changeFlatSettings()" label="Font {{'COLOR' | translate}}"></div>
 						</div>
 					</div>
 				</form>
 			</div>
 			<div id="userSettings" ng-show="settingsView === 'flat'">
 				<!--<h1>Flat</h1>-->
-				<table class="table table-hover">
+				<p ng-hide="flat.users.length > 1">{{'NOROOMIES' | translate}}</p>
+				<table class="table table-hover" ng-show="flat.users.length > 1">
 					<thead>
 						<tr>
-							<th>Name</th>
-							<th>Email</th>
-							<th ng-if="user.role === 'ROLE_ADMIN'">Admin actions</th>
+							<th>{{'NAME' | translate}}</th>
+							<th>{{'EMAIL' | translate}}</th>
+							<th ng-if="user.role === 'ROLE_ADMIN'">Admin {{'ACTIONS' | translate}}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -63,10 +64,10 @@
 							<td>{{flatmate.email}}</td>
 							<td ng-if="user.role === 'ROLE_ADMIN'">
 								<div ng-click="toggleUserRole(flatmate.id)">
-									<md-tooltip>{{flatmate.role === 'ROLE_ADMIN' ? 'Make user' : 'Make admin'}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_supervisor_account_24px.svg" aria-label="Change user"></md-icon>
+									<md-tooltip>{{(flatmate.role === 'ROLE_ADMIN' ? 'MAKE_USER' : 'MAKE_ADMIN') | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_supervisor_account_24px.svg" aria-label="Change user"></md-icon>
 								</div>
 								<div ng-click="moveOutFlat(flatmate.id)">
-									<md-tooltip>Delete from this household</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_delete_24px.svg" aria-label="Delete"></md-icon>
+									<md-tooltip>{{'DELETEROOMIE' | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_delete_24px.svg" aria-label="Delete"></md-icon>
 								</div>
 							</td>
 						</tr>
@@ -75,51 +76,51 @@
 				<div class="row">
 					<div class="col-md-6" ng-init="inviteList.invites = [{email: ''}]">
 						<md-input-container class="md-block" flex-gt-sm ng-repeat="invite in inviteList.invites">
-							<label>Invite your roommates</label>
+							<label>{{'INVITEROOMIES' | translate}}</label>
 							<input type="email" ng-model="invite.email">
 						</md-input-container>
 						<md-button class="md-raised" ng-click="inviteList.invites.push({email: ''})">+</md-button>
 					</div>
 					<div class="col-md-6">
-						<md-button class="md-raised md-primary" ng-click="sendInvites()">Send invites</md-button>
+						<md-button class="md-raised md-primary" ng-click="sendInvites()">{{'SENDINVITES' | translate}}</md-button>
 					</div>
 				</div>
 				<div ng-if="user.role === 'ROLE_ADMIN'">
-					<h1>Admin settings</h1>
+					<h1>Admin {{'SETTINGS' | translate}}</h1>
 					<div class="row">
 						<div class="col-md-6">
 							<md-input-container class="md-block" flex-gt-sm>
-								<label>Street</label>
+								<label>{{'STREET' | translate}}</label>
 								<input ng-model="flat.street">
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
-								<label>Nummber</label>
+								<label>{{'NUMBER' | translate}}</label>
 								<input ng-model="flat.number">
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
-								<label>Zipcode</label>
+								<label>{{'ZIPCODE' | translate}}</label>
 								<input ng-model="flat.zipcode">
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
-								<label>City</label>
+								<label>{{'CITY' | translate}}</label>
 								<input ng-model="flat.city">
 							</md-input-container>
 							<md-input-container class="md-block" flex-gt-sm>
-								<label>Country</label>
+								<label>{{'COUNTRY' | translate}}</label>
 								<input ng-model="flat.country">
 							</md-input-container>
 						</div>
 						<div class="col-md-6">
 							<md-input-container class="md-block" flex-gt-sm>
-								<label>Household name</label>
+								<label>{{'HOUSHOLD' | translate}} {{'NAME' | translate}}</label>
 								<input ng-model="flat.name">
 							</md-input-container>
-							<md-button class="md-raised md-primary" ng-click="changeFlatSettings()">Save household</md-button>
+							<md-button class="md-raised md-primary" ng-click="changeFlatSettings()">{{'SAVE' | translate}}</md-button>
 						</div>
 					</div>
 				</div>
-				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">Move out of this household</md-button>
-				<md-button ng-if="user.role === 'ROLE_ADMIN'" class="md-raised md-warn moveBtn" ng-click="deleteFlat(flat.id)">Delete this flat</md-button>
+				<md-button class="md-raised moveBtn" ng-click="moveOutFlat(user.id)">{{'MOVE_OUT' | translate}}</md-button>
+				<md-button ng-if="user.role === 'ROLE_ADMIN'" class="md-raised md-warn moveBtn" ng-click="deleteFlat(flat.id)">{{'DELETEFLAT' | translate}}</md-button>
 			</div>
 		</div>
 	</div>

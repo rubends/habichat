@@ -30,9 +30,9 @@ class Bill
 
     /**
      * 
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="float")
      *
-     * @var int
+     * @var float
      */
     protected $amount;
 
@@ -105,7 +105,7 @@ class Bill
     }
 
     /**
-     * @return int
+     * @return float
      *
      */
     public function getAmount()
@@ -114,7 +114,7 @@ class Bill
     }
 
     /**
-     * @param int $amount
+     * @param float $amount
      */
     public function setAmount($amount)
     {

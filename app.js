@@ -1,35 +1,20 @@
-var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular', 'ui.calendar']);
+var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdColorPicker', 'mdPickers', 'gridstack-angular', 'ui.calendar', 'pascalprecht.translate']);
 
 (function() {
 
-    app.config(function($routeProvider, $locationProvider, $mdThemingProvider) {
+    app.config(function($routeProvider, $locationProvider, $mdThemingProvider, $translateProvider) {
     	$locationProvider.hashPrefix('');
     	$routeProvider
 		.when("/", {
-			templateUrl : "templates/home.html",
-			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
-                }]
-            }
+			templateUrl : "templates/home.html"
 		})
 		.when("/login", {
 			templateUrl : "templates/login.html",
-			controller : "loginCtrl",
-			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
-                }]
-            }
+			controller : "loginCtrl"
 		})
 		.when("/register", {
 			templateUrl : "templates/register.html",
-			controller : "registerCtrl",
-			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
-                }]
-            }
+			controller : "registerCtrl"
 		})
 		.when("/dashboard", {
 			templateUrl : "templates/dashboard.html",
@@ -104,10 +89,27 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 			.warnPalette('red')
 			.backgroundPalette('grey', {'default': '50'});
 
+		$translateProvider.useStaticFilesLoader({   
+			prefix: '/translations/',             
+			suffix: '.json'                           
+		});                                         
+		$translateProvider.preferredLanguage(localStorage.language ? localStorage.language : 'en');
+
 	});
 
-    app.controller("mainCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
+    app.controller("mainCtrl", ['$rootScope', '$route', '$translate' , function($rootScope, $route, $translate){
  		$rootScope.apiPath = "../backend/web/api";
+
+		 var supportedLangs = ['nl', 'en', 'fr'];
+		if(! localStorage.language) localStorage.language = 'en';
+		$rootScope.setLanguage = function(lang) {
+			if(supportedLangs.indexOf(lang) > -1) {
+				localStorage.language = lang;
+				$rootScope.language = lang;
+				$translate.use(lang);
+				$route.reload();
+			}
+		}
 		 
 		$(document).on("click", ".navbar a", function() {
 			$(".nav").find(".activePage").removeClass("activePage");

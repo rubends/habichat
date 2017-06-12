@@ -45,6 +45,9 @@ class FlatController extends FOSRestController
         $flat->setCountry($data['country']);
         // DEFAULT
         $flat->setBackgroundImage('background.jpg?v='.time());
+        $flat->setWidgetColor('#2f2f2f');
+        $flat->setHeaderColor('#00897b');
+        $flat->setFontColor('#fafafa');
 
         $this->getDoctrine()->getManager()->persist($flat);
         $key = md5(uniqid($flat->getId(), true));
@@ -112,7 +115,7 @@ class FlatController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $data = ['user' => $user->getId(), 'reason' => 'flatUpdate', 'flat' => ['widget_color' => $flat->getWidgetColor(), 'header_color' => $flat->getHeaderColor(), 'font_color' => $flat->getFontColor(), 'street' => $flat->getStreet(), 'number' => $flat->getNumber(), 'zipcode' => $flat->getZipcode(), 'city' => $flat->getCity(), 'country' => $flat->getCountry(), 'name' => $flat->getName()]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'flatUpdate', 'flat' => ['widget_color' => $flat->getWidgetColor(), 'header_color' => $flat->getHeaderColor(), 'font_color' => $flat->getFontColor(), 'street' => $flat->getStreet(), 'number' => $flat->getNumber(), 'zipcode' => $flat->getZipcode(), 'city' => $flat->getCity(), 'country' => $flat->getCountry(), 'name' => $flat->getName()]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
@@ -142,7 +145,7 @@ class FlatController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $data = ['user' => $user->getId(), 'reason' => 'backgroundUpdate', 'background_image' => $flat->getBackgroundImage()];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'backgroundUpdate', 'background_image' => $flat->getBackgroundImage()];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 

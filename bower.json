@@ -39,5 +39,8 @@
     "angular": "^1.6.0",
     "jquery": ">=1.4.2 <4",
     "angular-material": "^1.1.4"
+  },
+  "devDependencies": {
+    "angular-translate": "^2.15.1"
   }
 }

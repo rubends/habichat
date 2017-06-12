@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Gegenereerd op: 09 jun 2017 om 15:30
+-- Gegenereerd op: 11 jun 2017 om 14:13
 -- Serverversie: 10.1.13-MariaDB
 -- PHP-versie: 7.0.6
 
@@ -249,7 +249,8 @@ CREATE TABLE `user` (
   `username` varchar(40) COLLATE utf8_unicode_ci NOT NULL,
   `role` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `flat_id` int(11) DEFAULT NULL,
-  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL
+  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `last_login` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -268,7 +269,8 @@ CREATE TABLE `widget` (
   `x` int(11) NOT NULL,
   `y` int(11) NOT NULL,
   `width` int(11) NOT NULL,
-  `height` int(11) NOT NULL
+  `height` int(11) NOT NULL,
+  `added` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
@@ -408,7 +410,7 @@ ALTER TABLE `widget`
 -- AUTO_INCREMENT voor een tabel `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT voor een tabel `calender`
 --
@@ -418,7 +420,7 @@ ALTER TABLE `calender`
 -- AUTO_INCREMENT voor een tabel `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT voor een tabel `chore`
 --
@@ -433,7 +435,7 @@ ALTER TABLE `flat`
 -- AUTO_INCREMENT voor een tabel `grocery`
 --
 ALTER TABLE `grocery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT voor een tabel `invite`
 --
@@ -478,7 +480,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT voor een tabel `widget`
 --
 ALTER TABLE `widget`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=194;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
 --
 -- Beperkingen voor geëxporteerde tabellen
 --

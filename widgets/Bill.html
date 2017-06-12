@@ -1,17 +1,20 @@
 <div class="bill">
     <p>{{widget.items[0].summary}}</p>
-    <p>Total: {{widget.items[0].amount}}€</p>
+    <p>{{'TOTAL' | translate}}: {{widget.items[0].amount | currency:"€"}}</p>
     <hr>
     <div ng-show="widget.items[0].unpaid_users.length">
-        <p>Still have to pay:</p>
+        <p>{{'STILL_PAY' | translate}}:</p>
         <ul>
-            <li ng-repeat="unpaidUser in widget.items[0].unpaid_users" class="unpaidUser" ng-click="billPaid(widget.id, widget.items[0].id, unpaidUser.id)"><i class="fa fa-credit-card" aria-hidden="true"></i> {{unpaidUser.username}} <span class="pull-right">{{widget.items[0].amount / widget.items[0].unpaid_users.length}}€</span></li>
+            <li ng-repeat="unpaidUser in widget.items[0].unpaid_users" class="unpaidUser" ng-click="billPaid(widget.id, widget.items[0].id, unpaidUser.id)">
+                <i class="fa fa-credit-card" aria-hidden="true"></i> {{unpaidUser.username}} 
+                <span class="pull-right">{{(widget.items[0].amount / widget.items[0].unpaid_users.length) | currency:"€"}}</span>
+            </li>
         </ul>
         <p>{{widget.items[0].account}}</p>
     </div>
-    <p ng-hide="widget.items[0].unpaid_users.length && !widget.items[0].paid_users.length"><strong>Everybody has paid!</strong></p>
+    <p ng-hide="widget.items[0].unpaid_users.length && !widget.items[0].paid_users.length"><strong>{{'EVERYBODY_PAID' | translate}}!</strong></p>
     <div class="done" ng-show="widget.items[0].paid_users.length">
-        <p>Already paid:</p>
+        <p>{{'ALREADY_PAID' | translate}}:</p>
         <ul>
             <li ng-repeat="paidUser in widget.items[0].paid_users" class="paidUser"<i class="fa fa-credit-card" aria-hidden="true"></i>{{paidUser.username}}</li>
         </ul>

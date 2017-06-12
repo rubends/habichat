@@ -78,6 +78,7 @@ class WidgetController extends FOSRestController
         $widget->setY(0);
         $widget->setWidth(2);
         $widget->setHeight(4);
+        $widget->setAdded(new \DateTime('now'));
         $widget->setItems([]);
 
         $this->getDoctrine()->getManager()->persist($widget);
@@ -97,7 +98,7 @@ class WidgetController extends FOSRestController
         $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'postWidget', 'widget' => ['id' => $widget->getId(), 'widget_type' => $request->request->get('type'), 'title' => $request->request->get('title'),'visible' => 1,'user' => ['id' => $user->getId(), 'username' => $user->getUsername()],'flat' => ['id' => $flat->getId()], 'x' => 0, 'y' => 0, 'width' => 2, 'height' => 4, 'items' => []]];
         // $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'postWidget', 'widget' => $this->container->get('serializer')->serialize($widget, 'json')];
         $pusher = $this->get('pusher');
-        $pusher->trigger('flat-'.$flat->getId(), $data);
+        $pusher->trigger('flat-'.$flat->getFlatToken(), $data);
         return $widget;
     }
 
@@ -127,6 +128,7 @@ class WidgetController extends FOSRestController
 
         if ($visible==0) {
             $widget->setVisible(1);
+            $widget->setAdded(new \DateTime('now'));
             $updateVis = 1;
             $type = $widget->getWidgetType();
             if(class_exists('\\AppBundle\\Entity\\'.$type)) {
@@ -444,7 +446,7 @@ class WidgetController extends FOSRestController
         $userLoggedin = $this->get('security.token_storage')->getToken()->getUser();
         $data = ['user' => ['id' => $userLoggedin->getId(), 'username' => $userLoggedin->getUsername()], 'reason' => 'addItem', 'item' => ['id' => $chore->getId(), 'title' => $request->request->get('title'), 'occurance' => $request->request->get('occurance'), 'last' => $lastDate->getTimestamp()*1000, 'user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'widget' => ['id' => $widget->getId()]]];
         $pusher = $this->get('pusher');
-        $pusher->trigger('flat-'.$userLoggedin->getFlat()->getId(), $data);
+        $pusher->trigger('flat-'.$userLoggedin->getFlat()->getFlatToken(), $data);
 
         return $chore;
     }

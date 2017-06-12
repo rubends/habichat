@@ -1,24 +1,24 @@
-<p>Add a poll</p>
+<p>{{'ADD' | translate}} {{'A' | translate}} poll</p>
 <md-input-container class="md-block" flex-gt-sm>
-    <label>Title</label>
+    <label>{{'TITLE' | translate}}</label>
     <input ng-model="ctrl.widgetForm.title">
 </md-input-container>
 <md-input-container class="md-block" flex-gt-sm>
-    <label>Question</label>
+    <label>{{'QUESTION' | translate}}</label>
     <textarea ng-model="ctrl.addPollForm.question"></textarea>
 </md-input-container>
-<p>Voting ends on</p>
+<p>{{'VOTING_ENDS' | translate}}</p>
 <div layout-gt-xs="row">
     <mdp-time-picker mdp-placeholder="Time" ng-model="ctrl.addPollForm.until.time"></mdp-time-picker>
     <mdp-date-picker mdp-placeholder="Date" ng-model="ctrl.addPollForm.until.date"></mdp-date-picker>
 </div>
 <md-checkbox ng-model="ctrl.addPollForm.multiple" aria-label="pollMultipleVotes">
-    Allow multiple votes
+    {{'ALLOW_MULTIPLE' | translate}}
 </md-checkbox>
 <div ng-init="ctrl.addPollForm.options = [{name: ''}, {name: ''}]">
     <div ng-repeat="option in ctrl.addPollForm.options">
         <md-input-container class="md-block" flex-gt-sm>
-            <label>Poll option</label>
+            <label>Poll {{'OPTION' | translate}}</label>
             <input ng-model="option.name">
         </md-input-container>
     </div>

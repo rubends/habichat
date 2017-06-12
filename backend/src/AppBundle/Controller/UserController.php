@@ -36,6 +36,9 @@ class UserController extends FOSRestController
         }
 
         $serialiseUser = $this->container->get('jms_serializer')->serialize($user, 'json', SerializationContext::create()->setGroups(array('Default', 'User')));
+        $user->setLastLogin(new \DateTime('now'));
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
         $serialiseFlat = $this->container->get('jms_serializer')->serialize($flat, 'json', SerializationContext::create()->setGroups(array('Default', 'Flat')));
         $calKey =  $this->getParameter('google_cal_key');
         return ['user' => $serialiseUser, 'flat' => $serialiseFlat, 'calKey' => $calKey];
@@ -84,6 +87,7 @@ class UserController extends FOSRestController
                 $user->setEmail($data['email']);
                 $user->setUsername($data['username']);
                 $user->setRole("ROLE_USER");
+                $user->setLastLogin(new \DateTime('now'));
 
                 $encoder = $this->container->get('security.password_encoder');
                 $encoded = $encoder->encodePassword($user, $data['password']);

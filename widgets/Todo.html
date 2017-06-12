@@ -1,5 +1,5 @@
 <div class="todo">
-    <p ng-hide="widget.items.length">You have no todo's</p>
+    <p ng-hide="widget.items.length">{{'NO_TODO' | translate}}</p>
     <ul>
         <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone">
             <div ng-click="toggleTodoDone(widget.id, item.id)">
@@ -10,7 +10,7 @@
             <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i>
         </li>
     </ul>
-    <p ng-show="widget.items.length && !notDone.length">Congrats, you have done everything!</p>
+    <p ng-show="widget.items.length && !notDone.length">{{'ALL_TODO' | translate}}!</p>
     <form ng-submit="postTodo(widget.id, todoForm.title); todoForm.title = ''">
         <div class="input-group">
             <input ng-style="inputTextStyle" type="text" ng-model="todoForm.title" id="addTodo" name="todo" class="form-control" placeholder="Add a todo">
@@ -20,7 +20,7 @@
         </div>
     </form> 
     <div class="done" ng-show="widget.items.length">
-        <p>done</p>
+        <p>{{'DONE' | translate}}</p>
         <ul>
             <li ng-repeat="item in widget.items | filter: {done: '1'} as dones">
                 <div ng-click="toggleTodoDone(widget.id, item.id)">
@@ -30,7 +30,7 @@
                 </div>
                 <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i></li>
         </ul>
-        <p ng-show="!dones.length">You haven't done anything!</p>
+        <p ng-show="!dones.length">{{'NONE_TODO' | translate}}!</p>
     </div>
 </div>
 </div>

@@ -74,7 +74,7 @@ class PollController extends FOSRestController
             $optionArray[] = ['id' => $option->getId(), 'name' => $option->getName(), 'voters' => $voters];
         }
 
-        $data = ['user' => $user->getId(), 'reason' => 'updateItem', 'item' => ['id' => $poll->getId(), 'options' => $optionArray, 'widget' => ['id' => $poll->getWidget()]]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => ['id' => $poll->getId(), 'options' => $optionArray, 'widget' => ['id' => $poll->getWidget()]]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 

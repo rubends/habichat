@@ -1,23 +1,29 @@
-<p>Add your expenses</p>
+<p>{{'ADD' | translate}} {{'YOUR' | translate}} {{'EXPENSES' | translate}}</p>
 <md-input-container class="md-block" flex-gt-sm>
-    <label>Title</label>
+    <label>{{'TITLE' | translate}}</label>
     <input ng-model="ctrl.widgetForm.title">
 </md-input-container>
 <md-input-container class="md-block" flex-gt-sm>
-    <label>Summary</label>
+    <label>{{'SUMMARY' | translate}}</label>
     <textarea ng-model="ctrl.addBillForm.summary"></textarea>
 </md-input-container>
 <md-input-container class="md-block" flex-gt-sm>
-    <label>Amount (in €)</label>
-    <input type="number" ng-model="ctrl.addBillForm.amount">
+    <label>{{'AMOUNT' | translate}}</label>
+    <input type="number" step="0.01" ng-model="ctrl.addBillForm.amount">
 </md-input-container>
 <md-input-container class="md-block" flex-gt-sm>
-    <label>Bankaccount</label>
+    <label>{{'BANKACCOUNT' | translate}}</label>
     <input ng-model="ctrl.addBillForm.account">
 </md-input-container>
-<p>Split between</p>
-<md-input-container class="md-block" flex-gt-sm ng-repeat="flatmate in ctrl.flat.users | filter: {id: '!' + ctrl.user.id}">
-    <md-checkbox ng-model="ctrl.addBillForm.users[flatmate.id]" aria-label="pollMultipleVotes" ng-value="flatmate.id">
-        {{flatmate.username}}
-    </md-checkbox>
-</md-input-container>
+<p>{{'SPLIT' | translate}}</p>
+<div layout-gt-xs="row" ng-repeat="flatmate in ctrl.flat.users | filter: {id: '!' + ctrl.user.id}">
+    <md-input-container class="md-block" flex-gt-sm>
+        <md-checkbox ng-model="ctrl.addBillForm.users[flatmate.id]" aria-label="pollMultipleVotes" ng-value="flatmate.id">
+            {{flatmate.username}}
+        </md-checkbox>
+    </md-input-container>
+    <!--<md-input-container class="md-block" flex-gt-sm>
+        <label>ows (in €)</label>
+        <input type="number" ng-value="ctrl.addBillForm.amount / ctrl.addBillForm.users.length">
+    </md-input-container>-->
+</div>

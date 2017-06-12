@@ -40,6 +40,13 @@ class User implements UserInterface
     protected $username;
 
     /**
+     * @ORM\Column(type="datetime")
+     * @Serializer\Expose
+     * @Serializer\Groups({"User"})
+     */
+    protected $lastLogin;
+
+    /**
      * @ORM\Column(type="string", length=50)
      * @Serializer\Expose
      * @Serializer\Groups({"User", "Flat"})
@@ -169,6 +176,23 @@ class User implements UserInterface
     public function setEmail($email)
     {
         $this->email = $email;
+    }
+
+    /**
+     * @return datetime
+     *
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * @param datetime $lastLogin
+     */
+    public function setLastLogin($lastLogin)
+    {
+        $this->lastLogin = $lastLogin;
     }
 
     /**

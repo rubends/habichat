@@ -22,7 +22,6 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			}
 			else{
 				$rootScope.error = "";
-				$rootScope.flat = response.data;
 			}
 		}, function errorCallback(response) {
 		    console.log(response);

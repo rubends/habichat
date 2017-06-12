@@ -1,35 +1,35 @@
 <div class="container page">
 	<div class="col-md-4 col-md-offset-4 login">
 		<form ng-submit="loginForm.$valid && loginUser()" name="loginForm" novalidate ng-hide="reset">
-			<h1>Login</h1>
+			<h1>{{'LOGIN' | translate}}</h1>
 			<md-input-container class="md-block" flex-gt-sm>
-				<label>E-mailadress</label>
+				<label>{{'EMAIL' | translate}}{{'ADRESS' | translate}}</label>
 				<input type="email" ng-model="userLogin.email" required>
 				<div ng-messages="userLogin.email.$error">
-					<div ng-message="required">Your e-mailadress is required.</div>
+					<div ng-message="required">{{'EMAILREQUIRED' | translate}}</div>
 				</div>
 			</md-input-container>
 			<md-input-container class="md-block" flex-gt-sm>
-				<label>Password</label>
+				<label>{{'PASSWORD' | translate}}</label>
 				<input type="password" ng-model="userLogin.password" required>
 				<div ng-messages="userLogin.password.$error">
-					<div ng-message="required">Your password is required.</div>
+					<div ng-message="required">{{'PASSWORDREQUIRED' | translate}}</div>
 				</div>
 			</md-input-container>
-			<a ng-click="reset = true">Forgot my password</a>
-			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="loginForm.$invalid">Login</md-button>
+			<a ng-click="reset = true">{{'FORGOTPASSWORD' | translate}}</a>
+			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="loginForm.$invalid">{{'LOGIN' | translate}}</md-button>
 		</form>
 		<form ng-submit="resetForm.$valid && resetPassword()" name="resetForm" novalidate ng-show="reset">
-			<h1>Password reset</h1>
+			<h1>{{'PASSWORD' | translate}} {{'RESET' | translate}}</h1>
 			<md-input-container class="md-block" flex-gt-sm>
-				<label>E-mailadress</label>
+				<label>{{'EMAIL' | translate}}{{'ADRESS' | translate}}</label>
 				<input type="email" ng-model="resetForm.email" required>
 				<div ng-messages="resetForm.email.$error">
-					<div ng-message="required">Your e-mailadress is required.</div>
+					<div ng-message="required">{{'EMAILREQUIRED' | translate}}</div>
 				</div>
 			</md-input-container>
-			<a ng-click="reset = false">cancel</a>
-			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="resetForm.$invalid">Send password reset link</md-button>
+			<a ng-click="reset = false">{{'CANCEL' | translate}}</a>
+			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="resetForm.$invalid">{{'RESETLINK' | translate}}</md-button>
 		</form>
 	</div>
 </div>

@@ -159,6 +159,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 
 	 $scope.uiConfig = {
       calendar:{
+		locale: localStorage.language,
+		lang: localStorage.language,
         height: "auto",
         editable: true,
 		timeFormat: 'H(:mm)',
@@ -539,7 +541,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	}
 
 	$scope.getWeather = function ($id, $title) {
-		var sUrl = "http://api.openweathermap.org/data/2.5/weather?q="+$title+"&units=metric&appid=ad5bf1181d1ab5166d19757241c1511e";
+		var sUrl = "http://api.openweathermap.org/data/2.5/weather?q="+$title+"&units=metric&appid=ad5bf1181d1ab5166d19757241c1511e&lang="+localStorage.language;
 		var oConfig = {
 			url: sUrl,
 			method: "GET"
@@ -568,7 +570,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$rootScope.error = "";
-				$scope.addBillForm = [];
+				$scope.addBillForm = {};
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
@@ -621,7 +623,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$rootScope.error = "";
-				$scope.addPollForm = [];
+				$scope.addPollForm = {};
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
@@ -778,7 +780,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		});
 	}
 
-	function showNotification(element, action, user, type, title) {
+	function showNotification(element, action, id, user, type, title) {
 		if(element === 'item'){
 			if(action === 'add') {
 				$rootScope.flat.notification = user + " added " + type + " item '" + title + "'.";
@@ -792,9 +794,10 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.flat.notification = user + " edited " + type + " widget '" + item + "'.";
 			}
 		}
+		$('#'+id+" .widget").addClass("recentlyAdded");
 		$audio = new Audio('/audio/pop_drip.wav');
 		$audio.play();
-		$timeout(function () { $rootScope.flat.notification = null; }, 3000);   
+		$timeout(function () { $rootScope.flat.notification = null; $(".recentlyAdded").removeClass("recentlyAdded"); }, 4000);   
 	}
 
 	// GRID STACK
@@ -863,7 +866,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			} else if(data.reason === 'postWidget') {
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 				$rootScope.flat.widgets.push(data.widget);
-				showNotification('widget', 'add', data.user.username, data.widget.widget_type, data.widget.title);
+				showNotification('widget', 'add', data.widget.id, data.user.username, data.widget.widget_type, data.widget.title);
 
 			} else if(data.reason === 'addItem') {
 				for(widget in $rootScope.flat.widgets){
@@ -872,7 +875,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						if(!data.item.title){
 							data.item.title = data.item.item;
 						}
-						showNotification('item', 'add', data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
+						showNotification('item', 'add', data.item.widget.id, data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
 						break;
 					}
 				}
@@ -1012,3 +1015,12 @@ app.directive('scrollDown', function() {
 		// }
     };
 });
+
+app.directive('recentlyAdded', ['$rootScope', '$timeout', function($rootScope, $timeout) {
+    return function(scope, element, attrs) {
+		if(moment(attrs.added).isAfter($rootScope.user.last_login)){
+			element.addClass("recentlyAdded");
+		}
+		$timeout(function () { $('.recentlyAdded').css("border", "none") }, 4000);  
+    };
+}]);
