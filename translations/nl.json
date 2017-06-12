@@ -3,7 +3,7 @@
     "SETTINGS": "Instellingen",
     "PROFILE": "Profiel",
     "LOGOUT": "Afmelden",
-    "LOGIN": "Aanmelder",
+    "LOGIN": "Aanmelden",
     "REGISTER": "Registreren",
     "CANCEL": "Annuleren",
     "STYLE": "Stijl",
@@ -76,7 +76,7 @@
      "CAT": "Kattenfilmpje",
      "CALENDER": "Agenda",
      "CHORES": "Klusjes",
-     "CHORE": "klushe",
+     "CHORE": "klusjes",
      "LIST": "lijst",
      "ADD": "Toevoegen",
      "RESTORE": "Herstellen",
@@ -110,7 +110,7 @@
      "LOCATION": "Locatie",
      "TOTAL": "Totaal",
      "STILL_PAY": "Moeten nog betalen",
-     "ALREADY_PAID": "Hebben al betaald",
+     "ALREADY_PAID": "Al betaald",
      "EVERYBODY_PAID": "Iedereen heeft betaald",
      "NO_GROCERIES": "Geen boodschappen op uw lijstje",
      "VOTING_HAS_ENDED": "Het stemmen is geëindigd op",
@@ -119,5 +119,10 @@
      "NO_TODO": "Je hebt geen todos",
      "ALL_TODO": "Proficiat, je hebt alles gedaan",
      "NONE_TODO": "Er is nog niets gebeurd",
-     "DONE": "Gedaan"
+     "DONE": "Gedaan",
+     "CLOSE": "Sluiten",
+     "NO_DELETED_WIDGETS": "Er zijn geen verwijderde widgets van dit type",
+     "ITEM": "item",
+     "ITEMS": "items",
+     "ADD_IMAGE": "Afbeelding kiezen"
 }

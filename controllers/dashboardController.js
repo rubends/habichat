@@ -247,7 +247,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
    		});
 	};
 
-
 	$scope.addWidget = function(){
         var sUrl = $rootScope.apiPath + "/widgets";
         var oConfig = {
@@ -759,25 +758,29 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	}
 
 	$scope.sendMsg = function (){
-		var sUrl = $rootScope.apiPath + "/chats/"+$rootScope.user.id+"/messages";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-			data: $scope.chatForm,
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$scope.chatForm.message= '';
-				$rootScope.flat.chats.push(response.data);
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
+		if($scope.chatForm.message){
+			$scope.chat = angular.copy($scope.chatForm);
+			$scope.chatForm.message= '';
+			var sUrl = $rootScope.apiPath + "/chats/"+$rootScope.user.id+"/messages";
+			var oConfig = {
+				url: sUrl,
+				method: "POST",
+				data: $scope.chat,
+				headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+				params: {callback: "JSON_CALLBACK"}
+			};
+			$http(oConfig).then(function successCallback(response) {
+				if (response.data.hasOwnProperty('error')){
+					$rootScope.error = response.data.error;
+				}
+				else{
+					$rootScope.flat.chats.push(response.data);
+					$scope.scrollChat();
+				}
+			}, function errorCallback(response) {
+				console.log(response);
+			});
+		}
 	}
 
 	function showNotification(element, action, id, user, type, title) {
@@ -798,6 +801,12 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$audio = new Audio('/audio/pop_drip.wav');
 		$audio.play();
 		$timeout(function () { $rootScope.flat.notification = null; $(".recentlyAdded").removeClass("recentlyAdded"); }, 4000);   
+	}
+
+	$scope.scrollChat = function() {
+		$timeout(function() {
+				$('.msgs .simplebar-scroll-content').scrollTop($('.msgs .simplebar-scroll-content')[0].scrollHeight);
+		});
 	}
 
 	// GRID STACK
@@ -961,6 +970,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.flat.background_image = data.background_image;
 				$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+data.background_image+')'};
 			} else if(data.reason === 'chat') {
+				$scope.scrollChat();
+				data.chat.send = moment(data.chat.send).format('HH:mm DD/MM/YY');
 				$rootScope.flat.chats.push(data.chat);
 				if(!$scope.chat){
 					$audio = new Audio('/audio/music_marimba_chord.wav');
@@ -1006,16 +1017,6 @@ app.directive('ngEnter', function() {
     };
 });
 
-app.directive('scrollDown', function() {
-    return function(scope, element, attrs) {
-        // if(scope.$last){
-		// 	window.setInterval(function() {
-		// 		$('.msgs').scrollTop($('.msgs')[0].scrollHeight);
-		// 	}, 0);
-		// }
-    };
-});
-
 app.directive('recentlyAdded', ['$rootScope', '$timeout', function($rootScope, $timeout) {
     return function(scope, element, attrs) {
 		if(moment(attrs.added).isAfter($rootScope.user.last_login)){
@@ -1023,4 +1024,20 @@ app.directive('recentlyAdded', ['$rootScope', '$timeout', function($rootScope, $
 		}
 		$timeout(function () { $('.recentlyAdded').css("border", "none") }, 4000);  
     };
+}]);
+
+app.directive('imagePreview', ['$rootScope', function ($rootScope) {
+    return {
+        link: function (scope, element, attrs) {
+            element.on('change', function  (evt) {
+                var file = evt.target.files[0];
+				var reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = function () {
+					var img = reader.result.replace(/^data:image\/[a-z]+;base64,/, '');
+					$("#imgPreview").attr({src: reader.result});
+				}
+            });
+        }
+    }
 }]);

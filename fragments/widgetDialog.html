@@ -1,46 +1,46 @@
 <md-dialog aria-label="Widget dialog" id="widgetDialog" class="addDialog">
-    <md-dialog-content>
+    <md-dialog-content data-simplebar>
         <div class="widgetBlock">
             <h1>Widgets</h1>
             <div ng-hide="ctrl.widgetForm.type">
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Todo'">
-                    <i class="fa fa-list" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_list_24px.svg" aria-label="todo"></md-icon>
                     <p>Todo</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Grocery'">
-                    <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/maps/svg/design/ic_local_grocery_store_24px.svg" aria-label="grocery"></md-icon>
                     <p>{{'GROCERY' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Text'">
-                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/editor/svg/design/ic_format_align_left_24px.svg" aria-label="text"></md-icon>
                     <p>{{'TEXT' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Picture'">
-                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/image/svg/design/ic_image_24px.svg" aria-label="picture"></md-icon>
                     <p>{{'PICTURE' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Weather'">
-                    <i class="fa fa-sun-o" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/image/svg/design/ic_wb_sunny_24px.svg" aria-label="weather"></md-icon>
                     <p>{{'WEATHER' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Bill'">
-                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_euro_symbol_24px.svg" aria-label="expense"></md-icon>
                     <p>{{'EXPENSES' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Catgif'">
-                    <i class="fa fa-heart" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_pets_24px.svg" aria-label="catgif"></md-icon>
                     <p>{{'CAT' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Poll'">
-                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/social/svg/design/ic_poll_24px.svg" aria-label="poll"></md-icon>
                     <p>Poll</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Calender'">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_event_24px.svg" aria-label="calendar"></md-icon>
                     <p>{{'CALENDER' | translate}}</p>
                 </div>
                 <div class="typeBlock col-md-2" ng-click="ctrl.widgetForm.type = 'Chore'">
-                    <i class="fa fa-list-alt" aria-hidden="true"></i>
+                    <md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_group_work_24px.svg" aria-label="chore"></md-icon>
                     <p>{{'CHORES' | translate}}</p>
                 </div>
             </div>
@@ -56,8 +56,8 @@
                 <div ng-show="addView === 'add'" class="navView">
                     <form ng-submit="ctrl.addWidget()">
                             <div ng-include="'widgets/forms/' + ctrl.widgetForm.type + 'Form.html'"></div>
-                            <md-button type='submit' class="md-raised md-primary">Add widget</md-button>
-                            <md-button ng-click="ctrl.widgetForm = {}">return</md-button>
+                            <md-button type='submit' class="md-raised md-primary">{{'ADD' | translate}}</md-button>
+                            <md-button ng-click="ctrl.widgetForm = {}">{{'RETURN' | translate}}</md-button>
                     </form>
                 </div>
                 <div ng-show="addView === 'restore'" class="navView">
@@ -65,17 +65,17 @@
                         <table class="table table-hover table-condensed restoreTable">
                             <tr ng-repeat="widget in ctrl.flat.widgets | filter:{visible:0} | filter:{widget_type:ctrl.widgetForm.type} as typeWidgets">
                                 <td><h2>{{widget.title}}</h2></td>
-                                <td><p>{{widget.items.length}} item{{widget.items.length != '1' ? 's' : ''}}</p></td>
+                                <td><p>{{widget.items.length}} {{(widget.items.length != '1' ? 'items' : 'item') | translate}}</p></td>
                                 <td><md-button class="md-accent" ng-click="ctrl.deleteWidget(widget.id)">{{'RESTORE' | translate}}</md-button></td>
                             </tr>
                         </table>
                     </div>
-                    <p ng-hide="typeWidgets.length">There are no deleted widgets of this type.</p>
+                    <p ng-hide="typeWidgets.length">{{'NO_DELETED_WIDGETS' | translate}}.</p>
                     <md-button ng-click="ctrl.widgetForm = {}; addView = 'add'">{{'RETURN' | translate}}</md-button>
                 </div>
             </div>
             <md-button class="md-raised" ng-click="ctrl.closeDialog()">
-                {{'CANCEL' | translate}}
+                {{'CLOSE' | translate}}
             </md-button>
         </div>
     </md-dialog-content>

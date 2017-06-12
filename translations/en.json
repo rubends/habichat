@@ -119,5 +119,10 @@
      "NO_TODO": "You have no todo's",
      "ALL_TODO": "Congratulations, you have done everything",
      "NONE_TODO": "You haven't done anything",
-     "DONE": "Done"
+     "DONE": "Done",
+     "CLOSE": "Close",
+     "NO_DELETED_WIDGETS": "There are no deleted widgets of this type",
+     "ITEM": "item",
+     "ITEMS": "items",
+     "ADD_IMAGE": "Choose picture"
 }

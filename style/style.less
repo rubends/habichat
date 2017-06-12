@@ -506,11 +506,19 @@ h1, h2, h3{
 			color: @mainColor;
 			border: 1px solid @mainColor;
 			border-radius: 3px;
+
+			.icon {
+				color: @mainColor;
+			}
 		}
 
 		.typeBlock:hover {
 			color: @backgroundColor;
 			background-color: @mainColor;
+
+			.icon {
+				color: @backgroundColor;
+			}
 		}
 
 		.restoreTable{
@@ -525,6 +533,10 @@ h1, h2, h3{
 			}
 		}
 	}
+
+	#imgPreview {
+		width: 20%;
+	}
 }
 
 /* === CHAT POPUP === */
@@ -535,15 +547,26 @@ h1, h2, h3{
 	width: 255px;
 	height: 290px;
 
-	h3 {
-		font-size: 12px;
-		color: @mainColor;
-		margin-top: 0;
+	.chatHeader {
+		background-color: @mainColor;
+		color: @backgroundColor;
+		padding: 4px 8px 2px 16px;
+
+		h3 {
+			font-size: 18px;
+			display: inline-block;
+			margin: 0;
+		}
+	}
+
+	md-card-content{
+		padding-top: 0;
 	}
 
 	.msgs {
-		padding-bottom: 8px;
-    	height: 203px;
+    	height: 185px;
+		display: flex;
+   	 	flex-direction: column-reverse;
 
 		.msg {
 			.sender{
@@ -567,6 +590,7 @@ h1, h2, h3{
 		position: absolute;
 		bottom: 0;
 		width: 100%;
+		background-color: @backgroundColor; 
 
 		md-input-container {
 			margin-top: 16px !important;

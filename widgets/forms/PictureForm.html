@@ -1,7 +1,10 @@
-<p>{{'ADD' | translate}} {{'A' | translate}} {{'PICTURE' | translate}}</p>
+<h2>{{'PICTURE' | translate}}</h2>
 <md-input-container class="md-block" flex-gt-sm>
     <label>{{'TITLE' | translate}}</label>
     <input ng-model="ctrl.widgetForm.title">
 </md-input-container>
-<input class="ng-hide" id="addPictureImage" multiple type="file" />
-<label for="addPictureImage" class="md-button md-raised">{{'ADD' | translate}} {{'PICTURE' | translate}}</label>
+<div>
+    <img id="imgPreview"/>
+</div>
+<input class="ng-hide" id="addPictureImage" multiple type="file" image-preview/>
+<label for="addPictureImage" class="md-button md-raised">{{'ADD_IMAGE' | translate}}</label>

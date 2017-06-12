@@ -21,10 +21,14 @@
 		</div>
 	</div>
 	<md-card id="chat" ng-show="chat">
-        <md-card-content>
+		<div class="chatHeader">
+			<h3>Chat</h3>
+			<md-icon class="icon close" ng-click="chat = false" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_clear_24px.svg" aria-label="Close chat"></md-icon>
+        </div>
+		<md-card-content>
 			<!--<h3>You are now chatting with your flatmates.</h3>-->
-			<div class="msgs" scroll-down data-simplebar>
-				<div class="clearfix" ng-repeat="chat in flat.chats" id="chat{{chat.id}}" scroll-down>
+			<div class="msgs" data-simplebar>
+				<div class="clearfix" ng-repeat="chat in flat.chats" id="chat{{chat.id}}">
 					<div class="msg" ng-class="chat.user.id == user.id ? 'pull-right text-right' : 'pull-left'">
 						<md-tooltip md-direction="left">{{chat.send | date:"HH:mm dd/MM/yy"}}</md-tooltip>
 						<p class="sender" ng-if="flat.chats[$index-1].user.id != chat.user.id">{{chat.user.username}}</p>
@@ -50,7 +54,7 @@
 			<md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon>
 		</md-button>
 		<div class="badge1 showTrans" ng-show="flat.chats.new && !chat">{{flat.chats.new}}</div>
-		<md-button ng-click="chat = !chat; flat.chats.new = 0" class="md-fab md-medium md-primary" aria-label="open chat">
+		<md-button ng-click="chat = !chat; flat.chats.new = 0; scrollChat()" class="md-fab md-medium md-primary" aria-label="open chat">
 			<md-icon md-svg-src="bower_components/material-design-icons/communication/svg/design/ic_chat_48px.svg"></md-icon>
 		</md-button>
 	</div>
