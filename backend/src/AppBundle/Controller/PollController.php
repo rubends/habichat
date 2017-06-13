@@ -78,6 +78,7 @@ class PollController extends FOSRestController
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
-        return $poll;
+        // $serialiseOptions = $this->container->get('jms_serializer')->serialize($options, 'json', SerializationContext::create()->setGroups(array('Default')));
+        return $options;
     }
 }

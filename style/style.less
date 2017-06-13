@@ -37,6 +37,15 @@ p, span {
 	opacity: 0;
 }
 
+hr {
+	filter: brightness(30%);
+}
+
+.smallText{
+	font-size: 10px;
+	opacity: 0.8;
+}
+
 .input-group {
 	padding-bottom: 16px;
 	width: 100%;
@@ -58,20 +67,23 @@ p, span {
 			background-color: transparent;
     		padding: 4px 4px;
 			outline: none;
-			-webkit-transition: 0.2s ease-in-out;
-			-moz-transition: 0.2s ease-in-out;
-			-o-transition: 0.2s ease-in-out;
 
 			md-icon{
 				border-radius: 12px;
 				border-width: 1px;
 				border-style: solid;
 				box-shadow: 0 4px 8px 0 rgba(0,0,0,.4);
+				color: inherit;
+
+				svg{
+					-webkit-transition: 0.2s ease-in-out;
+					-moz-transition: 0.2s ease-in-out;
+					-o-transition: 0.2s ease-in-out;
+				}
 			}
 		}
 
-		button:hover{
-			color: inherit;
+		button:hover md-icon svg{
 			-ms-transform: rotate(180deg);
 			-webkit-transform: rotate(180deg);
 			transform: rotate(180deg);
@@ -370,8 +382,7 @@ p, span {
 	}
 
 	.widgetBody {
-		// height: 100%;
-		padding: 16px;
+		padding: 24px 16px;
 	}
 	
 	.resize{
@@ -395,32 +406,22 @@ p, span {
 			div{
 				display: inline-block;
 			}
+			div:hover{
+				font-weight: bold;
+			}
 			.deleteTodo{
 				float:right;
 				display: none;
-			}
-			.checkSquare{
-				padding-right: 16px;
-			}
-			.hoverSquare{
-				display: none;
-				padding-right: 14px;
+				font-size: 19px;
 			}
 		}
 		li:hover{
 			.deleteTodo{
 				display: block;
 			}
-			.checkSquare{
-				display: none;
-			}
-			.hoverSquare{
-				display: inline-block;
-			}
 		}
 		.deleteTodo:hover{
-			color: #c70000;
-			font-size: 19px;
+			color: @warningColor;
 		}
 	}
 	/* PICTURE && GIF WIDGET */
@@ -439,6 +440,12 @@ p, span {
 		li {
 			margin-bottom: 4px;
 		}
+		.smallText{
+			margin: 16px 0 8px;
+		}
+		.smallText:first-child{
+			margin-top: 0;
+		}
 		.unpaidUser:hover {
 			cursor: pointer;
 			.fa {
@@ -449,20 +456,18 @@ p, span {
 
 	/* POLL WIDGET */
 	.poll {
-		.voteDate{
-			font-size: 10px;
-			opacity: 0.8;
-		}
+		
 	}
 
 	/* GROCERY WIDGET */
 	.grocery {
 		li {
 			padding-bottom: 16px;
-		}
-		md-icon {
-			color: inherit;
-			opacity: 0.5;
+
+			md-icon {
+				color: inherit;
+				opacity: 0.5;
+			}
 		}
 		li:hover {
 			font-weight: bold;
@@ -480,7 +485,7 @@ p, span {
 				font-size: 7em;
 			}
 			p {
-				margin-top: 8px;
+				margin-top: 16px;
 				margin-bottom: 0;
 			}
 		}
@@ -497,6 +502,51 @@ p, span {
 			color: white;
 			border-color: black;
 		}
+	}
+
+	/* CHORE WIDGET */
+	.chore {
+		table{
+			table-layout: fixed;
+		}
+		tr, td {
+			border: solid 1px #f4f4f4;
+			text-align: center;
+			p {
+				margin: 16px 0;
+				font-size: 12px;
+			}
+			td:nth-child(2n+1){
+				background-color: rgba(47, 47, 47, 0.05);
+			}
+		}
+		thead{
+			p {
+				text-transform: uppercase;
+				text-align: center;
+				font-size: 16px;
+				margin: 0 0 16px;
+			}
+			th{
+				padding-top: 0;
+				border-top-style : hidden!important;
+				border-left-style : hidden!important;
+				border-right-style : hidden!important;
+				border-bottom: solid 1px #f4f4f4;
+			}
+		}
+		tbody {
+			th{
+				border-top-style : hidden!important;
+				border-left-style : hidden!important;
+				border-bottom-style : hidden!important;
+				border-right: solid 1px #f4f4f4;
+				p {
+					font-size: 16px;
+				}
+			}
+		}
+		
 	}
 }
 

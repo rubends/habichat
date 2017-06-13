@@ -1,14 +1,14 @@
 <div class="poll">
     <p><strong>{{widget.items[0].question}}</strong></p>
     <div ng-show="getPassed(widget.items[0].until)">
-        <p class="voteDate">{{'VOTING_ENDS' | translate}} {{widget.items[0].until | date:"HH:mm dd/MM/yy"}}</p>
+        <p class="smallText">{{'VOTING_ENDS' | translate}} {{widget.items[0].until | date:"HH:mm dd/MM/yy"}}</p>
         <hr>
         <div ng-if="widget.items[0].multiple">
             <div ng-repeat="option in widget.items[0].options">
                 <md-checkbox class="checkboxColor" ng-model="isPollOptionChecked" aria-label="pollCheck" ng-click="votePoll(widget.id, option.id)" ng-checked="getChecked(option)">
                     {{option.name}}
                 </md-checkbox>
-                <p class="pull-right voteDate"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} {{(option.voters.length == '1' ? 'VOTE' : 'VOTES') | translate}}</p>
+                <p class="pull-right smallText"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} {{(option.voters.length == '1' ? 'VOTE' : 'VOTES') | translate}}</p>
             </div>
         </div>
         <div ng-if="!widget.items[0].multiple">
@@ -17,16 +17,16 @@
                     <md-radio-button class="pull-left selectColor" ng-value="option.id" aria-label="pollRadio" ng-click="votePoll(widget.id, option.id)">
                         {{option.name}}
                     </md-radio-button>
-                    <p class="pull-right voteDate"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} {{(option.voters.length == '1' ? 'VOTE' : 'VOTES') | translate}}</p>
+                    <p class="pull-right smallText"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} {{(option.voters.length == '1' ? 'VOTE' : 'VOTES') | translate}}</p>
                 </div>
             </md-radio-group>
         </div>
     </div>
     <div ng-hide="getPassed(widget.items[0].until)">
-        <p class="voteDate">{{'VOTING_HAS_ENDED' | translate}} {{widget.items[0].until | date:"HH:mm dd/MM/yy"}}</p>
+        <p class="smallText">{{'VOTING_HAS_ENDED' | translate}} {{widget.items[0].until | date:"HH:mm dd/MM/yy"}}</p>
         <hr>
         <div ng-repeat="option in widget.items[0].options">
-            <p>{{option.name}} <span class="pull-right voteDate"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} {{(option.voters.length == '1' ? 'VOTE' : 'VOTES') | translate}}</span></p>
+            <p>{{option.name}} <span class="pull-right smallText"><md-tooltip md-direction="right" ng-if="option.voters.length"><span ng-repeat="voter in option.voters">{{voter.username}} </span></md-tooltip>{{option.voters.length}} {{(option.voters.length == '1' ? 'VOTE' : 'VOTES') | translate}}</span></p>
         </div>
     </div>
 </div>

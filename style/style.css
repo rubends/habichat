@@ -26,6 +26,13 @@ span {
   transition: all linear 1s;
   opacity: 0;
 }
+hr {
+  filter: brightness(30%);
+}
+.smallText {
+  font-size: 10px;
+  opacity: 0.8;
+}
 .input-group {
   padding-bottom: 16px;
   width: 100%;
@@ -47,18 +54,20 @@ span {
   background-color: transparent;
   padding: 4px 4px;
   outline: none;
-  -webkit-transition: 0.2s ease-in-out;
-  -moz-transition: 0.2s ease-in-out;
-  -o-transition: 0.2s ease-in-out;
 }
 .input-group .input-group-btn button md-icon {
   border-radius: 12px;
   border-width: 1px;
   border-style: solid;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
-}
-.input-group .input-group-btn button:hover {
   color: inherit;
+}
+.input-group .input-group-btn button md-icon svg {
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+}
+.input-group .input-group-btn button:hover md-icon svg {
   -ms-transform: rotate(180deg);
   -webkit-transform: rotate(180deg);
   transform: rotate(180deg);
@@ -288,6 +297,7 @@ span {
   /* WEATHER WIDGET */
   /* TEXT WIDGET */
   /* CALENDER WIDGET */
+  /* CHORE WIDGET */
 }
 .widget .widgetHeader {
   padding: 8px 16px 0;
@@ -312,7 +322,7 @@ span {
   display: inline-block;
 }
 .widget .widgetBody {
-  padding: 16px;
+  padding: 24px 16px;
 }
 .widget .resize {
   float: right;
@@ -330,29 +340,19 @@ span {
 .widget .todo li div {
   display: inline-block;
 }
+.widget .todo li div:hover {
+  font-weight: bold;
+}
 .widget .todo li .deleteTodo {
   float: right;
   display: none;
-}
-.widget .todo li .checkSquare {
-  padding-right: 16px;
-}
-.widget .todo li .hoverSquare {
-  display: none;
-  padding-right: 14px;
+  font-size: 19px;
 }
 .widget .todo li:hover .deleteTodo {
   display: block;
 }
-.widget .todo li:hover .checkSquare {
-  display: none;
-}
-.widget .todo li:hover .hoverSquare {
-  display: inline-block;
-}
 .widget .todo .deleteTodo:hover {
-  color: #c70000;
-  font-size: 19px;
+  color: #d43f3a;
 }
 .widget .picture {
   overflow: hidden;
@@ -366,20 +366,22 @@ span {
 .widget .bill li {
   margin-bottom: 4px;
 }
+.widget .bill .smallText {
+  margin: 16px 0 8px;
+}
+.widget .bill .smallText:first-child {
+  margin-top: 0;
+}
 .widget .bill .unpaidUser:hover {
   cursor: pointer;
 }
 .widget .bill .unpaidUser:hover .fa {
   color: #4cae4c;
 }
-.widget .poll .voteDate {
-  font-size: 10px;
-  opacity: 0.8;
-}
 .widget .grocery li {
   padding-bottom: 16px;
 }
-.widget .grocery md-icon {
+.widget .grocery li md-icon {
   color: inherit;
   opacity: 0.5;
 }
@@ -396,13 +398,52 @@ span {
   font-size: 7em;
 }
 .widget .weather div p {
-  margin-top: 8px;
+  margin-top: 16px;
   margin-bottom: 0;
 }
 .widget .calender .newCalItem {
   background-color: black;
   color: white;
   border-color: black;
+}
+.widget .chore table {
+  table-layout: fixed;
+}
+.widget .chore tr,
+.widget .chore td {
+  border: solid 1px #f4f4f4;
+  text-align: center;
+}
+.widget .chore tr p,
+.widget .chore td p {
+  margin: 16px 0;
+  font-size: 12px;
+}
+.widget .chore tr td:nth-child(2n+1),
+.widget .chore td td:nth-child(2n+1) {
+  background-color: rgba(47, 47, 47, 0.05);
+}
+.widget .chore thead p {
+  text-transform: uppercase;
+  text-align: center;
+  font-size: 16px;
+  margin: 0 0 16px;
+}
+.widget .chore thead th {
+  padding-top: 0;
+  border-top-style: hidden!important;
+  border-left-style: hidden!important;
+  border-right-style: hidden!important;
+  border-bottom: solid 1px #f4f4f4;
+}
+.widget .chore tbody th {
+  border-top-style: hidden!important;
+  border-left-style: hidden!important;
+  border-bottom-style: hidden!important;
+  border-right: solid 1px #f4f4f4;
+}
+.widget .chore tbody th p {
+  font-size: 16px;
 }
 /* === DIALOGS === */
 .md-dialog-container {

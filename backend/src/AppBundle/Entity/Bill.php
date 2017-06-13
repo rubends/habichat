@@ -37,14 +37,6 @@ class Bill
     protected $amount;
 
     /**
-     * 
-     * @ORM\Column(type="string")
-     *
-     * @var string
-     */
-    protected $account;
-
-    /**
      * @ORM\ManyToMany(targetEntity="User", inversedBy="bills")
      * @ORM\JoinTable(name="bills_unpaid_users")
      */
@@ -119,23 +111,6 @@ class Bill
     public function setAmount($amount)
     {
         $this->amount = $amount;
-    }
-
-    /**
-     * @return string
-     *
-     */
-    public function getAccount()
-    {
-        return $this->account;
-    }
-
-    /**
-     * @param string $account
-     */
-    public function setAccount($account)
-    {
-        $this->account = $account;
     }
 
     public function addUnpaidUser(User $user)

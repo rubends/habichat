@@ -3,34 +3,30 @@
     <ul>
         <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone">
             <div ng-click="toggleTodoDone(widget.id, item.id)">
-                <i class="fa fa-square-o checkSquare" aria-hidden="true"></i>
-                <i class="fa fa-check-square-o hoverSquare" aria-hidden="true"></i>
-                <span>{{item.title}}</span>
+                 <md-checkbox class="checkboxColor" aria-label="Todo">{{item.title}}</md-checkbox>
             </div>
-            <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i>
+            <md-icon class="icon deleteTodo" ng-click="deleteTodo(widget.id, item.id)" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_clear_24px.svg" aria-label="Close chat"></md-icon>
         </li>
     </ul>
     <p ng-show="widget.items.length && !notDone.length">{{'ALL_TODO' | translate}}!</p>
-    <form ng-submit="postTodo(widget.id, todoForm.title); todoForm.title = ''">
-        <div class="input-group">
-            <input ng-style="inputTextStyle" type="text" ng-model="todoForm.title" id="addTodo" name="todo" class="form-control" placeholder="Add a todo">
-            <span class="input-group-btn" ng-show="todoForm.title">
-                <button ng-style="inputBtnStyle" class="btn btn-secondary" type="submit" ng-style="widgetHeader"><md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon></button>
-            </span>
-        </div>
-    </form> 
     <div class="done" ng-show="widget.items.length">
-        <p>{{'DONE' | translate}}</p>
+        <p class="smallText">{{'DONE' | translate}}</p>
         <ul>
             <li ng-repeat="item in widget.items | filter: {done: '1'} as dones">
                 <div ng-click="toggleTodoDone(widget.id, item.id)">
-                <i class="fa fa-check-square-o checkSquare" aria-hidden="true"></i>
-                <i class="fa fa-square-o hoverSquare" aria-hidden="true"></i>
-                <span href="">{{item.title}}</span>
+                    <md-checkbox ng-checked="true" class="checkboxColor" aria-label="Todo">{{item.title}}</md-checkbox>
                 </div>
-                <i class="fa fa-btn fa-times deleteTodo" ng-click="deleteTodo(widget.id, item.id)"></i></li>
+                 <md-icon class="icon deleteTodo" ng-click="deleteTodo(widget.id, item.id)" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_clear_24px.svg" aria-label="Close chat"></md-icon>
         </ul>
         <p ng-show="!dones.length">{{'NONE_TODO' | translate}}!</p>
     </div>
+    <form ng-submit="postTodo(widget.id, todoForm.title); todoForm.title = ''">
+        <div class="input-group">
+            <input ng-style="inputTextStyle" type="text" ng-model="todoForm.title" id="addTodo" name="todo" class="form-control" placeholder="{{'ADD_TODO' | translate}}">
+            <span class="input-group-btn" ng-show="todoForm.title">
+                <button class="btn" type="submit"><md-icon ng-style="inputBtnStyle" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon></button>
+            </span>
+        </div>
+    </form> 
 </div>
 </div>

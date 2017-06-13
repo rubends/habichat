@@ -8,12 +8,8 @@
     <textarea ng-model="ctrl.addBillForm.summary"></textarea>
 </md-input-container>
 <md-input-container class="md-block" flex-gt-sm>
-    <label>{{'AMOUNT' | translate}}</label>
+    <label>{{'TOTAL_AMOUNT' | translate}}</label>
     <input type="number" step="0.01" ng-model="ctrl.addBillForm.amount">
-</md-input-container>
-<md-input-container class="md-block" flex-gt-sm>
-    <label>{{'BANKACCOUNT' | translate}}</label>
-    <input ng-model="ctrl.addBillForm.account">
 </md-input-container>
 <p>{{'SPLIT' | translate}}</p>
 <div layout-gt-xs="row" ng-repeat="flatmate in ctrl.flat.users | filter: {id: '!' + ctrl.user.id}">

@@ -297,7 +297,6 @@ class WidgetController extends FOSRestController
         $bill = new Bill();
         $bill->setSummary($request->request->get('summary'));
         $bill->setAmount($request->request->get('amount'));
-        $bill->setAccount($request->request->get('account'));
         foreach($request->request->get('users') as $key => $value){
             if($value){
                 $unpaidUser = $this->getDoctrine()
@@ -317,7 +316,7 @@ class WidgetController extends FOSRestController
             $userInfo = ['id' => $unpaidUser->getId(), 'username' => $unpaidUser->getUsername()];
             $unpaidUsers[] = $userInfo;
         }
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'addItem', 'item' => ['id' => $bill->getId(), 'summary' => $request->request->get('summary'), 'amount' => $request->request->get('amount'), 'account' => $request->request->get('account'), 'unpaid_users' => $unpaidUsers, 'widget' => ['id' => $widget->getId()]]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'addItem', 'item' => ['id' => $bill->getId(), 'summary' => $request->request->get('summary'), 'amount' => $request->request->get('amount'), 'unpaid_users' => $unpaidUsers, 'widget' => ['id' => $widget->getId()]]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 

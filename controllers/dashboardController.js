@@ -9,11 +9,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+$rootScope.flat.background_image+')'};
 		$scope.widgetStyle = {'background-color': $rootScope.flat.widget_color, 'color': $rootScope.flat.font_color};
 		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.font_color};
-		$scope.inputTextStyle = {"border-bottom-color": $rootScope.flat.font_color, "color": $rootScope.flat.font_color};
-		$scope.inputBtnStyle = {"border-color": $rootScope.flat.font_color};
-		$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
-		$('.selectColor.md-checked .md-on').css('background-color', $rootScope.flat.header_color);
-		$('.selectColor.md-checked .md-off').css('border-color', $rootScope.flat.header_color);
+		$scope.inputTextStyle = {"border-bottom-color": $rootScope.flat.header_color, "color": $rootScope.flat.font_color};
+		$scope.inputBtnStyle = {"border-color": $rootScope.flat.header_color, "color": $rootScope.flat.header_color};
 	}
 
 	$scope.showWidgetDialog = function(ev) {
@@ -389,6 +386,11 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
+						$timeout(function() {
+							$('.checkboxColor .md-icon').css('background-color', 'transparent');
+							$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+							$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
+						});
 					}
 				}
 			}
@@ -418,6 +420,11 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 								$rootScope.flat.widgets[widget].items[item] = response.data;
 							}
 						}
+						$timeout(function() {
+							$('.checkboxColor .md-icon').css('background-color', 'transparent');
+							$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+							$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
+						});
 					}
 				}
 			}
@@ -689,16 +696,22 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items[0] = response.data;
+						for(option in response.data){
+							$rootScope.flat.widgets[widget].items[0].options[option].voters = response.data[option].voters;
+						}
+						if($rootScope.flat.widgets[widget].items[0].multiple) {
+							$timeout(function() {
+								$('.checkboxColor .md-icon').css('background-color', 'transparent');
+								$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+								$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
+							});
+						} else {
+							$timeout(function() {
+								$('.selectColor .md-on').css('background-color', $rootScope.flat.header_color);
+								$('.selectColor .md-off').css('border-color', $rootScope.flat.header_color);
+							});
+						}
 					}
-				}
-				if(response.data.multiple) {
-					$timeout(function() {$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color); });
-				} else {
-					$timeout(function() {
-						$('.selectColor.md-checked .md-off').css('border-color', $rootScope.flat.header_color);
-						$('.selectColor.md-checked .md-on').css('background-color', $rootScope.flat.header_color);
-					});
 				}
 			}
 		}, function errorCallback(response) {
@@ -843,6 +856,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	// AFTER BUILDUP
 	$timeout(function() {
 		$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+		$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
+		$('.selectColor .md-on').css('background-color', $rootScope.flat.header_color);
+		$('.selectColor .md-off').css('border-color', $rootScope.flat.header_color);
 		$('.grid-stack-item').each(function(){
 			$headerHeight = $(this).find('.grid-stack-item-content .widgetHeader').outerHeight();
 			$bodyHeight = $(this).find('.grid-stack-item-content .widgetBody').outerHeight();

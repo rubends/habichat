@@ -84,7 +84,7 @@
      "YOUR": "your",
      "TITLE": "Title",
      "SUMMARY": "Summary",
-     "AMOUNT": "Total amount (in €)",
+     "TOTAL_AMOUNT": "Total amount (in €)",
      "BANKACCOUNT": "Bankaccount",
      "SPLIT": "Split between",
      "ADD_EVENT": "Add an event",
@@ -109,6 +109,8 @@
      "OPTION": "option",
      "LOCATION": "Location",
      "TOTAL": "Total",
+     "AMOUNT": "Amount",
+     "DIVIDED_BETWEEN": "Divided between",
      "STILL_PAY": "Still have to pay",
      "ALREADY_PAID": "Already paid",
      "EVERYBODY_PAID": "Everybody has paid",
@@ -117,7 +119,7 @@
      "VOTE": "vote",
      "VOTES": "votes",
      "NO_TODO": "You have no todo's",
-     "ALL_TODO": "Congratulations, you have done everything",
+     "ALL_TODO": "Congratulations, everything has been done",
      "NONE_TODO": "You haven't done anything",
      "DONE": "Done",
      "CLOSE": "Close",
@@ -127,5 +129,7 @@
      "ADD_IMAGE": "Choose picture",
      "ADD_GROCERY": "Add a grocery",
      "WIDGET_DELETE": "You deleted a widget!",
-     "UNDO": "Undo"
+     "UNDO": "Undo",
+     "ADD_TODO": "Add a todo",
+     "START_ON": "Start on"
 }
