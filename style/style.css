@@ -9,6 +9,10 @@ h2,
 h3 {
   font-family: 'Allerta', sans-serif;
 }
+p,
+span {
+  font-family: 'Open Sans', sans-serif;
+}
 .btn-primary {
   background-color: #00897b !important;
 }
@@ -40,10 +44,24 @@ h3 {
   box-shadow: none;
 }
 .input-group .input-group-btn button {
-  border-radius: 18px !important;
+  background-color: transparent;
   padding: 4px 4px;
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
   outline: none;
+  -webkit-transition: 0.2s ease-in-out;
+  -moz-transition: 0.2s ease-in-out;
+  -o-transition: 0.2s ease-in-out;
+}
+.input-group .input-group-btn button md-icon {
+  border-radius: 12px;
+  border-width: 1px;
+  border-style: solid;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.4);
+}
+.input-group .input-group-btn button:hover {
+  color: inherit;
+  -ms-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 /*  === NAVIGATION  === */
 .navbar {
@@ -272,17 +290,28 @@ h3 {
   /* CALENDER WIDGET */
 }
 .widget .widgetHeader {
-  padding: 5px 8px 5px 16px;
+  padding: 8px 16px 0;
 }
 .widget .widgetHeader h3 {
   margin-top: 0;
   margin-bottom: 0;
   display: inline-block;
   max-width: 80%;
-  font-size: 1.5em;
+  font-size: 24px;
+}
+.widget .widgetHeader .type {
+  width: 100%;
+}
+.widget .widgetHeader .type p {
+  background-color: rgba(0, 0, 0, 0.12);
+  border-radius: 2px;
+  padding: 2px 8px;
+  font-size: 9px;
+  text-transform: uppercase;
+  font-weight: bold;
+  display: inline-block;
 }
 .widget .widgetBody {
-  height: 100%;
   padding: 16px;
 }
 .widget .resize {
@@ -345,11 +374,20 @@ h3 {
 }
 .widget .poll .voteDate {
   font-size: 10px;
+  opacity: 0.8;
 }
-.widget .grocery .fa:hover,
-.widget .grocery li span:hover ~ .fa {
-  color: #4cae4c;
-  cursor: pointer;
+.widget .grocery li {
+  padding-bottom: 16px;
+}
+.widget .grocery md-icon {
+  color: inherit;
+  opacity: 0.5;
+}
+.widget .grocery li:hover {
+  font-weight: bold;
+}
+.widget .grocery li:hover md-icon {
+  opacity: 1;
 }
 .widget .weather div {
   text-align: center;

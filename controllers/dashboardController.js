@@ -1,4 +1,4 @@
-app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', '$timeout', '$mdDialog', '$mdToast', function($rootScope, $scope, $http, $cookies, $location, $timeout, $mdDialog, $mdToast){
+app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', '$timeout', '$mdDialog', '$mdToast', '$filter', function($rootScope, $scope, $http, $cookies, $location, $timeout, $mdDialog, $mdToast, $filter){
 	if (!$rootScope.user || !$rootScope.user.loggedIn) {
 		$location.path('/login');
 	}
@@ -10,7 +10,10 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$scope.widgetStyle = {'background-color': $rootScope.flat.widget_color, 'color': $rootScope.flat.font_color};
 		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.font_color};
 		$scope.inputTextStyle = {"border-bottom-color": $rootScope.flat.font_color, "color": $rootScope.flat.font_color};
-		$scope.inputBtnStyle = {"background-color": $rootScope.flat.font_color};
+		$scope.inputBtnStyle = {"border-color": $rootScope.flat.font_color};
+		$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+		$('.selectColor.md-checked .md-on').css('background-color', $rootScope.flat.header_color);
+		$('.selectColor.md-checked .md-off').css('border-color', $rootScope.flat.header_color);
 	}
 
 	$scope.showWidgetDialog = function(ev) {
@@ -315,7 +318,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
     }
 
 	function deletedToast($widgetId) {
-		$mdToast.show($mdToast.simple().textContent('You deleted a widget').action('Undo').position('bottom center'))
+		$mdToast.show($mdToast.simple().textContent($filter('translate')('WIDGET_DELETE')).action($filter('translate')('UNDO')).position('bottom center'))
 			.then(function(response) {
 				if ( response == 'ok' ) {
 					$scope.deleteWidget($widgetId);
@@ -689,6 +692,14 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						$rootScope.flat.widgets[widget].items[0] = response.data;
 					}
 				}
+				if(response.data.multiple) {
+					$timeout(function() {$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color); });
+				} else {
+					$timeout(function() {
+						$('.selectColor.md-checked .md-off').css('border-color', $rootScope.flat.header_color);
+						$('.selectColor.md-checked .md-on').css('background-color', $rootScope.flat.header_color);
+					});
+				}
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -809,6 +820,37 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		});
 	}
 
+	$scope.postLastLogin = function (){
+		var sUrl = $rootScope.apiPath + "/users/lastlogins";
+		var oConfig = {
+			url: sUrl,
+			method: "POST",
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+			params: {callback: "JSON_CALLBACK"}
+		};
+		$http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				$rootScope.error = response.data.error;
+			}
+			else{
+				$rootScope.user.last_login = moment(response.data);
+			}
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+
+	// AFTER BUILDUP
+	$timeout(function() {
+		$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+		$('.grid-stack-item').each(function(){
+			$headerHeight = $(this).find('.grid-stack-item-content .widgetHeader').outerHeight();
+			$bodyHeight = $(this).find('.grid-stack-item-content .widgetBody').outerHeight();
+			$height = $headerHeight + $bodyHeight;
+			$(this).attr('data-gs-min-height', Math.ceil($height/70));
+		});
+	});
+
 	// GRID STACK
 	$scope.gridOptions = {
 		cellHeight: 50,
@@ -840,7 +882,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	
 	var channel = pusher.subscribe('habichannel');
 	channel.bind('flat-'+$rootScope.flat.flat_token, function(data) {
-		console.log(data);
 		if(data.user.id != $rootScope.user.id){
 			if(data.reason === 'place'){
 				for(widget in $rootScope.flat.widgets){
@@ -977,6 +1018,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$audio = new Audio('/audio/music_marimba_chord.wav');
 					$audio.play();
 					$rootScope.flat.chats.new++;
+				} else {
+					$scope.postLastLogin();
 				}
 			}
 			$scope.$apply();

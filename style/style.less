@@ -16,6 +16,10 @@ h1, h2, h3{
 	font-family: 'Allerta', sans-serif;
 }
 
+p, span {
+	font-family: 'Open Sans', sans-serif;
+}
+
 .btn-primary {
 	background-color: @mainColor !important;
 }
@@ -51,10 +55,26 @@ h1, h2, h3{
 		box-shadow: none;
 
 		button {
-			border-radius: 18px !important;
+			background-color: transparent;
     		padding: 4px 4px;
-			box-shadow: 0 4px 8px 0 rgba(0,0,0,.4);
 			outline: none;
+			-webkit-transition: 0.2s ease-in-out;
+			-moz-transition: 0.2s ease-in-out;
+			-o-transition: 0.2s ease-in-out;
+
+			md-icon{
+				border-radius: 12px;
+				border-width: 1px;
+				border-style: solid;
+				box-shadow: 0 4px 8px 0 rgba(0,0,0,.4);
+			}
+		}
+
+		button:hover{
+			color: inherit;
+			-ms-transform: rotate(180deg);
+			-webkit-transform: rotate(180deg);
+			transform: rotate(180deg);
 		}
 	}
 }
@@ -324,19 +344,33 @@ h1, h2, h3{
 	box-shadow: 0 1px 3px 0 rgba(0,0,0,.2), 0 1px 1px 0 rgba(0,0,0,.14), 0 2px 1px -1px rgba(0,0,0,.12);
 
 	.widgetHeader{
-		padding: 5px 8px 5px 16px;
+		padding: 8px 16px 0;
 
 		h3 {
 			margin-top: 0;
 			margin-bottom: 0;
 			display: inline-block;
 			max-width: 80%;
-			font-size: 1.5em;
+			font-size: 24px;
+		}
+
+		.type {
+			width: 100%;
+
+			p {
+				background-color: rgba(0, 0, 0, 0.12);
+				border-radius: 2px;
+				padding: 2px 8px;
+				font-size: 9px;
+				text-transform: uppercase;
+				font-weight: bold;
+				display: inline-block;
+			}
 		}
 	}
 
 	.widgetBody {
-		height: 100%;
+		// height: 100%;
 		padding: 16px;
 	}
 	
@@ -417,14 +451,24 @@ h1, h2, h3{
 	.poll {
 		.voteDate{
 			font-size: 10px;
+			opacity: 0.8;
 		}
 	}
 
 	/* GROCERY WIDGET */
 	.grocery {
-		.fa:hover, li span:hover ~ .fa {
-			color: @okColor;
-			cursor: pointer;
+		li {
+			padding-bottom: 16px;
+		}
+		md-icon {
+			color: inherit;
+			opacity: 0.5;
+		}
+		li:hover {
+			font-weight: bold;
+			md-icon {
+				opacity: 1;
+			}
 		}
 	}
 

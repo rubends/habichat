@@ -351,4 +351,18 @@ class UserController extends FOSRestController
             return new JsonResponse(array('error' => "Reset key is too old."));
         }
     }
+
+    /**
+     * @ApiDoc()
+     * @return $lastlogin
+     */
+    public function postUserLastloginAction()
+    {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $lastlogin = new \DateTime('now');
+        $user->setLastLogin($lastlogin);
+        $this->getDoctrine()->getManager()->persist($user);
+        $this->getDoctrine()->getManager()->flush();
+        return $lastlogin->getTimestamp()*1000;
+    }
 }

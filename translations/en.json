@@ -124,5 +124,8 @@
      "NO_DELETED_WIDGETS": "There are no deleted widgets of this type",
      "ITEM": "item",
      "ITEMS": "items",
-     "ADD_IMAGE": "Choose picture"
+     "ADD_IMAGE": "Choose picture",
+     "ADD_GROCERY": "Add a grocery",
+     "WIDGET_DELETE": "You deleted a widget!",
+     "UNDO": "Undo"
 }

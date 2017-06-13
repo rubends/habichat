@@ -104,7 +104,7 @@
      "DELETE_WIDGET": "Je wil deze widget verwijderen",
      "SURE": "Ben je zeker",
      "QUESTION": "Vraag",
-     "VOTING_ENDS": "Stemmen eindigt op",
+     "VOTING_ENDS": "Stemmen eindigt om",
      "ALLOW_MULTIPLE": "Meerdere stemmen toelaten",
      "OPTION": "optie",
      "LOCATION": "Locatie",
@@ -113,7 +113,7 @@
      "ALREADY_PAID": "Al betaald",
      "EVERYBODY_PAID": "Iedereen heeft betaald",
      "NO_GROCERIES": "Geen boodschappen op uw lijstje",
-     "VOTING_HAS_ENDED": "Het stemmen is geëindigd op",
+     "VOTING_HAS_ENDED": "Het stemmen is geëindigd om",
      "VOTE": "stem",
      "VOTES": "stemmen",
      "NO_TODO": "Je hebt geen todos",
@@ -124,5 +124,8 @@
      "NO_DELETED_WIDGETS": "Er zijn geen verwijderde widgets van dit type",
      "ITEM": "item",
      "ITEMS": "items",
-     "ADD_IMAGE": "Afbeelding kiezen"
+     "ADD_IMAGE": "Afbeelding kiezen",
+     "ADD_GROCERY": "Voeg een item toe",
+     "WIDGET_DELETE": "Je hebt een widget verwijderd!",
+     "UNDO": "Ongedaan maken"
 }

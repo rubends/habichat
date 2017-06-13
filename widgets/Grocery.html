@@ -2,15 +2,15 @@
     <p ng-hide="widget.items.length">{{'NO_GROCERIES' | translate}}.</p>
     <ul>
         <li ng-repeat="grocery in widget.items">
-            <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+            <md-icon class="icon" md-svg-src="bower_components/material-design-icons/maps/svg/design/ic_local_grocery_store_24px.svg" aria-label="grocery"></md-icon>
             <span ng-click="deleteGrocery(widget.id, grocery.id)">{{grocery.item}}</span>
         </li>
     </ul>
     <form ng-submit="postGrocery(widget.id, groceryForm.item); groceryForm.item = ''">
         <div class="input-group">
-            <input type="text" ng-style="inputTextStyle" ng-model="groceryForm.item" id="addGrocery" name="grocery" class="form-control" placeholder="Add a grocery">
+            <input type="text" ng-style="inputTextStyle" ng-model="groceryForm.item" id="addGrocery" name="grocery" class="form-control" placeholder="{{'ADD_GROCERY' | translate}}">
             <span class="input-group-btn" ng-show="groceryForm.item">
-                <button ng-style="inputBtnStyle" class="btn btn-secondary" type="submit" ng-style="buttonStyle"><md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon></button>
+                <button class="btn" type="submit" ng-style="buttonStyle"><md-icon ng-style="inputBtnStyle" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon></button>
             </span>
     </div>
     </form> 
