@@ -45,10 +45,10 @@ class FlatController extends FOSRestController
         $flat->setCountry($data['country']);
         // DEFAULT
         $flat->setBackgroundImage('background.jpg?v='.time());
-        $flat->setWidgetColor('#2f2f2f');
+        $flat->setWidgetColor('#ffffff');
         $flat->setHeaderColor('#00897b');
-        $flat->setFontColor('#00897b');
-        $flat->setHeaderFontColor('#fafafa');
+        $flat->setFontColor('#111111');
+        $flat->setHeaderFontColor('#ffffff');
 
         $this->getDoctrine()->getManager()->persist($flat);
         $key = md5(uniqid($flat->getId(), true));

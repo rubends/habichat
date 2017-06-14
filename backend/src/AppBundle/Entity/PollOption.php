@@ -4,10 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="poll_option")
+ * @Serializer\ExclusionPolicy("all")
  */
 class PollOption
 {
@@ -15,6 +17,8 @@ class PollOption
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      *
      * @var int
      */
@@ -23,6 +27,8 @@ class PollOption
     /**
      * 
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Poll", "PollOption"})
      *
      * @var string
      */
@@ -31,6 +37,8 @@ class PollOption
     /**
     * @ORM\ManyToMany(targetEntity="User", inversedBy="pollOptions")
     * @ORM\JoinTable(name="options_users")
+    * @Serializer\Expose
+     * @Serializer\Groups({"Poll", "PollOption"})
     */
     protected $voters;
 
@@ -38,6 +46,8 @@ class PollOption
      * 
      * @ORM\ManyToOne(targetEntity="Poll", inversedBy="options")
      * @ORM\JoinColumn(name="poll_id", referencedColumnName="id")
+     * @Serializer\Expose
+     * @Serializer\Groups({"PollOption"})
      *
      */
     protected $poll;

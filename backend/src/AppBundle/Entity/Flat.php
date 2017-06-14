@@ -124,7 +124,7 @@ class Flat
     /**
     * @ORM\OneToMany(targetEntity="Widget", mappedBy="flat")
     * @Serializer\Expose
-    * @Serializer\Groups({"Flat", "Widget"})
+    * @Serializer\Groups({"Flat"})
     */
     private $widgets;
 

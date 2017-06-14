@@ -97,12 +97,13 @@ class WidgetController extends FOSRestController
             $widget->setItems(array($text));
         }
 
+        $serialiseWidget = $this->container->get('jms_serializer')->serialize($widget, 'json', SerializationContext::create()->setGroups(array('Default', 'Widget')));
         // $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'postWidget', 'widget' => $widget->getId()];
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'postWidget', 'widget' => ['id' => $widget->getId(), 'widget_type' => $request->request->get('type'), 'title' => $request->request->get('title'),'visible' => 1,'user' => ['id' => $user->getId(), 'username' => $user->getUsername()],'flat' => ['id' => $flat->getId()], 'x' => 0, 'y' => 0, 'width' => 2, 'height' => 4, 'items' => []]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'postWidget', 'widget' => $serialiseWidget];
         // $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'postWidget', 'widget' => $this->container->get('serializer')->serialize($widget, 'json')];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$flat->getFlatToken(), $data);
-        return $widget;
+        return $serialiseWidget;
     }
 
     /**

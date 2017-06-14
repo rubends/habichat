@@ -1,6 +1,7 @@
 app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
 
 	$scope.loginUser = function(){
+		$rootScope.loadScreen = true;
         var sUrl = $rootScope.apiPath + "/users/logins";
         var oConfig = {
             url: sUrl,
@@ -13,6 +14,7 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
 				$rootScope.error = response.data.error;
 			}
 			else{
+				$rootScope.loadScreen = false;
 				$rootScope.error = "";
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;

@@ -4,10 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="poll")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Poll
 {
@@ -15,6 +17,8 @@ class Poll
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      *
      * @var int
      */
@@ -23,6 +27,8 @@ class Poll
     /**
      * 
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Poll"})
      *
      * @var string
      */
@@ -31,6 +37,8 @@ class Poll
     /**
      * 
      * @ORM\Column(type="boolean")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Poll"})
      *
      * @var boolean
      */
@@ -39,6 +47,8 @@ class Poll
     /**
      * 
      * @ORM\Column(type="datetime")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Poll"})
      *
      * @var datetime
      */
@@ -46,11 +56,15 @@ class Poll
 
     /**
     * @ORM\OneToMany(targetEntity="PollOption", mappedBy="poll")
+    * @Serializer\Expose
+     * @Serializer\Groups({"Poll"})
     */
     protected $options;
 
     /**
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Poll"})
      * @var int
      */
     protected $widget;

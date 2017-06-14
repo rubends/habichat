@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class ChatController extends FOSRestController
 {
@@ -32,11 +33,14 @@ class ChatController extends FOSRestController
             $this->getDoctrine()->getManager()->persist($chat);
             $this->getDoctrine()->getManager()->flush();
 
-            $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'chat', 'chat' => ['id' => $chat->getId(), 'text' => $chat->getText(), 'send' => $chat->getSend()->getTimestamp()*1000, 'user' => ['id' => $user->getId(), 'username' => $user->getUsername()]]];
+            $serialiseChat = $this->container->get('jms_serializer')->serialize($chat, 'json', SerializationContext::create()->setGroups(array('Default')));
+            
+            $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'chat', 'chat' => $serialiseChat];
             $pusher = $this->get('pusher');
             $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
-            return $chat;
+            return $serialiseChat;
+            
         }
         return new JsonResponse(array('error' => "The message wasn't send."));
 

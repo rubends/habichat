@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class PollController extends FOSRestController
 {
@@ -74,11 +75,12 @@ class PollController extends FOSRestController
             $optionArray[] = ['id' => $option->getId(), 'name' => $option->getName(), 'voters' => $voters];
         }
 
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => ['id' => $poll->getId(), 'options' => $optionArray, 'widget' => ['id' => $poll->getWidget()]]];
+        $serialiseOptions = $this->container->get('jms_serializer')->serialize($options, 'json', SerializationContext::create()->setGroups(array('Default', 'PollOption')));
+            
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => $serialiseOptions];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
-        // $serialiseOptions = $this->container->get('jms_serializer')->serialize($options, 'json', SerializationContext::create()->setGroups(array('Default')));
-        return $options;
+        return $serialiseOptions;
     }
 }

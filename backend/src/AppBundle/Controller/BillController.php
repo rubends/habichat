@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class BillController extends FOSRestController
 {
@@ -37,12 +38,13 @@ class BillController extends FOSRestController
             $billpayers[] = $payInfo;
         }
 
-        
+        $serialiseBill = $this->container->get('jms_serializer')->serialize($bill, 'json', SerializationContext::create()->setGroups(array('Default')));
+
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => ['id' => $bill->getId(), 'summary' => $bill->getSummary(), 'amount' => $bill->getAmount(), 'bill_payers' => $billpayers, 'widget' => ['id' => $bill->getWidget()]]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => $serialiseBill];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
-        return $bill;
+        return $serialiseBill;
     }
 }

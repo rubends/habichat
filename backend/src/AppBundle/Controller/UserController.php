@@ -39,7 +39,7 @@ class UserController extends FOSRestController
         $user->setLastLogin(new \DateTime('now'));
         $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
-        $serialiseFlat = $this->container->get('jms_serializer')->serialize($flat, 'json', SerializationContext::create()->setGroups(array('Default', 'Flat')));
+        $serialiseFlat = $this->container->get('jms_serializer')->serialize($flat, 'json', SerializationContext::create()->setGroups(array('Default', 'Flat', 'Poll')));
         $calKey =  $this->getParameter('google_cal_key');
         return ['user' => $serialiseUser, 'flat' => $serialiseFlat, 'calKey' => $calKey];
     }

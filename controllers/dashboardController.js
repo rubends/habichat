@@ -264,13 +264,14 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = "";
 				$mdDialog.cancel();
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
-				$rootScope.flat.widgets.push(response.data);
-				if(response.data.widget_type === 'Picture'){
-					postPicture(response.data.id);
-				} else if(response.data.widget_type === 'Bill'){
-					postBill(response.data.id);
-				} else if(response.data.widget_type === 'Poll'){
-					postPoll(response.data.id);
+				$response = JSON.parse(response.data);
+				$rootScope.flat.widgets.push($response);
+				if($response.widget_type === 'Picture'){
+					postPicture($response.id);
+				} else if($response.widget_type === 'Bill'){
+					postBill($response.id);
+				} else if($response.widget_type === 'Poll'){
+					postPoll($response.id);
 				}
 			}
 		}, function errorCallback(response) {
@@ -453,6 +454,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						for(item in $rootScope.flat.widgets[widget].items){
 							if($rootScope.flat.widgets[widget].items[item].id === $todoId){
 								$rootScope.flat.widgets[widget].items.splice(item, 1);
+								$scope.setHeight($widgetId);
 							}
 						}
 					}
@@ -510,6 +512,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						for(item in $rootScope.flat.widgets[widget].items){
 							if($rootScope.flat.widgets[widget].items[item].id === $groceryId){
 								$rootScope.flat.widgets[widget].items.splice(item, 1);
+								$scope.setHeight($widgetId);
+								break;
 							}
 						}
 					}
@@ -648,7 +652,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items[0] = response.data;
+						$rootScope.flat.widgets[widget].items[0] = JSON.parse(response.data);
 						$timeout(function() {
 							$('.paid .icon').css('color', $rootScope.flat.header_color);
 						});
@@ -742,8 +746,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = "";
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
-						for(option in response.data){
-							$rootScope.flat.widgets[widget].items[0].options[option].voters = response.data[option].voters;
+						$options = JSON.parse(response.data);
+						for(option in $options){
+							$rootScope.flat.widgets[widget].items[0].options[option].voters = $options[option].voters;
 						}
 						if($rootScope.flat.widgets[widget].items[0].multiple) {
 							$timeout(function() {
@@ -844,7 +849,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$rootScope.error = response.data.error;
 				}
 				else{
-					$rootScope.flat.chats.push(response.data);
+					$rootScope.flat.chats.push(JSON.parse(response.data));
 					$scope.scrollChat();
 				}
 			}, function errorCallback(response) {
@@ -906,9 +911,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			$bodyHeight = $widget.find('.grid-stack-item-content .widgetBody').outerHeight();
 			$height = Math.ceil(($headerHeight + $bodyHeight)/70);
 			$grid = $('.grid-stack').data('gridstack');
-			if($widget.attr('data-gs-height') < $height){
-				$grid.update($widget, null, null, null, $height);
-			}
+			$grid.update($widget, null, null, null, $height);
 			$widget.attr('data-gs-min-height', $height);
 		});
 	}
@@ -931,7 +934,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			$(this).attr('data-gs-min-height', $height);
 		});
-	});
+	}, 500);
 
 	// GRID STACK
 	$scope.gridOptions = {
@@ -956,7 +959,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	};
 
 	// PUSHER
-	Pusher.logToConsole = true;
+	Pusher.logToConsole = false;
 	var pusher = new Pusher('9da7e6891a9c5a3c8896', {
 		cluster: 'eu',
 		encrypted: true
