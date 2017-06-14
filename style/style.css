@@ -12,6 +12,10 @@ h3 {
 p,
 span {
   font-family: 'Open Sans', sans-serif;
+  font-size: 16px;
+}
+strong {
+  font-size: 18px;
 }
 .btn-primary {
   background-color: #00897b !important;
@@ -91,11 +95,13 @@ hr {
   width: 30px;
 }
 .navbar .flatname {
-  font-size: 25px;
   text-align: center;
   width: 68%;
   left: 16%;
   position: absolute;
+}
+.navbar .flatname p {
+  font-size: 25px;
 }
 .navbar .navbar-nav a {
   color: #fff !important;
@@ -144,7 +150,11 @@ hr {
 }
 #translate p {
   margin-bottom: 0;
-  font-size: 0.7em;
+  font-size: 10px;
+}
+#translate p span {
+  outline: none;
+  font-size: 10px;
 }
 #translate p span:hover {
   cursor: pointer;
@@ -284,6 +294,9 @@ hr {
 .widget.recentlyAdded {
   border: 3px solid #d43f3a;
 }
+.widgetBtn {
+  font-weight: bold;
+}
 .widget {
   margin: 8px;
   height: 100%;
@@ -359,12 +372,16 @@ hr {
   background-size: cover;
   background-position: center;
   height: calc(100% - 34px);
-  margin: -16px;
+  margin: -23px -16px;
   position: absolute;
   width: 100%;
 }
 .widget .bill li {
-  margin-bottom: 4px;
+  margin-bottom: 16px;
+}
+.widget .bill li p {
+  display: inline-block;
+  margin-bottom: 0;
 }
 .widget .bill .smallText {
   margin: 16px 0 8px;
@@ -372,11 +389,9 @@ hr {
 .widget .bill .smallText:first-child {
   margin-top: 0;
 }
-.widget .bill .unpaidUser:hover {
-  cursor: pointer;
-}
-.widget .bill .unpaidUser:hover .fa {
-  color: #4cae4c;
+.widget .bill .paid span,
+.widget .bill .unpaid:hover span {
+  text-decoration: line-through;
 }
 .widget .grocery li {
   padding-bottom: 16px;
@@ -466,6 +481,9 @@ hr {
 .smallDialog {
   text-align: center;
   padding: 16px;
+}
+.smallDialog md-dialog-content {
+  overflow: initial;
 }
 /* === WIDGET DIALOG === */
 #widgetDialog .widgetBlock {

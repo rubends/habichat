@@ -8,6 +8,7 @@ use AppBundle\Entity\Grocery;
 use AppBundle\Entity\Text;
 use AppBundle\Entity\Picture;
 use AppBundle\Entity\Bill;
+use AppBundle\Entity\BillPayer;
 use AppBundle\Entity\Poll;
 use AppBundle\Entity\PollOption;
 use AppBundle\Entity\Calender;
@@ -18,6 +19,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class WidgetController extends FOSRestController
 {
@@ -67,6 +69,7 @@ class WidgetController extends FOSRestController
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $flat = $user->getFlat();
+        $user->setLastLogin(new \DateTime('now'));
 
         $widget = new Widget();
         $widget->setWidgetType($request->request->get('type'));
@@ -297,30 +300,46 @@ class WidgetController extends FOSRestController
         $bill = new Bill();
         $bill->setSummary($request->request->get('summary'));
         $bill->setAmount($request->request->get('amount'));
-        foreach($request->request->get('users') as $key => $value){
-            if($value){
-                $unpaidUser = $this->getDoctrine()
-                    ->getRepository('AppBundle:User')
-                    ->find($key);
-                $bill->addUnpaidUser($unpaidUser);
-            }
-        };
         $bill->setWidget($widget->getId());
 
         $this->getDoctrine()->getManager()->persist($bill);
+
+        $payers = [];
+        $userLoggedIn = $this->get('security.token_storage')->getToken()->getUser();
+        foreach($request->request->get('user') as $key => $value){
+            if($value['pay']){
+                $billpayer = new BillPayer();
+                $billpayer->setBill($bill);
+                $user = $this->getDoctrine()
+                    ->getRepository('AppBundle:User')
+                    ->find($key);
+                $billpayer->setUser($user);
+                $billpayer->setAmount($value['amount']);
+                if($user->getId() === $userLoggedIn->getId()){
+                    $billpayer->setPaid(1);
+                } else {
+                    $billpayer->setPaid(0);
+                }
+                $this->getDoctrine()->getManager()->persist($billpayer);
+                $payers[] = $billpayer;
+            }
+        };
+        $bill->setPayers($payers);
+        
         $this->getDoctrine()->getManager()->flush();
 
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $unpaidUsers = [];
-        foreach($bill->getUnpaidUsers() as $key => $unpaidUser){
-            $userInfo = ['id' => $unpaidUser->getId(), 'username' => $unpaidUser->getUsername()];
-            $unpaidUsers[] = $userInfo;
+        $billpayers = [];
+        foreach($bill->getPayers() as $key => $payer){
+            $user = $payer->getUser();
+            $payInfo = ['id' => $payer->getId(), 'amount' => $payer->getAmount(), 'paid' => $payer->getPaid(), 'user' => ['id' => $user->getId(), 'username' => $user->getUsername()]];
+            $billpayers[] = $payInfo;
         }
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'addItem', 'item' => ['id' => $bill->getId(), 'summary' => $request->request->get('summary'), 'amount' => $request->request->get('amount'), 'unpaid_users' => $unpaidUsers, 'widget' => ['id' => $widget->getId()]]];
+        $data = ['user' => ['id' => $userLoggedIn->getId(), 'username' => $userLoggedIn->getUsername()], 'reason' => 'addItem', 'item' => ['id' => $bill->getId(), 'summary' => $request->request->get('summary'), 'amount' => $request->request->get('amount'), 'bill_payers' => $billpayers, 'widget' => ['id' => $widget->getId()]]];
         $pusher = $this->get('pusher');
-        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
+        $pusher->trigger('flat-'.$userLoggedIn->getFlat()->getFlatToken(), $data);
 
-        return $bill;
+        $serialiseBill = $this->container->get('jms_serializer')->serialize($bill, 'json', SerializationContext::create()->setGroups(array('Default')));
+        return $serialiseBill;
     }
 
     /**

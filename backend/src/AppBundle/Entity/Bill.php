@@ -37,16 +37,9 @@ class Bill
     protected $amount;
 
     /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="bills")
-     * @ORM\JoinTable(name="bills_unpaid_users")
-     */
-    protected $unpaidUsers;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="User", inversedBy="paid")
-     * @ORM\JoinTable(name="bills_paid_users")
-     */
-    protected $paidUsers;
+    * @ORM\OneToMany(targetEntity="BillPayer", mappedBy="bill")
+    */
+    protected $payers;
 
     /**
      * @ORM\Column(type="integer")
@@ -113,47 +106,20 @@ class Bill
         $this->amount = $amount;
     }
 
-    public function addUnpaidUser(User $user)
+    /**
+     * @return payers
+     *
+     */
+    public function getPayers()
     {
-        $user->addBill($this);
-        $this->unpaidUsers[] = $user;
+        return $this->payers;
     }
 
     /**
-     * @return unpaidUsers
+     * @param $payers
      */
-    public function getUnpaidUsers()
+    public function setPayers($payers)
     {
-        return $this->unpaidUsers;
-    }
-
-    /**
-     * @param $unpaidUsers
-     */
-    public function setUnpaidUsers($unpaidUsers)
-    {
-        $this->unpaidUsers = $unpaidUsers;
-    }
-
-    public function addPaidUser(User $user)
-    {
-        $user->addPaid($this);
-        $this->paidUsers[] = $user;
-    }
-
-    /**
-     * @return paidUsers
-     */
-    public function getPaidUsers()
-    {
-        return $this->paidUsers;
-    }
-
-    /**
-     * @param $paidUsers
-     */
-    public function setPaidUsers($paidUsers)
-    {
-        $this->paidUsers = $paidUsers;
+        $this->payers = $payers;
     }
 }

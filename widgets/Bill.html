@@ -4,23 +4,14 @@
     <p class="smallText">{{'SUMMARY' | translate}}</p>
     <p>{{widget.items[0].summary}}</p>
     <p class="smallText">{{'DIVIDED_BETWEEN' | translate}}</p>
-    <div ng-show="widget.items[0].unpaid_users.length">
+    <div ng-show="widget.items[0].payers.length">
         <ul>
-            <li ng-repeat="unpaidUser in widget.items[0].unpaid_users" class="unpaidUser" ng-click="billPaid(widget.id, widget.items[0].id, unpaidUser.id)">
+            <li ng-repeat="payer in widget.items[0].payers" ng-click="billPaid(widget.id, widget.items[0].id, payer.id)" ng-class="payer.paid ? 'paid' : 'unpaid'">
                 <md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_account_balance_wallet_24px.svg" aria-label="wallet"></md-icon>
-                {{unpaidUser.username}} 
-                <span class="pull-right">{{(widget.items[0].amount / widget.items[0].unpaid_users.length) | currency:"€"}}</span>
+                <p>{{payer.user.username}} {{(user.id === payer.user.id ? 'YOU' : '') | translate}}</p>
+                <span class="pull-right">{{payer.amount | currency:"€"}}</span>
             </li>
         </ul>
         <p>{{widget.items[0].account}}</p>
-    </div>
-    <p ng-hide="widget.items[0].unpaid_users.length && !widget.items[0].paid_users.length"><strong>{{'EVERYBODY_PAID' | translate}}!</strong></p>
-    <div class="done" ng-show="widget.items[0].paid_users.length">
-        <ul>
-            <li ng-repeat="paidUser in widget.items[0].paid_users" class="paidUser">
-                <md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_account_balance_wallet_24px.svg" aria-label="wallet"></md-icon>
-                {{paidUser.username}}
-            </li>
-        </ul>
     </div>
 </div>

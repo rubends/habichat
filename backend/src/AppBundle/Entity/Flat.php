@@ -108,6 +108,13 @@ class Flat
     protected $fontColor;
 
     /**
+     * @ORM\Column(type="string", length=50, nullable=true)
+     * @Serializer\Expose
+     * @Serializer\Groups({"Flat"})
+     */
+    protected $headerFontColor;
+
+    /**
     * @ORM\OneToMany(targetEntity="User", mappedBy="flat")
     * @Serializer\Expose
     * @Serializer\Groups({"Flat"})
@@ -284,6 +291,23 @@ class Flat
     public function setFontColor($fontColor)
     {
         $this->fontColor = $fontColor;
+    }
+
+    /**
+     * @return string
+     *
+     */
+    public function getHeaderFontColor()
+    {
+        return $this->headerFontColor;
+    }
+
+    /**
+     * @param string $headerFontColor
+     */
+    public function setHeaderFontColor($headerFontColor)
+    {
+        $this->headerFontColor = $headerFontColor;
     }
 
     /**

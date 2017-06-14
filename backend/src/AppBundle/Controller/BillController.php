@@ -2,9 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\BillPayer;
 use AppBundle\Entity\Bill;
-use AppBundle\Entity\Widget;
-use AppBundle\Entity\User;
 use FOS\RestBundle\Controller\FOSRestController;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -17,36 +16,30 @@ class BillController extends FOSRestController
     /**
      * @ApiDoc()
      * @param Bill $bill
-     * @param User $user
-     * @return Bill[]
+     * @param BillPayer $payer
+     * @return BillPayer[]
      */
-    public function putBillPaidAction(Bill $bill, User $user)
+    public function putBillPayerAction(Bill $bill, BillPayer $payer)
     {
-        $unpaidUsers = $bill->getUnpaidUsers();
-        foreach($unpaidUsers as $key => $unpaidUser){
-            if($unpaidUser->getId() === $user->getId()){
-                $bill->addPaidUser($unpaidUser);
-                unset($unpaidUsers[$key]);
-                break;
-            }
+        if($payer->getPaid() == 0){
+            $payer->setPaid(1);
+        } else {
+            $payer->setPaid(0);
         }
-        $bill->setUnpaidUsers($unpaidUsers);
 
-        $this->getDoctrine()->getManager()->persist($bill);
+        $this->getDoctrine()->getManager()->persist($payer);
         $this->getDoctrine()->getManager()->flush();
 
+        $billpayers = [];
+        foreach($bill->getPayers() as $key => $payer){
+            $user = $payer->getUser();
+            $payInfo = ['id' => $payer->getId(), 'amount' => $payer->getAmount(), 'paid' => $payer->getPaid(), 'user' => ['id' => $user->getId(), 'username' => $user->getUsername()]];
+            $billpayers[] = $payInfo;
+        }
+
+        
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $unpaidUsers = [];
-        foreach($bill->getUnpaidUsers() as $key => $unpaidUser){
-            $userInfo = ['id' => $unpaidUser->getId(), 'username' => $unpaidUser->getUsername()];
-            $unpaidUsers[] = $userInfo;
-        }
-        $paidUsers = [];
-        foreach($bill->getPaidUsers() as $key => $paidUser){
-            $userInfo = ['id' => $paidUser->getId(), 'username' => $paidUser->getUsername()];
-            $paidUsers[] = $userInfo;
-        }
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => ['id' => $bill->getId(), 'unpaid_users' => $unpaidUsers, 'paid_users' => $paidUsers, 'widget' => ['id' => $bill->getWidget()]]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => ['id' => $bill->getId(), 'summary' => $bill->getSummary(), 'amount' => $bill->getAmount(), 'bill_payers' => $billpayers, 'widget' => ['id' => $bill->getWidget()]]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 

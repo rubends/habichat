@@ -1,5 +1,5 @@
-<div class="chore">
-    <div class="table-responsive">
+<div class="chore" ng-init="setHeight(widget.id)">
+    <div>
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>
@@ -27,7 +27,7 @@
             </tbody>
         </table>
     </div>
-    <md-button ng-click="showChoreDialog($event, widget.id)" class="md-fab md-mini pull-right" aria-label="Add chore">
-        <md-icon md-svg-src="bower_components/material-design-icons/content/svg/design/ic_add_48px.svg"></md-icon>
+    <md-button ng-click="showChoreDialog($event, widget.id)" class="pull-right widgetBtn" aria-label="Add chore">
+        {{'ADD_CHORE' | translate}}
     </md-button>
 </div>

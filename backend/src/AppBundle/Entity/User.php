@@ -79,14 +79,9 @@ class User implements UserInterface
     protected $invite;
 
      /**
-     * @ORM\ManyToMany(targetEntity="Bill", mappedBy="unpaidUsers")
+     * @ORM\OneToMany(targetEntity="BillPayer", mappedBy="user")
      */
     protected $bills;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Bill", mappedBy="paidUsers")
-     */
-    protected $paid;
 
     /**
      * @ORM\ManyToMany(targetEntity="PollOption", mappedBy="voters")

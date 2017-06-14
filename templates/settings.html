@@ -28,7 +28,7 @@
 						<div class="col-md-6" id="widgetPreview">
 							<p>Widget</p>
 							<div class="panel panel-default" ng-style="{'background-color': flat.widget_color, 'color': flat.font_color}">
-								<div class="panel-heading" ng-style="{'background-color': flat.header_color, 'color': flat.font_color}">
+								<div class="panel-heading" ng-style="{'background-color': flat.header_color, 'color': flat.header_font_color}">
 									<h3>{{'THISISTITLE' | translate}}</h3>
 									<div class="resize">
 										<i class="fa fa-times" aria-hidden="true" data-toggle="tooltip" title="Delete widget" onmouseenter="$(this).tooltip()"></i>
@@ -40,8 +40,9 @@
 							</div>
 						</div>
 						<div class="col-md-6">
-								<div md-color-picker ng-model="flat.widget_color" ng-change="changeFlatSettings()" label="Widget {{'COLOR' | translate}}"></div>
 								<div md-color-picker ng-model="flat.header_color" ng-change="changeFlatSettings()" label="Header {{'COLOR' | translate}}"></div>
+								<div md-color-picker ng-model="flat.header_font_color" ng-change="changeFlatSettings()" label="Header font {{'COLOR' | translate}}"></div>
+								<div md-color-picker ng-model="flat.widget_color" ng-change="changeFlatSettings()" label="Widget {{'COLOR' | translate}}"></div>
 								<div md-color-picker ng-model="flat.font_color" ng-change="changeFlatSettings()" label="Font {{'COLOR' | translate}}"></div>
 						</div>
 					</div>

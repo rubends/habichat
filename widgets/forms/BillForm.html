@@ -9,17 +9,17 @@
 </md-input-container>
 <md-input-container class="md-block" flex-gt-sm>
     <label>{{'TOTAL_AMOUNT' | translate}}</label>
-    <input type="number" step="0.01" ng-model="ctrl.addBillForm.amount">
+    <input type="number" step="0.01" ng-model="ctrl.addBillForm.amount" ng-change="ctrl.setBillAmount('total')">
 </md-input-container>
 <p>{{'SPLIT' | translate}}</p>
-<div layout-gt-xs="row" ng-repeat="flatmate in ctrl.flat.users | filter: {id: '!' + ctrl.user.id}">
+<div layout-gt-xs="row" ng-repeat="flatmate in ctrl.flat.users">
     <md-input-container class="md-block" flex-gt-sm>
-        <md-checkbox ng-model="ctrl.addBillForm.users[flatmate.id]" aria-label="pollMultipleVotes" ng-value="flatmate.id">
-            {{flatmate.username}}
+        <md-checkbox class="billsplitCheck"  ng-change="ctrl.setBillAmount('total')" ng-model="ctrl.addBillForm.user[flatmate.id].pay" aria-label="pollMultipleVotes" ng-value="flatmate.id">
+            {{flatmate.username}} {{(ctrl.user.id === flatmate.id ? 'YOU' : '') | translate}}
         </md-checkbox>
     </md-input-container>
-    <!--<md-input-container class="md-block" flex-gt-sm>
+    <md-input-container class="md-block" flex-gt-sm>
         <label>ows (in €)</label>
-        <input type="number" ng-value="ctrl.addBillForm.amount / ctrl.addBillForm.users.length">
-    </md-input-container>-->
+        <input type="number" step="0.01" ng-model="ctrl.addBillForm.user[flatmate.id].amount" ng-change="ctrl.setBillAmount('divide')">
+    </md-input-container>
 </div>

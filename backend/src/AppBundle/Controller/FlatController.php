@@ -47,7 +47,8 @@ class FlatController extends FOSRestController
         $flat->setBackgroundImage('background.jpg?v='.time());
         $flat->setWidgetColor('#2f2f2f');
         $flat->setHeaderColor('#00897b');
-        $flat->setFontColor('#fafafa');
+        $flat->setFontColor('#00897b');
+        $flat->setHeaderFontColor('#fafafa');
 
         $this->getDoctrine()->getManager()->persist($flat);
         $key = md5(uniqid($flat->getId(), true));
@@ -104,6 +105,7 @@ class FlatController extends FOSRestController
         $flat->setWidgetColor($request->request->get('widget_color'));
         $flat->setHeaderColor($request->request->get('header_color'));
         $flat->setFontColor($request->request->get('font_color'));
+        $flat->setHeaderFontColor($request->request->get('header_font_color'));
         $flat->setStreet($request->request->get('street'));
         $flat->setNumber($request->request->get('number'));
         $flat->setZipcode($request->request->get('zipcode'));
@@ -115,7 +117,7 @@ class FlatController extends FOSRestController
         $this->getDoctrine()->getManager()->flush();
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'flatUpdate', 'flat' => ['widget_color' => $flat->getWidgetColor(), 'header_color' => $flat->getHeaderColor(), 'font_color' => $flat->getFontColor(), 'street' => $flat->getStreet(), 'number' => $flat->getNumber(), 'zipcode' => $flat->getZipcode(), 'city' => $flat->getCity(), 'country' => $flat->getCountry(), 'name' => $flat->getName()]];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'flatUpdate', 'flat' => ['widget_color' => $flat->getWidgetColor(), 'header_color' => $flat->getHeaderColor(), 'font_color' => $flat->getFontColor(), 'header_font_color' => $flat->getHeaderFontColor(), 'street' => $flat->getStreet(), 'number' => $flat->getNumber(), 'zipcode' => $flat->getZipcode(), 'city' => $flat->getCity(), 'country' => $flat->getCountry(), 'name' => $flat->getName()]];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 

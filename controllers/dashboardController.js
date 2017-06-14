@@ -8,7 +8,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$("#dashboardLink").addClass("activePage");
 		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+$rootScope.flat.background_image+')'};
 		$scope.widgetStyle = {'background-color': $rootScope.flat.widget_color, 'color': $rootScope.flat.font_color};
-		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.font_color};
+		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.header_font_color};
 		$scope.inputTextStyle = {"border-bottom-color": $rootScope.flat.header_color, "color": $rootScope.flat.font_color};
 		$scope.inputBtnStyle = {"border-color": $rootScope.flat.header_color, "color": $rootScope.flat.header_color};
 	}
@@ -391,6 +391,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 							$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
 							$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
 						});
+						$scope.setHeight($widgetId);
 					}
 				}
 			}
@@ -480,6 +481,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
+						$scope.setHeight($widgetId);
+						break;
 					}
 				}
 			}
@@ -558,6 +561,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$http(oConfig).then(function successCallback(response) {
 			$scope.weather = $scope.weather ? $scope.weather : [];
 			$scope.weather[$id] = response.data;
+			$scope.setHeight($id);
 		}, function errorCallback(response) {
 			console.log(response);
 		});
@@ -580,9 +584,14 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			else{
 				$rootScope.error = "";
 				$scope.addBillForm = {};
+				console.log(response.data);
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items.push(response.data);
+						$rootScope.flat.widgets[widget].items[0] = JSON.parse(response.data);
+						$scope.setHeight($widgetId);
+						$timeout(function() {
+							$('.paid .icon').css('color', $rootScope.flat.header_color);
+						});
 					}
 				}
 			}
@@ -591,8 +600,40 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		});
 	}
 
-	$scope.billPaid = function ($widgetId, $billId, $userId){
-		var sUrl = $rootScope.apiPath + "/bills/"+$billId+"/paids/"+$userId;
+	$scope.setBillAmount= function ($type){
+		if($type === 'total'){
+			$timeout(function() {
+				$divided = $('.billsplitCheck.md-checked').length;
+				if($divided >= 1){
+					$amount = Number(($scope.addBillForm.amount / $divided).toFixed(2));
+					for($user in $rootScope.flat.users){
+						$id = $rootScope.flat.users[$user].id;
+						if($scope.addBillForm.user[$id]){
+							if($scope.addBillForm.user[$id].pay){
+								$scope.addBillForm.user[$id].amount = $amount;
+							} else {
+								$scope.addBillForm.user[$id].amount = 0;
+							}
+						}
+					}
+				}
+			});
+		} else {
+			$amount = 0;
+			for($user in $rootScope.flat.users){
+				$id = $rootScope.flat.users[$user].id;
+				if($scope.addBillForm.user[$id]){
+					if($scope.addBillForm.user[$id].pay){
+						$amount = $amount + $scope.addBillForm.user[$id].amount;
+					}
+				}
+			}
+			$scope.addBillForm.amount = $amount;
+		}
+	}
+
+	$scope.billPaid = function ($widgetId, $billId, $payerId){
+		var sUrl = $rootScope.apiPath + "/bills/"+$billId+"/payers/"+$payerId;
         var oConfig = {
             url: sUrl,
             method: "PUT",
@@ -608,6 +649,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items[0] = response.data;
+						$timeout(function() {
+							$('.paid .icon').css('color', $rootScope.flat.header_color);
+						});
 						break;
 					}
 				}
@@ -636,6 +680,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
+						$scope.setHeight($widgetId);
+						break;
 					}
 				}
 			}
@@ -829,7 +875,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 
 	$scope.scrollChat = function() {
 		$timeout(function() {
-				$('.msgs .simplebar-scroll-content').scrollTop($('.msgs .simplebar-scroll-content')[0].scrollHeight);
+			$('.msgs .simplebar-scroll-content').scrollTop($('.msgs .simplebar-scroll-content')[0].scrollHeight);
 		});
 	}
 
@@ -853,17 +899,37 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		});
 	}
 
+	$scope.setHeight = function ($id) {
+		$timeout(function() {
+			$widget = $('#'+$id);
+			$headerHeight = $widget.find('.grid-stack-item-content .widgetHeader').outerHeight();
+			$bodyHeight = $widget.find('.grid-stack-item-content .widgetBody').outerHeight();
+			$height = Math.ceil(($headerHeight + $bodyHeight)/70);
+			$grid = $('.grid-stack').data('gridstack');
+			if($widget.attr('data-gs-height') < $height){
+				$grid.update($widget, null, null, null, $height);
+			}
+			$widget.attr('data-gs-min-height', $height);
+		});
+	}
+
 	// AFTER BUILDUP
 	$timeout(function() {
 		$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
 		$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
 		$('.selectColor .md-on').css('background-color', $rootScope.flat.header_color);
 		$('.selectColor .md-off').css('border-color', $rootScope.flat.header_color);
+		$('.widgetBtn').css('color', $rootScope.flat.header_color);
+		$('.paid .icon').css('color', $rootScope.flat.header_color);
+		$grid = $('.grid-stack').data('gridstack');
 		$('.grid-stack-item').each(function(){
 			$headerHeight = $(this).find('.grid-stack-item-content .widgetHeader').outerHeight();
 			$bodyHeight = $(this).find('.grid-stack-item-content .widgetBody').outerHeight();
-			$height = $headerHeight + $bodyHeight;
-			$(this).attr('data-gs-min-height', Math.ceil($height/70));
+			$height = Math.ceil(($headerHeight + $bodyHeight)/70);
+			if($(this).attr('data-gs-height') < $height){
+				$grid.update($(this), null, null, null, $height);
+			}
+			$(this).attr('data-gs-min-height', $height);
 		});
 	});
 
@@ -933,6 +999,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 				$rootScope.flat.widgets.push(data.widget);
 				showNotification('widget', 'add', data.widget.id, data.user.username, data.widget.widget_type, data.widget.title);
+				$scope.postLastLogin();
+				$scope.setHeight(data.widget.id);
 
 			} else if(data.reason === 'addItem') {
 				for(widget in $rootScope.flat.widgets){
@@ -942,6 +1010,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 							data.item.title = data.item.item;
 						}
 						showNotification('item', 'add', data.item.widget.id, data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
+						$scope.postLastLogin();
 						break;
 					}
 				}
@@ -1022,7 +1091,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$rootScope.flat[$property] = data.flat[$property];
 				}
 				$scope.widgetStyle = {'background-color': data.flat.widget_color, 'color': data.flat.font_color};
-				$scope.headerStyle = {'background-color': data.flat.header_color, 'color': data.flat.font_color};
+				$scope.headerStyle = {'background-color': data.flat.header_color, 'color': data.flat.header_font_color};
 			} else if(data.reason === 'backgroundUpdate') {
 				$rootScope.flat.background_image = data.background_image;
 				$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+data.background_image+')'};
