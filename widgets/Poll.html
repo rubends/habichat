@@ -1,4 +1,4 @@
-<div class="poll">
+<div class="poll" ng-controller="pollCtrl">
     <p><strong>{{widget.items[0].question}}</strong></p>
     <div ng-show="getPassed(widget.items[0].until)">
         <p class="smallText">{{'VOTING_ENDS' | translate}} {{widget.items[0].until | date:"HH:mm dd/MM/yy"}}</p>

@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class TodoController extends FOSRestController
 {
@@ -34,11 +35,12 @@ class TodoController extends FOSRestController
      */
     public function deleteTodoAction(Todo $todo)
     {
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'deleteItem', 'item' => ['id' => $todo->getId(), 'widget' => $todo->getWidget()]];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
         $this->getDoctrine()->getManager()->remove($todo);
         $this->getDoctrine()->getManager()->flush();
-
-        // $user = $this->get('security.token_storage')->getToken()->getUser();
-        // return $this->getDoctrine()->getRepository('AppBundle:Todo')->findByUserID($user->getId());
         return new JsonResponse(array('deleted' => $todo));
     }
 
@@ -62,6 +64,12 @@ class TodoController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($todo);
         $this->getDoctrine()->getManager()->flush();
+
+        $serialiseTodo = $this->container->get('jms_serializer')->serialize($todo, 'json', SerializationContext::create()->setGroups(array('Default')));
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => $serialiseTodo];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
         return $todo;
     }
 }

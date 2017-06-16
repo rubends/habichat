@@ -1,4 +1,4 @@
-<div class="todo">
+<div class="todo" ng-controller="todoCtrl">
     <p ng-hide="widget.items.length">{{'NO_TODO' | translate}}</p>
     <ul>
         <li ng-repeat="item in widget.items | filter: {done: '0'} as notDone">

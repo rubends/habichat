@@ -10,9 +10,30 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class FlatController extends FOSRestController
 {
+    /**
+     * @ApiDoc()
+     *
+     * @return $flat
+     */
+    public function getFlatAction()
+    {
+        $flat = $this->get('security.token_storage')->getToken()->getUser()->getFlat();
+        $widgets = $flat->getWidgets();
+        foreach($widgets as $key => $widget){
+            $type = $widget->getWidgetType();
+            if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                $widget->setItems($items);
+            }
+        }
+        $serialiseFlat = $this->container->get('jms_serializer')->serialize($flat, 'json', SerializationContext::create()->setGroups(array('Default', 'Widget', 'Flat', 'Poll')));
+        return $serialiseFlat;
+    }
+
     /**
      * @ApiDoc()
      *
@@ -20,9 +41,18 @@ class FlatController extends FOSRestController
      *
      * @return $flat
      */
-    public function getFlatAction(Flat $flat)
+    public function getFlatWidgetsAction(Flat $flat)
     {
-        return $flat;
+        $widgets = $flat->getWidgets();
+        foreach($widgets as $key => $widget){
+            $type = $widget->getWidgetType();
+            if(class_exists('\\AppBundle\\Entity\\'.$type)) {
+                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
+                $widget->setItems($items);
+            }
+        }
+        $serialiseWidgets = $this->container->get('jms_serializer')->serialize($widgets, 'json', SerializationContext::create()->setGroups(array('Default', 'Poll')));
+        return $serialiseWidgets;
     }
 
     /**

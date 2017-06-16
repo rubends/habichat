@@ -2,7 +2,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
 	return {
 		getUser: function(){
             if ($cookies.get('token')) {
-                if(!$rootScope.user || !$rootScope.flat || $rootScope.flat.length == '0') {
+                if(!$rootScope.user || !$rootScope.user.username) {
                     $rootScope.loadScreen = true;
                     var sUrl = "../backend/web/api/user";
                     var oConfig = {
@@ -13,22 +13,14 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                     };
                     var promise = $http(oConfig).then(function successCallback(response) {
                         if (response.data.hasOwnProperty('error')){
+                            $rootScope.loadScreen = false;
                             $rootScope.error = response.data.error;
                         }
                         else{
                             $rootScope.error = "";
                             $rootScope.user = JSON.parse(response.data.user);
-                            if($rootScope.user.flat){
-                                $rootScope.flat = JSON.parse(response.data.flat);
-                                $rootScope.flat.chats.new = 0;
-                                for($i = $rootScope.flat.chats.length-1; $i >= 0; $i--){
-                                    if(moment($rootScope.flat.chats[$i].send).isAfter($rootScope.user.last_login)){
-                                        $rootScope.flat.chats.new++;
-                                    } else { break; }
-                                }
-                            }
                             $rootScope.calKey = response.data.calKey;
-                            console.log($rootScope.user, $rootScope.flat);
+                            console.log($rootScope.user);
                             $rootScope.user.token = $cookies.get('token');
                             $rootScope.user.loggedIn = true;
                             $rootScope.loadScreen = false;
@@ -39,7 +31,9 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                 }
             }
             else{
-                $location.path('/login');
+                if($location.path() === '/dasboard' || $location.path() === '/settings'){
+                    $location.path('/login');
+                }
             }
             return promise;
         }

@@ -85,6 +85,38 @@ hr {
   padding-left: 10px;
   padding-right: 10px;
 }
+.navbar .navbar-toggle {
+  border: none;
+  background: transparent !important;
+}
+.navbar .navbar-toggle:hover {
+  background: transparent !important;
+}
+.navbar .navbar-toggle .icon-bar {
+  background-color: #fafafa;
+  width: 22px;
+  transition: all 0.2s;
+}
+.navbar .navbar-toggle .icon-bar:nth-child(2) {
+  transform: rotate(45deg);
+  transform-origin: 10% 10%;
+}
+.navbar .navbar-toggle .icon-bar:nth-child(3) {
+  opacity: 0;
+}
+.navbar .navbar-toggle .icon-bar:nth-child(4) {
+  transform: rotate(-45deg);
+  transform-origin: 10% 90%;
+}
+.navbar .navbar-toggle.collapsed .icon-bar:nth-child(2) {
+  transform: rotate(0);
+}
+.navbar .navbar-toggle.collapsed .icon-bar:nth-child(3) {
+  opacity: 1;
+}
+.navbar .navbar-toggle.collapsed .icon-bar:nth-child(4) {
+  transform: rotate(0);
+}
 .navbar .navbar-brand {
   font-weight: bold;
   color: #fff !important;
@@ -103,8 +135,13 @@ hr {
 .navbar .flatname p {
   font-size: 25px;
 }
-.navbar .navbar-nav a {
-  color: #fff !important;
+.navbar .navbar-nav li a {
+  color: #fff;
+}
+.navbar .navbar-nav p {
+  float: right;
+  width: calc(100% - 24px);
+  padding-left: 24px;
 }
 .navbar .icon {
   color: #fff;
@@ -112,8 +149,16 @@ hr {
 .navbar .activePage,
 .navbar .activePage .icon,
 .navbar a:hover .icon,
-.navbar a:hover {
+.navbar a:hover,
+.navbar .activePage a p {
   color: #00897b !important;
+}
+.navbar .activePage .visible-xs,
+.navbar .activePage .icon .visible-xs,
+.navbar a:hover .icon .visible-xs,
+.navbar a:hover .visible-xs,
+.navbar .activePage a p .visible-xs {
+  font-weight: bold;
 }
 .navbar .userMenu button {
   height: 54px;
@@ -565,7 +610,7 @@ hr {
 }
 #chat .msgs .msg .text {
   font-size: 12px;
-  margin-bottom: 1px;
+  margin-bottom: 2px;
   background-color: #00897b;
   color: #fff;
   padding: 5px 8px;

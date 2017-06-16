@@ -1,0 +1,50 @@
+%!Adobe-FontList 1.14
+%Locale:0x409
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:D:\xampp\htdocs\sites\eindwerk\Font\weathericons-regular-webfont.eot
+FileModTime:1490023554
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:D:\xampp\htdocs\sites\eindwerk\Font\weathericons-regular-webfont.svg
+FileModTime:1490023554
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:TrueType
+FontName:WeatherIcons-Regular
+FamilyName:Weather Icons
+StyleName:Regular
+FullName:Weather Icons Regular
+MenuName:Weather Icons
+StyleBits:0
+WritingScript:Roman
+OutlineFileName:D:\xampp\htdocs\sites\eindwerk\Font\weathericons-regular-webfont.ttf
+DataFormat:sfntData
+FileLength:99564
+FileModTime:1490023554
+WeightClass:400
+WidthClass:5
+AngleClass:0
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:D:\xampp\htdocs\sites\eindwerk\Font\weathericons-regular-webfont.woff
+FileModTime:1490023554
+%EndFont
+
+%BeginFont
+Handler:DirectoryHandler
+FontType:Invalid
+OutlineFileName:D:\xampp\htdocs\sites\eindwerk\Font\weathericons-regular-webfont.woff2
+FileModTime:1490023554
+%EndFont
+

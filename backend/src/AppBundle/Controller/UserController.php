@@ -23,25 +23,12 @@ class UserController extends FOSRestController
     public function getUserAction()
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
-        $flat = $user->getFlat();
-        if($flat){
-            $widgets = $flat->getWidgets();
-            foreach($widgets as $key => $widget){
-                $type = $widget->getWidgetType();
-                if(class_exists('\\AppBundle\\Entity\\'.$type)) {
-                    $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-                    $widget->setItems($items);
-                }
-            }
-        }
-
         $serialiseUser = $this->container->get('jms_serializer')->serialize($user, 'json', SerializationContext::create()->setGroups(array('Default', 'User')));
         $user->setLastLogin(new \DateTime('now'));
         $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
-        $serialiseFlat = $this->container->get('jms_serializer')->serialize($flat, 'json', SerializationContext::create()->setGroups(array('Default', 'Flat', 'Poll')));
-        $calKey =  $this->getParameter('google_cal_key');
-        return ['user' => $serialiseUser, 'flat' => $serialiseFlat, 'calKey' => $calKey];
+        $calKey = $this->getParameter('google_cal_key');
+        return ['user' => $serialiseUser, 'calKey' => $calKey];
     }
 
     /**
@@ -122,9 +109,8 @@ class UserController extends FOSRestController
 
         $response = [
                 'token' => $token,
-                'username'  => $user->getUsername(),
-                'email' => $user->getEmail(),
-                'flat' => $user->getFlat() ? $user->getFlat()->getId() : false
+                'id'  => $user->getId(),
+                'flat' => $user->getFlat() ? ['id' => $user->getFlat()->getId()] : false
             ];
 
         return new JsonResponse($response, $statusCode); // Return a 201 Created with the JWT.

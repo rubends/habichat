@@ -1,4 +1,4 @@
-<div class="grocery">
+<div class="grocery" ng-controller="groceryCtrl">
     <p ng-hide="widget.items.length">{{'NO_GROCERIES' | translate}}.</p>
     <ul>
         <li ng-repeat="grocery in widget.items">

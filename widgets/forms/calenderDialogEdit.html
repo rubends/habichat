@@ -46,7 +46,7 @@
             </div>
             <div class="navView" ng-show="editView === 'delete'">
                 <p ng-show="calItem.url">Feed: "{{calItem.source.googleCalendarId}}"</p>
-                <md-button ng-click="deleteCalItem()" class="md-raised md-warn">{{'DELETE' | translate}} {{calItem.type | translate}}</md-button>
+                <md-button ng-click="deleteCalItem()" class="md-raised md-warn">{{'DELETE' | translate}}</md-button>
                 <md-button class="md-raised" ng-click="cancel()">{{'CANCEL' | translate}}</md-button>
             </div>
     </md-dialog-content>

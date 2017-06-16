@@ -1,16 +1,23 @@
 app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', '$timeout', '$mdDialog', '$mdToast', '$filter', function($rootScope, $scope, $http, $cookies, $location, $timeout, $mdDialog, $mdToast, $filter){
+
 	if (!$rootScope.user || !$rootScope.user.loggedIn) {
 		$location.path('/login');
 	}
-	else if (!$rootScope.flat) {
+	else if (!$rootScope.user.flat) {
 		$location.path('/flat');
 	} else {
-		$("#dashboardLink").addClass("activePage");
+		$rootScope.flat.chats.new = 0;
+		for($i = $rootScope.flat.chats.length-1; $i >= 0; $i--){
+			if(moment($rootScope.flat.chats[$i].send).isAfter($rootScope.user.last_login)){
+				$rootScope.flat.chats.new++;
+			} else { break; }
+		}
 		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+$rootScope.flat.background_image+')'};
 		$scope.widgetStyle = {'background-color': $rootScope.flat.widget_color, 'color': $rootScope.flat.font_color};
 		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.header_font_color};
 		$scope.inputTextStyle = {"border-bottom-color": $rootScope.flat.header_color, "color": $rootScope.flat.font_color};
 		$scope.inputBtnStyle = {"border-color": $rootScope.flat.header_color, "color": $rootScope.flat.header_color};
+
 	}
 
 	$scope.showWidgetDialog = function(ev) {
@@ -30,186 +37,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	};
 	$scope.closeDialog = function() {
 		$mdDialog.cancel();
-	};
-
-	$scope.onCalItemClick = function (date, jsEvent, view){
-		if(date.url){
-			date.type = 'feed';
-		} else {
-			date.type = 'event';
-		}
-		if(date.start) {
-			$d = moment(date.start).toDate();
-			date.start.date = $d;
-			date.start.time = $d;
-		}
-		if(date.end) {
-			$d = moment(date.end).toDate();
-			date.end.date = $d;
-			date.end.time = $d;
-		}
-		$mdDialog.show({
-			controller: editCalItemController,
-			templateUrl: 'widgets/forms/calenderDialogEdit.html',
-			parent: angular.element(document.body),
-			targetEvent: jsEvent,
-			clickOutsideToClose: true,
-			locals: {
-				calItem: date,
-				moment: window.moment
-			},
-		})
-		.then(function(answer) {
-		 //show answer or something
-		}, function() {
-			$scope.calItemForm = {};
-   		});
-
-		if (date.url) {
-            return false;
-        }
-	}
-
-	function editCalItemController($scope, $mdDialog, calItem, moment, $http){
-		$scope.calItem = calItem;
-		$scope.moment = moment;
-
-		$scope.cancel = function() {
-			$mdDialog.cancel();
-		};
-
-		$scope.saveCalItem = function() {
-			var sUrl = $rootScope.apiPath + "/calenders/"+$scope.calItem.itemId;
-			var oConfig = {
-				url: sUrl,
-				method: "PUT",
-				data: {'title': $scope.calItem.title, 'allDay': $scope.calItem.allDay, 'start': {'date':  $scope.calItem.start.date, 'time': $scope.calItem.start.time}, 'end': {'date':  $scope.calItem.end.date, 'time': $scope.calItem.end.time}},
-				headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-				params: {callback: "JSON_CALLBACK"}
-			};
-			$http(oConfig).then(function successCallback(response) {
-				if (response.data.hasOwnProperty('error')){
-					$rootScope.error = response.data.error;
-				}
-				else{
-					$rootScope.error = "";
-					$mdDialog.cancel();
-					for(widget in $rootScope.flat.widgets){
-						if($rootScope.flat.widgets[widget].id === response.data.widget){
-							for(item in $rootScope.flat.widgets[widget].calItems[0].events){
-								if($rootScope.flat.widgets[widget].calItems[0].events[item].itemId === response.data.id){
-									$rootScope.flat.widgets[widget].calItems[0].events.splice(item,1);
-									response.data.className = ['newCalItem'];
-									response.data.itemId = response.data.id;
-									response.data.allDay = response.data.all_day;
-									$rootScope.flat.widgets[widget].calItems[0].events.push(response.data);
-									break;
-								}
-							}
-						}
-					}
-				}
-			}, function errorCallback(response) {
-				console.log(response);
-			});
-		}
-
-		$scope.deleteCalItem = function() {
-			if(!$scope.calItem.itemId){
-				$scope.calItem.itemId = $scope.calItem.source.itemId
-			}
-			var sUrl = $rootScope.apiPath + "/calenders/"+$scope.calItem.itemId;
-			var oConfig = {
-				url: sUrl,
-				method: "DELETE",
-				headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-				params: {callback: "JSON_CALLBACK"}
-			};
-			$http(oConfig).then(function successCallback(response) {
-				if (response.data.hasOwnProperty('error')){
-					$rootScope.error = response.data.error;
-				}
-				else{
-					$rootScope.error = "";
-					$mdDialog.cancel();
-					for(widget in $rootScope.flat.widgets){
-						if($rootScope.flat.widgets[widget].id === response.data){
-							if($scope.calItem.type === 'feed'){
-								for(item in $rootScope.flat.widgets[widget].calItems){
-									if($rootScope.flat.widgets[widget].calItems[item].itemId === $scope.calItem.itemId){
-										$rootScope.flat.widgets[widget].calItems.splice(item,1);
-									}
-								}
-							} else {
-								for(item in $rootScope.flat.widgets[widget].calItems[0].events){
-									if($rootScope.flat.widgets[widget].calItems[0].events[item].itemId === $scope.calItem.itemId){
-										$rootScope.flat.widgets[widget].calItems[0].events.splice(item,1);
-										break;
-									}
-								}
-							}
-						}
-					}
-				}
-			}, function errorCallback(response) {
-				console.log(response);
-			});
-		}
-	}
-
-	 $scope.uiConfig = {
-      calendar:{
-		locale: localStorage.language,
-		lang: localStorage.language,
-        height: "auto",
-        editable: true,
-		timeFormat: 'H(:mm)',
-		ignoreTimezone: false,
-		fixedWeekCount: false,
-		googleCalendarApiKey: $rootScope.calKey,
-        header:{
-          left: 'month agendaWeek agendaDay',
-          center: 'title',
-          right: 'today prev,next'
-        },
-        eventClick: $scope.onCalItemClick
-      }
-    };
-	
-	$scope.toCalItems = function($widget){
-		$widget.calItems = [{events: [], color:'black', textColor: 'white'}];
-		for($item in $widget.items){
-			if(!$widget.items[$item].url) {
-				$event = {
-					title: $widget.items[$item].title,
-					start: $widget.items[$item].start,
-					end: $widget.items[$item].end,
-					allDay: $widget.items[$item].all_day,
-					itemId: $widget.items[$item].id
-				}
-				$widget.calItems[0].events.push($event);
-			} else {
-				$widget.calItems.push({url: $widget.items[$item].url, dataType : 'jsonp', className: 'newCalItem', itemId: $widget.items[$item].id});
-			}
-		}
-	};
-
-	$scope.showCalendertDialog = function(ev, $widgetId) {
-		$scope.calItemForm = {};
-		$scope.calWidgetId = $widgetId;
-		$mdDialog.show({
-			controller: () => this,
-			controllerAs: 'ctrl',
-			templateUrl: 'widgets/forms/calenderDialog.html',
-			parent: angular.element(document.body),
-			targetEvent: ev,
-			clickOutsideToClose: true
-		})
-		.then(function(answer) {
-		 //show answer or something
-		}, function() {
-			$scope.calItemForm = {};
-   		});
 	};
 
 	$scope.showChoreDialog = function(ev, $widgetId) {
@@ -317,11 +144,11 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 
 	function deletedToast($widgetId) {
 		$mdToast.show($mdToast.simple().textContent($filter('translate')('WIDGET_DELETE')).action($filter('translate')('UNDO')).position('bottom center'))
-			.then(function(response) {
-				if ( response == 'ok' ) {
-					$scope.deleteWidget($widgetId);
-				}
-			});
+		.then(function(response) {
+			if ( response == 'ok' ) {
+				$scope.deleteWidget($widgetId);
+			}
+		});
 	};
 
 	function changeWidgetSize($widgetId, $width, $height){
@@ -362,162 +189,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			else{
 				$rootScope.error = "";
 				console.log(response.data);
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-
-	$scope.postTodo = function($widgetId, $todoTitle){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/todos";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-            data: {"title": $todoTitle},
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
-			}
-			else{
-				$rootScope.error = "";
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items.push(response.data);
-						$timeout(function() {
-							$('.checkboxColor .md-icon').css('background-color', 'transparent');
-							$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
-							$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
-						});
-						$scope.setHeight($widgetId);
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	$scope.toggleTodoDone = function($widgetId, $todoId){
-		var sUrl = $rootScope.apiPath + "/todos/" + $todoId + "/toggle";
-        var oConfig = {
-            url: sUrl,
-            method: "PUT",
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						for(item in $rootScope.flat.widgets[widget].items){
-							if($rootScope.flat.widgets[widget].items[item].id === $todoId){
-								$rootScope.flat.widgets[widget].items[item] = response.data;
-							}
-						}
-						$timeout(function() {
-							$('.checkboxColor .md-icon').css('background-color', 'transparent');
-							$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
-							$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
-						});
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	$scope.deleteTodo = function($widgetId, $todoId){
-		var sUrl = $rootScope.apiPath + "/todos/"+$todoId;
-        var oConfig = {
-            url: sUrl,
-            method: "DELETE",
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						for(item in $rootScope.flat.widgets[widget].items){
-							if($rootScope.flat.widgets[widget].items[item].id === $todoId){
-								$rootScope.flat.widgets[widget].items.splice(item, 1);
-								$scope.setHeight($widgetId);
-							}
-						}
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	$scope.postGrocery = function($widgetId, $groceryTitle){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/groceries";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-            data: {"item": $groceryTitle},
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items.push(response.data);
-						$scope.setHeight($widgetId);
-						break;
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	$scope.deleteGrocery = function($widgetId, $groceryId){
-		var sUrl = $rootScope.apiPath + "/groceries/"+$groceryId;
-        var oConfig = {
-            url: sUrl,
-            method: "DELETE",
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						for(item in $rootScope.flat.widgets[widget].items){
-							if($rootScope.flat.widgets[widget].items[item].id === $groceryId){
-								$rootScope.flat.widgets[widget].items.splice(item, 1);
-								$scope.setHeight($widgetId);
-								break;
-							}
-						}
-					}
-				}
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -565,243 +236,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$http(oConfig).then(function successCallback(response) {
 			$scope.weather = $scope.weather ? $scope.weather : [];
 			$scope.weather[$id] = response.data;
-			$scope.setHeight($id);
+			$scope.fixStyle($id);
 		}, function errorCallback(response) {
 			console.log(response);
-		});
-	}
-
-
-	function postBill($widgetId){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/bills";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-			data: $scope.addBillForm,
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				$scope.addBillForm = {};
-				console.log(response.data);
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items[0] = JSON.parse(response.data);
-						$scope.setHeight($widgetId);
-						$timeout(function() {
-							$('.paid .icon').css('color', $rootScope.flat.header_color);
-						});
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	$scope.setBillAmount= function ($type){
-		if($type === 'total'){
-			$timeout(function() {
-				$divided = $('.billsplitCheck.md-checked').length;
-				if($divided >= 1){
-					$amount = Number(($scope.addBillForm.amount / $divided).toFixed(2));
-					for($user in $rootScope.flat.users){
-						$id = $rootScope.flat.users[$user].id;
-						if($scope.addBillForm.user[$id]){
-							if($scope.addBillForm.user[$id].pay){
-								$scope.addBillForm.user[$id].amount = $amount;
-							} else {
-								$scope.addBillForm.user[$id].amount = 0;
-							}
-						}
-					}
-				}
-			});
-		} else {
-			$amount = 0;
-			for($user in $rootScope.flat.users){
-				$id = $rootScope.flat.users[$user].id;
-				if($scope.addBillForm.user[$id]){
-					if($scope.addBillForm.user[$id].pay){
-						$amount = $amount + $scope.addBillForm.user[$id].amount;
-					}
-				}
-			}
-			$scope.addBillForm.amount = $amount;
-		}
-	}
-
-	$scope.billPaid = function ($widgetId, $billId, $payerId){
-		var sUrl = $rootScope.apiPath + "/bills/"+$billId+"/payers/"+$payerId;
-        var oConfig = {
-            url: sUrl,
-            method: "PUT",
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items[0] = JSON.parse(response.data);
-						$timeout(function() {
-							$('.paid .icon').css('color', $rootScope.flat.header_color);
-						});
-						break;
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	function postPoll($widgetId){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/polls";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-			data: $scope.addPollForm,
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				$scope.addPollForm = {};
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items.push(response.data);
-						$scope.setHeight($widgetId);
-						break;
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	$scope.getChecked = function($option){
-		$voters = $option.voters;
-		$hasVoted = false;
-		if($voters.length > 0){
-			for($i = $voters.length-1; $i === 0; $i--){
-				if($voters[$i].id === $rootScope.user.id){
-					$hasVoted = true;
-					break;
-				}
-			}
-		}
-		return $hasVoted;
-	}
-
-	$scope.getSelected = function($options){
-		$selected = 'none';
-		for ($option in $options) {
-			for ($voter in $options[$option].voters) {
-				if($options[$option].voters[$voter].id === $rootScope.user.id){
-					$selected = $options[$option].id;
-				}
-			}
-		}
-		return $selected;
-	}
-
-	$scope.getPassed = function($date){
-		$now = new Date();
-		if(new Date($date) >= $now){
-			$isValid = true;
-		} else {
-			$isValid = false;
-		}
-		return $isValid;
-	}
-
-	$scope.votePoll = function ($widgetId, $optionId){
-		var sUrl = $rootScope.apiPath + "/polloptions/"+$optionId+"/vote";
-        var oConfig = {
-            url: sUrl,
-            method: "PUT",
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$options = JSON.parse(response.data);
-						for(option in $options){
-							$rootScope.flat.widgets[widget].items[0].options[option].voters = $options[option].voters;
-						}
-						if($rootScope.flat.widgets[widget].items[0].multiple) {
-							$timeout(function() {
-								$('.checkboxColor .md-icon').css('background-color', 'transparent');
-								$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
-								$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
-							});
-						} else {
-							$timeout(function() {
-								$('.selectColor .md-on').css('background-color', $rootScope.flat.header_color);
-								$('.selectColor .md-off').css('border-color', $rootScope.flat.header_color);
-							});
-						}
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-	$scope.addCalItem = function ($widgetId){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/calenders";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-			data: $scope.calItemForm,
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				$mdDialog.cancel();
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items.push(response.data);
-						response.data.className = ['newCalItem'];
-						response.data.itemId = response.data.id;
-						if(!response.data.url){
-							response.data.allDay = response.data.all_day;
-							$rootScope.flat.widgets[widget].calItems[0].events.push(response.data);
-						} else {
-							$rootScope.flat.widgets[widget].calItems.push(response.data);
-						}
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
 		});
 	}
 
@@ -904,8 +341,15 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		});
 	}
 
-	$scope.setHeight = function ($id) {
+	$scope.fixStyle = function ($id) {
 		$timeout(function() {
+			$('.checkboxColor .md-icon').css('background-color', 'transparent');
+			$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+			$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
+			$('.selectColor .md-on').css('background-color', $rootScope.flat.header_color);
+			$('.selectColor .md-off').css('border-color', $rootScope.flat.header_color);
+			$('.widgetBtn').css('color', $rootScope.flat.header_color);
+			$('.paid .icon').css('color', $rootScope.flat.header_color);
 			$widget = $('#'+$id);
 			$headerHeight = $widget.find('.grid-stack-item-content .widgetHeader').outerHeight();
 			$bodyHeight = $widget.find('.grid-stack-item-content .widgetBody').outerHeight();
@@ -913,28 +357,32 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			$grid = $('.grid-stack').data('gridstack');
 			$grid.update($widget, null, null, null, $height);
 			$widget.attr('data-gs-min-height', $height);
-		});
+		}, 50);
 	}
 
 	// AFTER BUILDUP
-	$timeout(function() {
-		$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
-		$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
-		$('.selectColor .md-on').css('background-color', $rootScope.flat.header_color);
-		$('.selectColor .md-off').css('border-color', $rootScope.flat.header_color);
-		$('.widgetBtn').css('color', $rootScope.flat.header_color);
-		$('.paid .icon').css('color', $rootScope.flat.header_color);
-		$grid = $('.grid-stack').data('gridstack');
-		$('.grid-stack-item').each(function(){
-			$headerHeight = $(this).find('.grid-stack-item-content .widgetHeader').outerHeight();
-			$bodyHeight = $(this).find('.grid-stack-item-content .widgetBody').outerHeight();
-			$height = Math.ceil(($headerHeight + $bodyHeight)/70);
-			if($(this).attr('data-gs-height') < $height){
-				$grid.update($(this), null, null, null, $height);
-			}
-			$(this).attr('data-gs-min-height', $height);
-		});
-	}, 500);
+	$scope.fixGrid = function() {
+		$timeout(function() {
+			$('.checkboxColor .md-icon').css('background-color', 'transparent');
+			$('.checkboxColor.md-checked .md-icon').css('background-color', $rootScope.flat.header_color);
+			$('.checkboxColor .md-icon').css('border-color', $rootScope.flat.header_color);
+			$('.selectColor .md-on').css('background-color', $rootScope.flat.header_color);
+			$('.selectColor .md-off').css('border-color', $rootScope.flat.header_color);
+			$('.widgetBtn').css('color', $rootScope.flat.header_color);
+			$('.paid .icon').css('color', $rootScope.flat.header_color);
+			$grid = $('.grid-stack').data('gridstack');
+			$('.grid-stack-item').each(function(){
+				$headerHeight = $(this).find('.grid-stack-item-content .widgetHeader').outerHeight();
+				$bodyHeight = $(this).find('.grid-stack-item-content .widgetBody').outerHeight();
+				$height = Math.ceil(($headerHeight + $bodyHeight)/70);
+				if($(this).attr('data-gs-height') < $height){
+					$grid.update($(this), null, null, null, $height);
+				}
+				$(this).attr('data-gs-min-height', $height);
+			});
+		}, 500);
+	}
+	$scope.fixGrid()
 
 	// GRID STACK
 	$scope.gridOptions = {
@@ -1003,7 +451,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.flat.widgets.push(data.widget);
 				showNotification('widget', 'add', data.widget.id, data.user.username, data.widget.widget_type, data.widget.title);
 				$scope.postLastLogin();
-				$scope.setHeight(data.widget.id);
+				$scope.fixStyle(data.widget.id);
 
 			} else if(data.reason === 'addItem') {
 				for(widget in $rootScope.flat.widgets){
@@ -1014,12 +462,14 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						}
 						showNotification('item', 'add', data.item.widget.id, data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
 						$scope.postLastLogin();
+						$scope.fixStyle(data.item.widget.id);
 						break;
 					}
 				}
 			} else if(data.reason === 'updateItem') {
+				data.item = JSON.parse(data.item);
 				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
+					if($rootScope.flat.widgets[widget].id === data.item.widget){
 						if($rootScope.flat.widgets[widget].items.length <= 0){
 							for($property in data.item){
 								$rootScope.flat.widgets[widget].items[0][$property] = data.item[$property];
@@ -1037,7 +487,20 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						break;
 					}
 				}
-			} else if(data.reason === 'addCalItem') {
+				$scope.fixStyle(data.item.widget);
+			} else if(data.reason === 'deleteItem') {
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === data.item.widget){
+						for(item in $rootScope.flat.widgets[widget].items){
+							if($rootScope.flat.widgets[widget].items[item].id === data.item.id){
+								$rootScope.flat.widgets[widget].items.splice(item, 1);
+								break;
+							}
+						}
+					}
+				}
+				$scope.fixStyle(data.item.widget);
+			}else if(data.reason === 'addCalItem') {
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === data.item.widget.id){
 						$rootScope.flat.widgets[widget].items.push(data.item);
@@ -1049,6 +512,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						} else {
 							$rootScope.flat.widgets[widget].calItems.push(data.item);
 						}
+						showNotification('item', 'add', data.item.widget.id, data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
 						break;
 					}
 				}
@@ -1100,6 +564,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+data.background_image+')'};
 			} else if(data.reason === 'chat') {
 				$scope.scrollChat();
+				data.chat = JSON.parse(data.chat);
 				data.chat.send = moment(data.chat.send).format('HH:mm DD/MM/YY');
 				$rootScope.flat.chats.push(data.chat);
 				if(!$scope.chat){

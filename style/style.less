@@ -106,6 +106,52 @@ hr {
 	padding-left: 10px;
 	padding-right: 10px;
 
+	// .navbar-toggle {
+	// 	background-color: transparent !important;
+	// 	border: none;
+	// 	.icon-bar {
+	// 		background-color: @backgroundColor;
+	// 	}
+	// }
+
+	.navbar-toggle {
+		border: none;
+		background: transparent !important;
+		
+		&:hover {
+			background: transparent !important;
+		}
+
+		.icon-bar {
+			background-color: @backgroundColor;
+			width: 22px;
+			transition: all 0.2s;
+		}
+		.icon-bar:nth-child(2) {
+			transform: rotate(45deg);
+			transform-origin: 10% 10%;
+		}
+		.icon-bar:nth-child(3) {
+			opacity: 0;
+		}
+		.icon-bar:nth-child(4) {
+			transform: rotate(-45deg);
+			transform-origin: 10% 90%;
+		}
+
+		&.collapsed {
+			.icon-bar:nth-child(2) {
+			transform: rotate(0);      
+			}
+			.icon-bar:nth-child(3) {
+			opacity: 1;
+			}
+			.icon-bar:nth-child(4) {
+			transform: rotate(0);
+			}
+		}
+	}
+
 	.navbar-brand {
 		font-weight: bold;
 		color: @lightColor !important;
@@ -129,17 +175,26 @@ hr {
 	}
 
 	.navbar-nav {
-		a {
-			color: @lightColor !important;
+		li a {
+			color: @lightColor;
 		}
+		p {
+			float: right;
+			width: calc(~'100% - 24px');
+			padding-left: 24px;
+		}
+
 	}
 
 	.icon {
 		color: @lightColor;
 	}
 
-	.activePage, .activePage .icon, a:hover .icon, a:hover {
+	.activePage, .activePage .icon, a:hover .icon, a:hover, .activePage a p {
 		color: @mainColor !important;
+		.visible-xs {
+			font-weight: bold;
+		}
 	}
 
 	.userMenu {
@@ -703,7 +758,7 @@ hr {
 
 			.text{
 				font-size: 12px;
-				margin-bottom: 1px;
+				margin-bottom: 2px;
 				background-color: @mainColor;
 				color: @lightColor;
 				padding: 5px 8px;

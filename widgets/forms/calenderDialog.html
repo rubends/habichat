@@ -23,7 +23,7 @@
                     <div layout-gt-xs="row">
                         <label>Start</label>
                         <mdp-date-picker mdp-placeholder="Date" ng-model="ctrl.calItemForm.start.date"></mdp-date-picker>
-                        <mdp-time-picker ng-hide="calItem.allDay" mdp-placeholder="Time" ng-model="ctrl.calItemForm.start.time"></mdp-time-picker>
+                        <mdp-time-picker ng-hide="ctrl.calItemForm.allDay" mdp-placeholder="Time" ng-model="ctrl.calItemForm.start.time"></mdp-time-picker>
                     </div>
                     <div layout-gt-xs="row" ng-hide="ctrl.calItemForm.allDay">
                         <label>{{'END' | translate}}</label>

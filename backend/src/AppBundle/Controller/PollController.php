@@ -75,9 +75,10 @@ class PollController extends FOSRestController
             $optionArray[] = ['id' => $option->getId(), 'name' => $option->getName(), 'voters' => $voters];
         }
 
+        $serialisePoll = $this->container->get('jms_serializer')->serialize($poll, 'json', SerializationContext::create()->setGroups(array('Default', 'Poll')));
         $serialiseOptions = $this->container->get('jms_serializer')->serialize($options, 'json', SerializationContext::create()->setGroups(array('Default', 'PollOption')));
             
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => $serialiseOptions];
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => $serialisePoll];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 

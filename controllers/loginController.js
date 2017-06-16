@@ -1,5 +1,5 @@
 app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
-
+	$("#loginLink").addClass("activePage");
 	$scope.loginUser = function(){
 		$rootScope.loadScreen = true;
         var sUrl = $rootScope.apiPath + "/users/logins";
@@ -11,6 +11,7 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
+				$rootScope.loadScreen = false;
 				$rootScope.error = response.data.error;
 			}
 			else{

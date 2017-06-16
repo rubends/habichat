@@ -1,4 +1,5 @@
 app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
+	$("#registerLink").addClass("activePage");
 	$scope.registerUser = function(){
 		$rootScope.loadScreen = true;
         var sUrl = $rootScope.apiPath + "/users";

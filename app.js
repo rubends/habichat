@@ -20,9 +20,15 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 			templateUrl : "templates/dashboard.html",
 			controller : "dashboardCtrl",
 			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
+                userService: ['$q', 'getUserService', 'getFlatService', function($q, getUserService, getFlatService){
+					return $q.all({
+						user: getUserService.getUser(),
+						flat: getFlatService.getFlat()
+					});
                 }]
+                // flatService: ['getFlatService', function(getFlatService){
+				// 	 return getFlatService.getFlat();
+                // }]
             }
 		})
 		.when("/settings", {
@@ -31,6 +37,9 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 			resolve: {
                 userService: ['getUserService', function(getUserService){
                     return getUserService.getUser();
+                }],
+                flatService: ['getFlatService', function(getFlatService){
+					 return getFlatService.getFlat();
                 }]
             }
 		})
@@ -114,6 +123,10 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 		$(document).on("click", ".navbar a", function() {
 			$(".nav").find(".activePage").removeClass("activePage");
 			$(this).addClass("activePage");
+		});
+
+		$(document).on('click',function(){
+			$('.collapse').collapse('hide');
 		});
     }]);
 

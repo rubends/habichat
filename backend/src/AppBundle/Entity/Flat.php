@@ -82,35 +82,35 @@ class Flat
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Serializer\Expose
-     * @Serializer\Groups({"Flat"})
+     * @Serializer\Groups({"Flat", "User"})
      */
     protected $backgroundImage;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Serializer\Expose
-     * @Serializer\Groups({"Flat"})
+     * @Serializer\Groups({"Flat", "User"})
      */
     protected $widgetColor;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Serializer\Expose
-     * @Serializer\Groups({"Flat"})
+     * @Serializer\Groups({"Flat", "User"})
      */
     protected $headerColor;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Serializer\Expose
-     * @Serializer\Groups({"Flat"})
+     * @Serializer\Groups({"Flat", "User"})
      */
     protected $fontColor;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      * @Serializer\Expose
-     * @Serializer\Groups({"Flat"})
+     * @Serializer\Groups({"Flat", "User"})
      */
     protected $headerFontColor;
 
@@ -130,13 +130,15 @@ class Flat
 
     /**
     * @ORM\OneToMany(targetEntity="Invite", mappedBy="flat")
+    * @Serializer\Expose
+    * @Serializer\Groups({"Flat"})
     */
     protected $invites;
 
     /**
      * @ORM\Column(type="string")
      * @Serializer\Expose
-     * @Serializer\Groups({"Flat"})
+     * @Serializer\Groups({"Flat", "User"})
      */
     protected $flatToken;
 

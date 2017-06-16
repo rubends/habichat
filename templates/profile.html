@@ -16,7 +16,7 @@
 					<div ng-message="required">{{'EMAILREQUIRED' | translate}}</div>
 				</div>
 			</md-input-container>
-			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="registerForm.$invalid">{{'UPDATE' | translate}} {{'PROFILE' | translate}}</md-button>
+			<md-button type='submit' class="md-raised md-primary pull-right" ng-disabled="registerForm.$invalid">{{'UPDATE' | translate}}</md-button>
 		</form>
 		<form ng-submit="passForm.$valid && updatePassword(user.id)" name="passForm" novalidate class="clearfix">
 			<md-input-container class="md-block" flex-gt-sm>

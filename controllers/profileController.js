@@ -1,5 +1,5 @@
 app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
-
+    $("#profileLink").addClass("activePage");
     $scope.updateProfile = function($userId) {
         var sUrl = $rootScope.apiPath + "/users/"+$userId+"/update";
         var oConfig = {

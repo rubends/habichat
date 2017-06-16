@@ -1,4 +1,4 @@
-<div class="calender" ng-init="toCalItems(widget); setHeight(widget.id)">
+<div class="calender" ng-init="toCalItems(widget); setHeight(widget.id)" ng-controller="calCtrl">
     <div ui-calendar="uiConfig.calendar" ng-model="widget.calItems"></div>
     <md-button ng-click="showCalendertDialog($event, widget.id)" class="pull-right widgetBtn" aria-label="Add calendar item">
         {{'ADD_EVENT' | translate}}

@@ -4,10 +4,12 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Validator;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity()
  * @ORM\Table(name="chore")
+ * @Serializer\ExclusionPolicy("all")
  */
 class Chore
 {
@@ -15,6 +17,8 @@ class Chore
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Default"})
      *
      * @var int
      */
@@ -22,6 +26,8 @@ class Chore
 
     /**
      * @ORM\Column(type="string")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Widget"})
      *
      * @var string
      */
@@ -29,6 +35,8 @@ class Chore
 
     /**
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Widget"})
      *
      * @var int
      */
@@ -36,6 +44,8 @@ class Chore
 
     /**
      * @ORM\Column(type="datetime")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Widget"})
      *
      * @var datetime
      */
@@ -44,11 +54,15 @@ class Chore
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="chores")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Widget"})
      */
     protected $user;
 
     /**
      * @ORM\Column(type="integer")
+     * @Serializer\Expose
+     * @Serializer\Groups({"Widget"})
      * @var int
      */
     protected $widget;
