@@ -16,14 +16,14 @@ class FlatController extends FOSRestController
 {
     /**
      * @ApiDoc()
+     * @param Flat $flat
      *
      * @return $flat
      */
-    public function getFlatAction()
+    public function getFlatAction(Flat $flat)
     {
-        $flat = $this->get('security.token_storage')->getToken()->getUser()->getFlat();
         $widgets = $flat->getWidgets();
-        foreach($widgets as $key => $widget){
+        foreach($widgets as $widget){
             $type = $widget->getWidgetType();
             if(class_exists('\\AppBundle\\Entity\\'.$type)) {
                 $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());

@@ -15,6 +15,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
 				$rootScope.error = response.data.error;
+				$rootScope.loadScreen = false;
 			}
 			else{
 				$rootScope.error = "";
@@ -28,7 +29,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				$rootScope.loadScreen = false;
 			}
 		}, function errorCallback(response) {
-		    console.log("error on create flat");
+		    console.log(response);
 		});
     }
 

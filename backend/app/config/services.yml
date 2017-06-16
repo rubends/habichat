@@ -7,3 +7,7 @@ services:
     pusher:
         class:  AppBundle\Service\TriggerPusher
         arguments: ["%pusher_key%", "%pusher_secret%", "%pusher_app_id%"]
+    acme_api.event.jwt_created_listener:
+        class: AppBundle\EventListener\JWTCreatedListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }

@@ -10,6 +10,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use JMS\Serializer\SerializationContext;
 
 class TextController extends FOSRestController
 {
@@ -27,6 +28,27 @@ class TextController extends FOSRestController
 
         $this->getDoctrine()->getManager()->persist($text);
         $this->getDoctrine()->getManager()->flush();
+
+        return $text;
+    }
+
+    /**
+     * @ApiDoc()
+     * @param Text $text
+     * @param Request $request
+     * @return Text[]
+     */
+    public function putTextAction(Text $text, Request $request)
+    {
+        $text->setText($request->request->get('text'));
+        $this->getDoctrine()->getManager()->persist($text);
+        $this->getDoctrine()->getManager()->flush();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        $serialiseText = $this->container->get('jms_serializer')->serialize($text, 'json', SerializationContext::create()->setGroups(array('Default')));
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'updateItem', 'item' => $serialiseText];
+        $pusher = $this->get('pusher');
+        $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
         return $text;
     }

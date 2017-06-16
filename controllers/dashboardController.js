@@ -12,6 +12,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.flat.chats.new++;
 			} else { break; }
 		}
+		$("#dashboardLink").addClass("activePage");
 		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+$rootScope.flat.background_image+')'};
 		$scope.widgetStyle = {'background-color': $rootScope.flat.widget_color, 'color': $rootScope.flat.font_color};
 		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.header_font_color};
@@ -237,6 +238,32 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			$scope.weather = $scope.weather ? $scope.weather : [];
 			$scope.weather[$id] = response.data;
 			$scope.fixStyle($id);
+		}, function errorCallback(response) {
+			console.log(response);
+		});
+	}
+
+	$scope.saveText = function ($widgetId, $textId) {
+		for(widget in $rootScope.flat.widgets){
+			if($rootScope.flat.widgets[widget].id === $widgetId){
+				$textForm = $rootScope.flat.widgets[widget].items[0]
+			}
+		}
+		var sUrl = $rootScope.apiPath + "/texts/"+$textId;
+		var oConfig = {
+			url: sUrl,
+			method: "PUT",
+			data: $textForm,
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+		};
+		$http(oConfig).then(function successCallback(response) {
+			for(widget in $rootScope.flat.widgets){
+				if($rootScope.flat.widgets[widget].id === $widgetId){
+					$rootScope.flat.widgets[widget].items[0] = response.data;
+				}
+			}
+			$scope.fixStyle($widgetId);
 		}, function errorCallback(response) {
 			console.log(response);
 		});

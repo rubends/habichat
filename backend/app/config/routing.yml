@@ -22,6 +22,10 @@ todo:
     resource: "@AppBundle/Controller/TodoController.php"
     type:     rest
     prefix: /api
+text:
+    resource: "@AppBundle/Controller/TextController.php"
+    type:     rest
+    prefix: /api
 calender:
     resource: "@AppBundle/Controller/CalenderController.php"
     type:     rest

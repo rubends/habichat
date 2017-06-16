@@ -47,7 +47,6 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
 			}
 			else{
 				$rootScope.error = "";
-				console.log(response.data);
 				
 			}
 		}, function errorCallback(response) {

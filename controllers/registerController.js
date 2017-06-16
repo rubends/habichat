@@ -12,9 +12,9 @@ app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
 				$rootScope.error = response.data.error;
+				$rootScope.loadScreen = false;
 			}
 			else{
-				console.log(response.data);
 				$rootScope.error = "";
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
@@ -28,7 +28,7 @@ app.controller("registerCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.loadScreen = false;
 			}
 		}, function errorCallback(response) {
-		    console.log("error on register");
+		    console.log(response);
 		});
     }
 }]);

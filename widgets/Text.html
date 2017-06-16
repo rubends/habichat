@@ -1,3 +1,7 @@
 <div class="text">
-    {{widget.items[0].text}}
+    <p ng-click="textedit = true" ng-hide="textedit">{{widget.items[0].text}}</p>
+    <md-input-container class="md-block" ng-show="textedit">
+          <label>Press enter to save text</label>
+          <textarea ng-model="widget.items[0].text" md-select-on-focus ng-enter="saveText(widget.id, widget.items[0].id); textedit=false"></textarea>
+     </md-input-container>
 </div>

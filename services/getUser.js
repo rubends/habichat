@@ -4,7 +4,8 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
             if ($cookies.get('token')) {
                 if(!$rootScope.user || !$rootScope.user.username) {
                     $rootScope.loadScreen = true;
-                    var sUrl = "../backend/web/api/user";
+                    var decoded = jwt_decode($cookies.get('token'));
+                    var sUrl = "../backend/web/api/users/" + decoded.id;
                     var oConfig = {
                         url: sUrl,
                         method: "GET",
@@ -20,7 +21,6 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                             $rootScope.error = "";
                             $rootScope.user = JSON.parse(response.data.user);
                             $rootScope.calKey = response.data.calKey;
-                            console.log($rootScope.user);
                             $rootScope.user.token = $cookies.get('token');
                             $rootScope.user.loggedIn = true;
                             $rootScope.loadScreen = false;

@@ -2,7 +2,8 @@ app.factory('getFlatService', ['$rootScope','$http', '$cookies', function($rootS
 	return {
 		getFlat: function(){
             if(!$rootScope.flat){
-                var sUrl = "../backend/web/api/flat";
+                var decoded = jwt_decode($cookies.get('token'));
+                var sUrl = "../backend/web/api/flats/"+ decoded.flat;
                 var oConfig = {
                     url: sUrl,
                     method: "GET",
@@ -16,7 +17,6 @@ app.factory('getFlatService', ['$rootScope','$http', '$cookies', function($rootS
                     else{
                         $rootScope.error = "";
                         $rootScope.flat = JSON.parse(response.data);
-                        console.log($rootScope.flat);
                     }
                 }, function errorCallback(response) {
                     console.log(response);

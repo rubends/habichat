@@ -9,7 +9,6 @@
 						<div class="widgetHeader" ng-style="headerStyle">
 							<h3>{{widget.title}}</h3>
 							<div class="resize" ng-if="!widget.user || widget.user.id === user.id || user.role === 'ROLE_ADMIN'">
-								<!--<i ng-if="!widget.user || widget.user.id === user.id || user.role === 'ROLE_ADMIN'" class="fa fa-times" aria-hidden="true" ng-click="deleteWidget(widget.id)" data-toggle="tooltip" title="Delete widget" onmouseenter="$(this).tooltip()"></i>-->
 								<md-tooltip>{{'DELETE' | translate}}</md-tooltip><md-icon ng-click="showDeleteDialog(ev, widget.id, widget.title)" class="icon close" md-svg-src="bower_components/material-design-icons/content/svg/design/ic_clear_24px.svg" aria-label="Delete widget"></md-icon>
 							</div>
 							<div class="type">

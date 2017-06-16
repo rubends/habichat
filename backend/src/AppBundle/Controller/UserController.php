@@ -15,20 +15,24 @@ use JMS\Serializer\SerializationContext;
 class UserController extends FOSRestController
 {
     /**
-     * @ParamConverter()
      * @ApiDoc()
+     * @param User $user
      *
      * @return User
      */
-    public function getUserAction()
+    public function getUserAction(User $user)
     {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        $serialiseUser = $this->container->get('jms_serializer')->serialize($user, 'json', SerializationContext::create()->setGroups(array('Default', 'User')));
-        $user->setLastLogin(new \DateTime('now'));
-        $this->getDoctrine()->getManager()->persist($user);
-        $this->getDoctrine()->getManager()->flush();
-        $calKey = $this->getParameter('google_cal_key');
-        return ['user' => $serialiseUser, 'calKey' => $calKey];
+        $userDB = $this->get('security.token_storage')->getToken()->getUser();
+        if($user->getId() === $userDB->getId()){
+            $serialiseUser = $this->container->get('jms_serializer')->serialize($user, 'json', SerializationContext::create()->setGroups(array('Default', 'User')));
+            $user->setLastLogin(new \DateTime('now'));
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
+            $calKey = $this->getParameter('google_cal_key');
+            return ['user' => $serialiseUser, 'calKey' => $calKey];
+        }
+        return new JsonResponse(array('error' => "Something went wrong"));
+        
     }
 
     /**

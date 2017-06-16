@@ -15,7 +15,6 @@ app.controller("billCtrl", ['$rootScope', '$scope', '$http', '$timeout', functio
 			else{
 				$rootScope.error = "";
 				$scope.addBillForm = {};
-				console.log(response.data);
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items[0] = JSON.parse(response.data);

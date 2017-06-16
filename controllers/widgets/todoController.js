@@ -10,7 +10,7 @@ app.controller("todoCtrl", ['$rootScope', '$scope', '$http', function($rootScope
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				console.log(response.data);
+				$rootScope.error = response.data.error;
 			}
 			else{
 				$rootScope.error = "";
