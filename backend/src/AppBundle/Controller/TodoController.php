@@ -14,19 +14,6 @@ use JMS\Serializer\SerializationContext;
 class TodoController extends FOSRestController
 {
     /**
-     * @ParamConverter()
-     * @ApiDoc()
-     *
-     * @param Todo $todo
-     *
-     * @return Todo
-     */
-    public function getTodoAction(Todo $todo)
-    {
-        return $todo;
-    }
-
-    /**
      * @ApiDoc()
      *
      * @param Todo $todo

@@ -122,6 +122,7 @@ hr {
   color: #fff !important;
   font-family: 'Allerta', sans-serif;
   text-transform: uppercase;
+  padding-top: 12px;
 }
 .navbar .navbar-brand img {
   width: 30px;
@@ -554,6 +555,7 @@ hr {
   color: #00897b;
   border: 1px solid #00897b;
   border-radius: 3px;
+  word-wrap: break-word;
 }
 #widgetDialog .widgetBlock .typeBlock .icon {
   color: #00897b;

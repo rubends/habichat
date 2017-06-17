@@ -13,30 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 class CalenderController extends FOSRestController
 {
     /**
-     * @ParamConverter()
-     * @ApiDoc()
-     *
-     * @param Calender $calender
-     *
-     * @return Calender
-     */
-    public function getCalenderAction(Calender $calender)
-    {
-        return $calender;
-    }
-
-    /**
-     * @ApiDoc()
-     *
-     * @return Calender[]
-     */
-    public function getCalendersAction()
-    {
-        $user = $this->get('security.token_storage')->getToken()->getUser();
-        return $this->getDoctrine()->getRepository('AppBundle:Calender')->findByFlatID($user->getFlat());
-    }
-
-    /**
      * @ApiDoc()
      *
      * @param Calender $calender

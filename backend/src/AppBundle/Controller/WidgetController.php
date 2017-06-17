@@ -148,13 +148,15 @@ class WidgetController extends FOSRestController
             }
         }
 
-        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'toggle', 'id' => $widget->getId(), 'visible' => $updateVis];
+        $this->getDoctrine()->getManager()->persist($widget);
+        $this->getDoctrine()->getManager()->flush();
+
+        $serialiseWidget = $this->container->get('jms_serializer')->serialize($widget, 'json', SerializationContext::create()->setGroups(array('Default', 'WidgetToggle')));
+        $data = ['user' => ['id' => $user->getId(), 'username' => $user->getUsername()], 'reason' => 'toggle', 'widget' => $serialiseWidget];
         $pusher = $this->get('pusher');
         $pusher->trigger('flat-'.$user->getFlat()->getFlatToken(), $data);
 
-        $this->getDoctrine()->getManager()->persist($widget);
-        $this->getDoctrine()->getManager()->flush();
-        return $widget;
+        return $serialiseWidget;
     }
 
     /**

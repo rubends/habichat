@@ -51,16 +51,6 @@ class UserController extends FOSRestController
     /**
      * @ApiDoc()
      *
-     * @return User[]
-     */
-    public function getUsersAction()
-    {
-        return $this->getDoctrine()->getRepository('AppBundle:User')->findAll();
-    }
-
-    /**
-     * @ApiDoc()
-     *
      * @param Request $request
      *
      * @return User

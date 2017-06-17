@@ -37,27 +37,6 @@ class FlatController extends FOSRestController
     /**
      * @ApiDoc()
      *
-     * @param Flat $flat
-     *
-     * @return $flat
-     */
-    public function getFlatWidgetsAction(Flat $flat)
-    {
-        $widgets = $flat->getWidgets();
-        foreach($widgets as $key => $widget){
-            $type = $widget->getWidgetType();
-            if(class_exists('\\AppBundle\\Entity\\'.$type)) {
-                $items = $this->getDoctrine()->getRepository('AppBundle:'.$type)->findByWidget($widget->getId());
-                $widget->setItems($items);
-            }
-        }
-        $serialiseWidgets = $this->container->get('jms_serializer')->serialize($widgets, 'json', SerializationContext::create()->setGroups(array('Default', 'Poll')));
-        return $serialiseWidgets;
-    }
-
-    /**
-     * @ApiDoc()
-     *
      * @param Request $request
      *
      * @return Flat

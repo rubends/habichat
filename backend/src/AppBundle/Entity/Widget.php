@@ -45,7 +45,7 @@ class Widget
      * 
      * @ORM\Column(type="integer")
      * @Serializer\Expose
-     * @Serializer\Groups({"Flat", "Widget"})
+     * @Serializer\Groups({"Flat", "Widget", "WidgetToggle"})
      *
      * @var int
      */

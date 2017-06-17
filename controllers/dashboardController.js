@@ -128,6 +128,8 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$rootScope.error = "";
+				response.data = JSON.parse(response.data);
+				console.log(response.data);
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].visible = response.data.visible;
@@ -135,6 +137,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					}
 				}
 				if (!response.data.visible){	
+					console.log($widgetId);
 					deletedToast($widgetId);
 				}
 			}
@@ -167,7 +170,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$rootScope.error = "";
-				console.log(response.data);
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -189,7 +191,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$rootScope.error = "";
-				console.log(response.data);
 			}
 		}, function errorCallback(response) {
 		    console.log(response);
@@ -383,7 +384,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			$height = Math.ceil(($headerHeight + $bodyHeight)/70);
 			$grid = $('.grid-stack').data('gridstack');
 			$grid.update($widget, null, null, null, $height);
-			$widget.attr('data-gs-min-height', $height);
+			$grid.minHeight($widget, $height);
 		}, 50);
 	}
 
@@ -405,7 +406,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				if($(this).attr('data-gs-height') < $height){
 					$grid.update($(this), null, null, null, $height);
 				}
-				$(this).attr('data-gs-min-height', $height);
+				$grid.minHeight($(this), $height);
 			});
 		}, 500);
 	}
@@ -467,9 +468,10 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					}
 				}
 			} else if(data.reason === 'toggle') {
+				data.widget = JSON.parse(data.widget);
 				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === data.id){
-						$rootScope.flat.widgets[widget].visible = data.visible;
+					if($rootScope.flat.widgets[widget].id === data.widget.id){
+						$rootScope.flat.widgets[widget].visible = data.widget.visible;
 						break;
 					}
 				}

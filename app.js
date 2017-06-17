@@ -103,6 +103,7 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 			suffix: '.json'                           
 		});                                         
 		$translateProvider.preferredLanguage(localStorage.language ? localStorage.language : 'en');
+		$translateProvider.useSanitizeValueStrategy('escape');
 
 	});
 
