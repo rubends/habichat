@@ -1,4 +1,4 @@
-app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
+app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', "$filter", function($rootScope, $scope, $http, $cookies, $location, $filter){
 	if (!$rootScope.user) {
 		$location.path('/login');
 	}
@@ -22,9 +22,10 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			}
 			else{
 				$rootScope.error = "";
+				$rootScope.showNotification($filter('translate')('FLAT_CHANGED'), null);
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -38,7 +39,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
+				$rootScope.error = $filter('translate')(response.data.error);
 			}
 			else{
 				$rootScope.error = "";
@@ -48,7 +49,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -62,7 +63,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
+				$rootScope.error = $filter('translate')(response.data.error);
 			}
 			else{
 				$rootScope.error = "";
@@ -71,7 +72,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$location.path('/flat');
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -92,11 +93,12 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				for(flatmate in $rootScope.flat.users){
 					if($rootScope.flat.users[flatmate].id === response.data.id){
 						$rootScope.flat.users[flatmate] = response.data;
+						break;
 					}
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -116,9 +118,10 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 			else{
 				$rootScope.error = "";
 				$scope.inviteList.invites = [{email: ''}];
+				$rootScope.showNotification($filter('translate')('INVITES_SEND'), null);
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 }]);
@@ -146,10 +149,10 @@ app.directive('backgroundChange', ['$rootScope', '$http', function ($rootScope, 
 						}
 						else{
 							$rootScope.error = "";
-							$rootScope.user.flat = response.data;
+							$rootScope.flat.background_image = response.data.background_image;
 						}
 					}, function errorCallback(response) {
-						console.log(response);
+						$location.path('/login');
 					});
 				}
             });

@@ -1,33 +1,4 @@
-app.controller("billCtrl", ['$rootScope', '$scope', '$http', '$timeout', function($rootScope, $scope, $http, $timeout){
-	function postBill($widgetId){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/bills";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-			data: $scope.addBillForm,
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				$scope.addBillForm = {};
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items[0] = JSON.parse(response.data);
-						$scope.fixStyle($widgetId);
-                        break;
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
+app.controller("billCtrl", ['$rootScope', '$scope', '$http', '$timeout', '$location', function($rootScope, $scope, $http, $timeout, $location){
 	$scope.setBillAmount= function ($type){
 		if($type === 'total'){
 			$timeout(function() {
@@ -83,7 +54,7 @@ app.controller("billCtrl", ['$rootScope', '$scope', '$http', '$timeout', functio
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 }]);

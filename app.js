@@ -2,7 +2,7 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 
 (function() {
 
-    app.config(function($routeProvider, $locationProvider, $mdThemingProvider, $translateProvider) {
+    app.config(function($routeProvider, $locationProvider, $mdThemingProvider, $translateProvider, $qProvider) {
     	$locationProvider.hashPrefix('');
     	$routeProvider
 		.when("/", {
@@ -26,20 +26,17 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 						flat: getFlatService.getFlat()
 					});
                 }]
-                // flatService: ['getFlatService', function(getFlatService){
-				// 	 return getFlatService.getFlat();
-                // }]
             }
 		})
 		.when("/settings", {
 			templateUrl : "templates/settings.html",
 			controller : "settingsCtrl",
 			resolve: {
-                userService: ['getUserService', function(getUserService){
-                    return getUserService.getUser();
-                }],
-                flatService: ['getFlatService', function(getFlatService){
-					 return getFlatService.getFlat();
+                userService: ['$q', 'getUserService', 'getFlatService', function($q, getUserService, getFlatService){
+					return $q.all({
+						user: getUserService.getUser(),
+						flat: getFlatService.getFlat()
+					});
                 }]
             }
 		})
@@ -105,12 +102,14 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 		$translateProvider.preferredLanguage(localStorage.language ? localStorage.language : 'en');
 		$translateProvider.useSanitizeValueStrategy('escape');
 
+		$qProvider.errorOnUnhandledRejections(false);
+
 	});
 
-    app.controller("mainCtrl", ['$rootScope', '$route', '$translate' , function($rootScope, $route, $translate){
+    app.controller("mainCtrl", ['$rootScope', '$route', '$translate', '$timeout',  function($rootScope, $route, $translate, $timeout){
  		$rootScope.apiPath = "../backend/web/api";
 
-		 var supportedLangs = ['nl', 'en', 'fr'];
+		var supportedLangs = ['nl', 'en', 'fr'];
 		if(! localStorage.language) localStorage.language = 'en';
 		$rootScope.setLanguage = function(lang) {
 			if(supportedLangs.indexOf(lang) > -1) {
@@ -129,6 +128,16 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
 		$(document).on('click',function(){
 			$('.collapse').collapse('hide');
 		});
+
+		$rootScope.showNotification = function(text, id) {
+			$rootScope.flat.notification = text;
+			if(id) {
+				$('#'+id+" .widget").addClass("recentlyAdded");
+			}
+			$audio = new Audio('/audio/pop_drip.wav');
+			$audio.play();
+			$timeout(function () { $rootScope.flat.notification = null; $(".recentlyAdded").removeClass("recentlyAdded"); }, 4000);   
+		}
     }]);
 
 })();

@@ -15,11 +15,17 @@ class JWTCreatedListener
     {
         $user = $event->getUser();
 
+        if($user->getFlat()){
+            $flat = $user->getFlat()->getId();
+        } else {
+            $flat = null;
+        }
+
         $payload = array_merge(
             $event->getData(),
             [
                 'id' => $user->getId(),
-                'flat' => $user->getFlat()->getId()
+                'flat' => $flat
             ]
         );
 

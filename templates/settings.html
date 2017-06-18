@@ -51,43 +51,41 @@
 			<div id="userSettings" ng-show="settingsView === 'flat'">
 				<!--<h1>Flat</h1>-->
 				<p ng-hide="flat.users.length > 1">{{'NOROOMIES' | translate}}</p>
-				<table class="table table-hover" ng-show="flat.users.length > 1">
-					<thead>
-						<tr>
-							<th>{{'NAME' | translate}}</th>
-							<th>{{'EMAIL' | translate}}</th>
-							<th ng-if="user.role === 'ROLE_ADMIN'">Admin {{'ACTIONS' | translate}}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="flatmate in flat.users" ng-if="flatmate.id !== user.id">
-							<td>{{flatmate.username}}{{flatmate.role === 'ROLE_ADMIN' ? ' | Admin' : ''}}</td>
-							<td>{{flatmate.email}}</td>
-							<td ng-if="user.role === 'ROLE_ADMIN'">
-								<div ng-click="toggleUserRole(flatmate.id)">
-									<md-tooltip>{{(flatmate.role === 'ROLE_ADMIN' ? 'MAKE_USER' : 'MAKE_ADMIN') | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_supervisor_account_24px.svg" aria-label="Change user"></md-icon>
-								</div>
-								<div ng-click="moveOutFlat(flatmate.id)">
-									<md-tooltip>{{'DELETEROOMIE' | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_delete_24px.svg" aria-label="Delete"></md-icon>
-								</div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="row roommateSettings" ng-show="flat.users.length > 1">
+					<div class="col-md-12">
+						<h2>{{'ROOMMATES' | translate}}</h2>
+					</div>
+					<div class="col-md-4" ng-repeat="flatmate in flat.users" ng-if="flatmate.id !== user.id">
+						<h3>{{flatmate.username}}</h3>
+						<strong>{{flatmate.role === 'ROLE_ADMIN' ? 'Admin' : ''}}</strong>
+						<p>{{flatmate.email}}</p>
+						<div ng-if="user.role === 'ROLE_ADMIN'" class="clearfix">
+							<div class="pull-left" ng-click="toggleUserRole(flatmate.id)">
+								<md-tooltip>{{(flatmate.role === 'ROLE_ADMIN' ? 'MAKE_USER' : 'MAKE_ADMIN') | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_supervisor_account_24px.svg" aria-label="Change user"></md-icon>
+							</div>
+							<div class="pull-left" ng-click="moveOutFlat(flatmate.id)">
+								<md-tooltip>{{'DELETEROOMIE' | translate}}</md-tooltip><md-icon class="icon" md-svg-src="bower_components/material-design-icons/action/svg/design/ic_delete_24px.svg" aria-label="Delete"></md-icon>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="row">
+					<div class="col-md-12">
+						<p>{{'INVITEROOMIES' | translate}}</p>
+					</div>
 					<div class="col-md-6" ng-init="inviteList.invites = [{email: ''}]">
 						<md-input-container class="md-block" flex-gt-sm ng-repeat="invite in inviteList.invites">
-							<label>{{'INVITEROOMIES' | translate}}</label>
+							<label>{{'ROOMIE_EMAIL' | translate}}</label>
 							<input type="email" ng-model="invite.email">
 						</md-input-container>
-						<md-button class="md-raised" ng-click="inviteList.invites.push({email: ''})">+</md-button>
 					</div>
 					<div class="col-md-6">
+						<md-button class="md-raised" ng-click="inviteList.invites.push({email: ''})">{{'ADDROOMIE' | translate}}</md-button>
 						<md-button class="md-raised md-primary" ng-click="sendInvites()">{{'SENDINVITES' | translate}}</md-button>
 					</div>
 				</div>
 				<div ng-if="user.role === 'ROLE_ADMIN'">
-					<h1>Admin {{'SETTINGS' | translate}}</h1>
+					<h2>Admin {{'SETTINGS' | translate}}</h2>
 					<div class="row">
 						<div class="col-md-6">
 							<md-input-container class="md-block" flex-gt-sm>

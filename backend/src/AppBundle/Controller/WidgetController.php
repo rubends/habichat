@@ -144,7 +144,7 @@ class WidgetController extends FOSRestController
                 $widget->setVisible(0);
                 $updateVis = 0;
             }  else {
-                return new JsonResponse(array('error' => "User has no rights to delete this widget."));
+                return new JsonResponse(array('error' => "WIDGET_DELETE_NOT_ALLOWED"));
             }
         }
 
@@ -272,7 +272,11 @@ class WidgetController extends FOSRestController
         $data = base64_decode($image);
         $f = finfo_open();
         $mime_type = finfo_buffer($f, $data, FILEINFO_MIME_TYPE);
-        $file = time().'.'.explode("/", $mime_type)[1];
+        $type = explode("/", $mime_type);
+        if($type[0] !== 'image'){
+            return new JsonResponse(array('error' => "IMG_ERROR"));
+        }
+        $file = md5(uniqid(time(), true)).'.'.$type[1];
         $flat = $widget->getFlat();
         mkdir('./uploads/'.$flat->getFlatToken(), 0777, true);
         file_put_contents('./uploads/'.$flat->getFlatToken().'/'.$file, $data);

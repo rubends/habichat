@@ -1,4 +1,4 @@
-app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
+app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', '$filter', function($rootScope, $scope, $http, $cookies, $location, $filter){
 	$("#loginLink").addClass("activePage");
 	$scope.loginUser = function(){
 		$rootScope.loadScreen = true;
@@ -12,7 +12,7 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
 				$rootScope.loadScreen = false;
-				$rootScope.error = response.data.error;
+				$rootScope.error = $filter('translate')(response.data.error);
 			}
 			else{
 				$rootScope.loadScreen = false;
@@ -43,14 +43,14 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
+				$rootScope.error = $filter('translate')(response.data.error);
+			} else {
 				$rootScope.error = "";
-				
+				$rootScope.showNotification($filter('translate')('SENT'), null);
+				$location.path('/login');
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 }]);

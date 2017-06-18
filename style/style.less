@@ -81,6 +81,7 @@ hr {
 				color: inherit;
 
 				svg{
+					transition: 0.2s ease-in-out;
 					-webkit-transition: 0.2s ease-in-out;
 					-moz-transition: 0.2s ease-in-out;
 					-o-transition: 0.2s ease-in-out;
@@ -209,7 +210,7 @@ hr {
 
 /*  === PAGE === */
 .page{
-	padding-top: 66px;
+	padding-top: 78px;
 	min-height: 100vh;
 	padding-bottom: 24px;
 }
@@ -304,8 +305,8 @@ hr {
 	}
 }
 
-/* === LOGIN & REGISTER & FLAT & PROFILE  === */
-.login, .register, .flat, .profile {
+/* === LOGIN & REGISTER & FLAT & PROFILE & INVITE  === */
+.login, .register, .flat, .profile , .invite{
 	h1 {
 		text-align: center;
 		font-size: 24px;
@@ -320,10 +321,15 @@ hr {
 		margin-bottom: 24px;
 	}
 
+	h2 {
+		color: @mainColor;
+	}
+
 	#userSettings {
-		.table {
-			td div {
-				display: inline-block;
+		.roommateSettings {
+			margin-bottom: 24px;
+			div {
+				word-break: break-all;
 			}
 		}
 	}
@@ -360,10 +366,6 @@ hr {
 		}
 		.resize{
 			float: right;
-
-			.fa{
-				cursor: pointer;
-			}
 		}
 	}
 }
@@ -377,7 +379,7 @@ hr {
 }
 
 #notification{
-	position: absolute;
+	position: fixed;
     z-index: 20;
     width: 50%;
     margin-left: 25%;
@@ -389,6 +391,7 @@ hr {
     color: @mainColor;
     font-weight: bold;
     text-transform: uppercase;
+	box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 
 .addWidgetBtn {
@@ -503,7 +506,7 @@ hr {
 		overflow: hidden;
 		background-size: cover;
 		background-position: center;
-		height: calc(~'100% - 34px');
+		height: calc(~'100% - 64px');
 		margin: -23px -16px;
 		position: absolute;
 		width: 100%;
@@ -530,11 +533,6 @@ hr {
 				text-decoration: line-through;
 			}
 		}
-	}
-
-	/* POLL WIDGET */
-	.poll {
-		
 	}
 
 	/* GROCERY WIDGET */

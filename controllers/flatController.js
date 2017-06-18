@@ -29,7 +29,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				$rootScope.loadScreen = false;
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -51,7 +51,7 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 				$scope.inviteList.invites = [{email: ''}];
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 }]);

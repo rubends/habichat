@@ -1,4 +1,4 @@
-app.controller("calCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', function($rootScope, $scope, $http, $mdDialog){
+app.controller("calCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', '$location', function($rootScope, $scope, $http, $mdDialog, $location){
    $scope.onCalItemClick = function (date, jsEvent, view){
 		if(date.url){
 			date.type = 'feed';
@@ -69,7 +69,7 @@ app.controller("calCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', functio
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 
@@ -117,7 +117,7 @@ app.controller("calCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', functio
 					}
 				}
 			}, function errorCallback(response) {
-				console.log(response);
+				$location.path('/login');
 			});
 		}
 
@@ -160,7 +160,7 @@ app.controller("calCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', functio
 					}
 				}
 			}, function errorCallback(response) {
-				console.log(response);
+				$location.path('/login');
 			});
 		}
 	}

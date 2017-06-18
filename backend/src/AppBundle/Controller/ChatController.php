@@ -42,7 +42,7 @@ class ChatController extends FOSRestController
             return $serialiseChat;
             
         }
-        return new JsonResponse(array('error' => "The message wasn't send."));
+        return new JsonResponse(array('error' => "MESSAGE_FAIL"));
 
     }
 }

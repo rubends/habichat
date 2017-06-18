@@ -1,4 +1,4 @@
-app.controller("groceryCtrl", ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
+app.controller("groceryCtrl", ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location){
    	$scope.postGrocery = function($widgetId, $groceryTitle){
 		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/groceries";
         var oConfig = {
@@ -23,7 +23,7 @@ app.controller("groceryCtrl", ['$rootScope', '$scope', '$http', function($rootSc
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 
@@ -54,7 +54,7 @@ app.controller("groceryCtrl", ['$rootScope', '$scope', '$http', function($rootSc
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 }]);

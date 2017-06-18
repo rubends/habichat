@@ -92,10 +92,10 @@ class FlatController extends FOSRestController
                 $this->getDoctrine()->getManager()->remove($flat);
                 $this->getDoctrine()->getManager()->flush();
             } else {
-                return new JsonResponse(array('error' => "User is not in this flat."));
+                return new JsonResponse(array('error' => "WRONG_FLAT"));
             }
         } else {
-            return new JsonResponse(array('error' => "There are still other users in this flat."));
+            return new JsonResponse(array('error' => "OTHERS_IN_FLAT"));
         }
 
         return $user;

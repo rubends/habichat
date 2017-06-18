@@ -1,5 +1,4 @@
 <div id="dashboardBackground" ng-style="dashboardStyle"></div>
-<div id="notification" class="flipTrans" ng-show="flat.notification">{{flat.notification}}'</div>
 <div class="container-fluid page" id="dashboard">
 	<div class="row">
 		<div class="col-md-12">
@@ -15,7 +14,7 @@
 								<p>{{widget.widget_type.toUpperCase() | translate}}</p>
 							</div>
 						</div>
-						<div class="widgetBody clearfix" ng-include="'widgets/' + widget.widget_type + '.html'"></div>
+						<div class="widgetBody clearfix" ng-include="'templates/widgets/' + widget.widget_type + '.html'"></div>
 					</div>
 				</div>
 				<h2 ng-hide=" flat.widgets.length" class="text-center">{{'NO_WIDGETS' | translate}}</h2>

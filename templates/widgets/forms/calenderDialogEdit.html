@@ -2,13 +2,13 @@
     <md-dialog-content ng-init="editView = calItem.type" class="navView">
             <md-nav-bar nav-bar-aria-label="Calender edit navigation" md-selected-nav-item="editView">
                 <md-nav-item md-nav-click="goto('event')" name="event" ng-hide="calItem.url">
-                    {{'EDIT' | translate}} {{'EVENT' | translate}}
+                    {{'EDIT' | translate}}
                 </md-nav-item>
                 <md-nav-item md-nav-click="goto('feed')" name="feed" ng-show="calItem.url">
                     {{'EVENT' | translate}}
                 </md-nav-item>
                 <md-nav-item md-nav-click="goto('delete')" name="delete">
-                    {{'DELETE' | translate}} {{calItem.type}}
+                    {{'DELETE' | translate}}
                 </md-nav-item>
             </md-nav-bar>
             <div class="navView" ng-show="editView === 'event'">

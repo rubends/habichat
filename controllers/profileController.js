@@ -1,4 +1,4 @@
-app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', function($rootScope, $scope, $http, $cookies, $location){
+app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', "$filter", function($rootScope, $scope, $http, $cookies, $location, $filter){
     $("#profileLink").addClass("activePage");
     $scope.updateProfile = function($userId) {
         var sUrl = $rootScope.apiPath + "/users/"+$userId+"/update";
@@ -18,11 +18,13 @@ app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$lo
                 for(user in $rootScope.flat.users){
                     if($rootScope.flat.users[user].id === response.data.id){
                         $rootScope.flat.users[user] = response.data;
+                        $rootScope.showNotification($filter('translate')('PROFILE_UPDATED'), null);
+                        break;
                     }
                 }
             }
         }, function errorCallback(response) {
-            console.log(response);
+            $location.path('/login');
         });
     };
 
@@ -37,18 +39,20 @@ app.controller("profileCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$lo
         };
         $http(oConfig).then(function successCallback(response) {
             if (response.data.hasOwnProperty('error')){
-                $rootScope.error = response.data.error;
+                $rootScope.error = $filter('translate')(response.data.error);
             }
             else{
                 $rootScope.error = "";
                 for(user in $rootScope.flat.users){
                     if($rootScope.flat.users[user].id === response.data.id){
                         $rootScope.flat.users[user] = response.data;
+                        $rootScope.showNotification($filter('translate')('PASSWORD_CHANGED'), null);
+                        break;
                     }
                 }
             }
         }, function errorCallback(response) {
-            console.log(response);
+            $location.path('/login');
         });
     };
 }]);

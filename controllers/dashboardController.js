@@ -1,16 +1,17 @@
 app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$location', '$timeout', '$mdDialog', '$mdToast', '$filter', function($rootScope, $scope, $http, $cookies, $location, $timeout, $mdDialog, $mdToast, $filter){
-
 	if (!$rootScope.user || !$rootScope.user.loggedIn) {
 		$location.path('/login');
 	}
 	else if (!$rootScope.user.flat) {
 		$location.path('/flat');
 	} else {
-		$rootScope.flat.chats.new = 0;
-		for($i = $rootScope.flat.chats.length-1; $i >= 0; $i--){
-			if(moment($rootScope.flat.chats[$i].send).isAfter($rootScope.user.last_login)){
-				$rootScope.flat.chats.new++;
-			} else { break; }
+		if($rootScope.flat.chats) {
+			$rootScope.flat.chats.new = 0;
+			for($i = $rootScope.flat.chats.length-1; $i >= 0; $i--){
+				if(moment($rootScope.flat.chats[$i].send).isAfter($rootScope.user.last_login)){
+					$rootScope.flat.chats.new++;
+				} else { break; }
+			}
 		}
 		$("#dashboardLink").addClass("activePage");
 		$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+$rootScope.flat.background_image+')'};
@@ -18,7 +19,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		$scope.headerStyle = {'background-color': $rootScope.flat.header_color, 'color': $rootScope.flat.header_font_color};
 		$scope.inputTextStyle = {"border-bottom-color": $rootScope.flat.header_color, "color": $rootScope.flat.font_color};
 		$scope.inputBtnStyle = {"border-color": $rootScope.flat.header_color, "color": $rootScope.flat.header_color};
-
 	}
 
 	$scope.showWidgetDialog = function(ev) {
@@ -38,24 +38,6 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 	};
 	$scope.closeDialog = function() {
 		$mdDialog.cancel();
-	};
-
-	$scope.showChoreDialog = function(ev, $widgetId) {
-		$scope.choreForm = {};
-		$scope.choreWidgetId = $widgetId;
-		$mdDialog.show({
-			controller: () => this,
-			controllerAs: 'ctrl',
-			templateUrl: 'widgets/forms/choreDialog.html',
-			parent: angular.element(document.body),
-			targetEvent: ev,
-			clickOutsideToClose: true
-		})
-		.then(function(answer) {
-		 //show answer or something
-		}, function() {
-			$scope.choreForm = {};
-   		});
 	};
 
 	$scope.showDeleteDialog = function(ev, $widgetId, $widgetTitle) {
@@ -93,17 +75,19 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$mdDialog.cancel();
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 				$response = JSON.parse(response.data);
-				$rootScope.flat.widgets.push($response);
-				if($response.widget_type === 'Picture'){
-					postPicture($response.id);
-				} else if($response.widget_type === 'Bill'){
-					postBill($response.id);
-				} else if($response.widget_type === 'Poll'){
-					postPoll($response.id);
+				if($rootScope.flat.widgets[$rootScope.flat.widgets.length-1].id !== $response.id){
+					$rootScope.flat.widgets.push($response);
+					if($response.widget_type === 'Picture'){
+						$scope.postPicture($response.id);
+					} else if($response.widget_type === 'Bill'){
+						$scope.postBill($response.id);
+					} else if($response.widget_type === 'Poll'){
+						$scope.postPoll($response.id);
+					}
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -124,25 +108,23 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
+				$rootScope.error = $filter('translate')(response.data.error);
 			}
 			else{
 				$rootScope.error = "";
 				response.data = JSON.parse(response.data);
-				console.log(response.data);
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].visible = response.data.visible;
 						break;
 					}
 				}
-				if (!response.data.visible){	
-					console.log($widgetId);
+				if (!response.data.visible){
 					deletedToast($widgetId);
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -172,7 +154,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = "";
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
     }
 
@@ -193,11 +175,11 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.error = "";
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 
-	function postPicture($widgetId){
+	$scope.postPicture = function($widgetId){
 		var file = $('#addPictureImage')[0].files[0];
 		var reader = new FileReader();
 		reader.readAsDataURL(file);
@@ -213,7 +195,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			};
 			$http(oConfig).then(function successCallback(response) {
 				if (response.data.hasOwnProperty('error')){
-					$rootScope.error = response.data.error;
+					$rootScope.error = $filter('translate')(response.data.error);
 				}
 				else{
 					$rootScope.error = "";
@@ -224,58 +206,17 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					}
 				}
 			}, function errorCallback(response) {
-				console.log(response);
+				$location.path('/login');
 			});
 		}
 	}
 
-	$scope.getWeather = function ($id, $title) {
-		var sUrl = "http://api.openweathermap.org/data/2.5/weather?q="+$title+"&units=metric&appid=ad5bf1181d1ab5166d19757241c1511e&lang="+localStorage.language;
-		var oConfig = {
-			url: sUrl,
-			method: "GET"
-		};
-		$http(oConfig).then(function successCallback(response) {
-			$scope.weather = $scope.weather ? $scope.weather : [];
-			$scope.weather[$id] = response.data;
-			$scope.fixStyle($id);
-		}, function errorCallback(response) {
-			console.log(response);
-		});
-	}
-
-	$scope.saveText = function ($widgetId, $textId) {
-		for(widget in $rootScope.flat.widgets){
-			if($rootScope.flat.widgets[widget].id === $widgetId){
-				$textForm = $rootScope.flat.widgets[widget].items[0]
-			}
-		}
-		var sUrl = $rootScope.apiPath + "/texts/"+$textId;
-		var oConfig = {
-			url: sUrl,
-			method: "PUT",
-			data: $textForm,
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-		};
-		$http(oConfig).then(function successCallback(response) {
-			for(widget in $rootScope.flat.widgets){
-				if($rootScope.flat.widgets[widget].id === $widgetId){
-					$rootScope.flat.widgets[widget].items[0] = response.data;
-				}
-			}
-			$scope.fixStyle($widgetId);
-		}, function errorCallback(response) {
-			console.log(response);
-		});
-	}
-
-	$scope.addChore = function ($widgetId){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/chores";
+	$scope.postPoll = function($widgetId){
+		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/polls";
         var oConfig = {
             url: sUrl,
             method: "POST",
-			data: $scope.choreForm,
+			data: $scope.addPollForm,
 			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
             params: {callback: "JSON_CALLBACK"}
         };
@@ -285,15 +226,46 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			}
 			else{
 				$rootScope.error = "";
-				$mdDialog.cancel();
+				$scope.addPollForm = {};
 				for(widget in $rootScope.flat.widgets){
 					if($rootScope.flat.widgets[widget].id === $widgetId){
 						$rootScope.flat.widgets[widget].items.push(response.data);
+						$scope.fixStyle($widgetId);
+						break;
 					}
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
+		});
+	}
+
+	$scope.postBill = function($widgetId){
+		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/bills";
+        var oConfig = {
+            url: sUrl,
+            method: "POST",
+			data: $scope.addBillForm,
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				$rootScope.error = response.data.error;
+			}
+			else{
+				$rootScope.error = "";
+				$scope.addBillForm = {};
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === $widgetId){
+						$rootScope.flat.widgets[widget].items[0] = JSON.parse(response.data);
+						$scope.fixStyle($widgetId);
+                        break;
+					}
+				}
+			}
+		}, function errorCallback(response) {
+		    $location.path('/login');
 		});
 	}
 
@@ -311,36 +283,16 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			};
 			$http(oConfig).then(function successCallback(response) {
 				if (response.data.hasOwnProperty('error')){
-					$rootScope.error = response.data.error;
+					$rootScope.error = $filter('translate')(response.data.error);
 				}
 				else{
 					$rootScope.flat.chats.push(JSON.parse(response.data));
 					$scope.scrollChat();
 				}
 			}, function errorCallback(response) {
-				console.log(response);
+				$location.path('/login');
 			});
 		}
-	}
-
-	function showNotification(element, action, id, user, type, title) {
-		if(element === 'item'){
-			if(action === 'add') {
-				$rootScope.flat.notification = user + " added " + type + " item '" + title + "'.";
-			} else if(action === 'edit') {
-				$rootScope.flat.notification = user + " edited " + type + " item '" + title + "'.";
-			}
-		} else if(element === 'widget'){
-			if(action === 'add') {
-				$rootScope.flat.notification = user + " added " + type + " widget '" + title + "'.";
-			} else if(action === 'edit') {
-				$rootScope.flat.notification = user + " edited " + type + " widget '" + item + "'.";
-			}
-		}
-		$('#'+id+" .widget").addClass("recentlyAdded");
-		$audio = new Audio('/audio/pop_drip.wav');
-		$audio.play();
-		$timeout(function () { $rootScope.flat.notification = null; $(".recentlyAdded").removeClass("recentlyAdded"); }, 4000);   
 	}
 
 	$scope.scrollChat = function() {
@@ -365,7 +317,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.user.last_login = moment(response.data);
 			}
 		}, function errorCallback(response) {
-			console.log(response);
+			$location.path('/login');
 		});
 	}
 
@@ -383,6 +335,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			$bodyHeight = $widget.find('.grid-stack-item-content .widgetBody').outerHeight();
 			$height = Math.ceil(($headerHeight + $bodyHeight)/70);
 			$grid = $('.grid-stack').data('gridstack');
+			if($height <= 3) {
+				$height = 4;
+			}
 			$grid.update($widget, null, null, null, $height);
 			$grid.minHeight($widget, $height);
 		}, 50);
@@ -403,6 +358,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$headerHeight = $(this).find('.grid-stack-item-content .widgetHeader').outerHeight();
 				$bodyHeight = $(this).find('.grid-stack-item-content .widgetBody').outerHeight();
 				$height = Math.ceil(($headerHeight + $bodyHeight)/70);
+				if($height <= 3) {
+					$height = 4;
+				}
 				if($(this).attr('data-gs-height') < $height){
 					$grid.update($(this), null, null, null, $height);
 				}
@@ -410,7 +368,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			});
 		}, 500);
 	}
-	$scope.fixGrid()
+	$scope.fixGrid();
 
 	// GRID STACK
 	$scope.gridOptions = {
@@ -477,8 +435,9 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				}
 			} else if(data.reason === 'postWidget') {
 				$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
+				data.widget = JSON.parse(data.widget);
 				$rootScope.flat.widgets.push(data.widget);
-				showNotification('widget', 'add', data.widget.id, data.user.username, data.widget.widget_type, data.widget.title);
+				$rootScope.showNotification(data.user.username + " " + $filter('translate')('ADDED') + " " + $filter('translate')(data.widget.widget_type.toUpperCase())+" widget '"+data.widget.title+"'"+$filter('translate')('ADDED_2')+".", data.widget.id);
 				$scope.postLastLogin();
 				$scope.fixStyle(data.widget.id);
 
@@ -489,7 +448,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						if(!data.item.title){
 							data.item.title = data.item.item;
 						}
-						showNotification('item', 'add', data.item.widget.id, data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
+						$rootScope.showNotification(data.user.username + " " + $filter('translate')('ITEM_ADDED') + " " + $filter('translate')($rootScope.flat.widgets[widget].widget_type.toUpperCase())+" widget '"+$rootScope.flat.widgets[widget].title+"'"+$filter('translate')('ADDED_2')+".", data.item.widget.id);
 						$scope.postLastLogin();
 						$scope.fixStyle(data.item.widget.id);
 						break;
@@ -541,7 +500,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						} else {
 							$rootScope.flat.widgets[widget].calItems.push(data.item);
 						}
-						showNotification('item', 'add', data.item.widget.id, data.user.username, $rootScope.flat.widgets[widget].widget_type, data.item.title);
+						$rootScope.showNotification(data.user.username + " " + $filter('translate')('ADDED') + " " + $filter('translate')($rootScope.flat.widgets[widget].widget_type.toUpperCase())+" item '"+data.item.title+"'"+$filter('translate')('ADDED_2')+".", data.item.widget.id);
 						break;
 					}
 				}
@@ -592,16 +551,18 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				$rootScope.flat.background_image = data.background_image;
 				$scope.dashboardStyle = {'background-image': 'url(../backend/web/uploads/'+$rootScope.flat.flat_token+'/'+data.background_image+')'};
 			} else if(data.reason === 'chat') {
-				$scope.scrollChat();
 				data.chat = JSON.parse(data.chat);
 				data.chat.send = moment(data.chat.send).format('HH:mm DD/MM/YY');
-				$rootScope.flat.chats.push(data.chat);
-				if(!$scope.chat){
-					$audio = new Audio('/audio/music_marimba_chord.wav');
-					$audio.play();
-					$rootScope.flat.chats.new++;
-				} else {
-					$scope.postLastLogin();
+				if($rootScope.flat.chats[$rootScope.flat.chats.length-1].id !== data.chat.id){
+					$rootScope.flat.chats.push(data.chat);
+					if(!$scope.chat || $location.path() !== '/dasboard'){
+						$audio = new Audio('/audio/music_marimba_chord.wav');
+						$audio.play();
+						$rootScope.flat.chats.new++;
+					} else {
+						$scope.scrollChat();
+						$scope.postLastLogin();
+					}
 				}
 			}
 			$scope.$apply();
@@ -651,16 +612,18 @@ app.directive('recentlyAdded', ['$rootScope', '$timeout', function($rootScope, $
     };
 }]);
 
-app.directive('imagePreview', ['$rootScope', function ($rootScope) {
+app.directive('imagePreview', ['$rootScope', '$timeout', '$filter', function ($rootScope, $timeout, $filter) {
     return {
         link: function (scope, element, attrs) {
             element.on('change', function  (evt) {
                 var file = evt.target.files[0];
-				var reader = new FileReader();
-				reader.readAsDataURL(file);
-				reader.onload = function () {
-					var img = reader.result.replace(/^data:image\/[a-z]+;base64,/, '');
-					$("#imgPreview").attr({src: reader.result});
+				if (file.type.match('image.*')) {
+					var reader = new FileReader();
+					reader.readAsDataURL(file);
+					reader.onload = function () {
+						var img = reader.result.replace(/^data:image\/[a-z]+;base64,/, '');
+						$("#imgPreview").attr({src: reader.result});
+					}
 				}
             });
         }

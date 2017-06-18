@@ -31,7 +31,7 @@ class UserController extends FOSRestController
             $calKey = $this->getParameter('google_cal_key');
             return ['user' => $serialiseUser, 'calKey' => $calKey];
         }
-        return new JsonResponse(array('error' => "Something went wrong"));
+        return new JsonResponse(array('error' => "ERROR"));
         
     }
 
@@ -90,10 +90,10 @@ class UserController extends FOSRestController
                 return $this->generateToken($user, 201);
             }
 
-            return new JsonResponse(array('error' => "E-mailadress is already taken."));
+            return new JsonResponse(array('error' => "EMAIL_TAKEN"));
         }
 
-        return new JsonResponse(array('error' => "passwords don't match"));
+        return new JsonResponse(array('error' => "PASS_NOT_MATCH"));
     }
 
     protected function generateToken($user, $statusCode = 200)
@@ -123,14 +123,14 @@ class UserController extends FOSRestController
         $password = $request->request->get('password');
 
         if(is_null($email) || is_null($password)) {
-            return new JsonResponse(array('error' => "Not all fields are filled."));
+            return new JsonResponse(array('error' => "FIELDS_NOT_FILLED"));
         }
 
         $repository = $this->getDoctrine()->getRepository('AppBundle:User');
         $user = $repository->findOneByEmail($email);
 
         if (!$user) {
-            return new JsonResponse(array('error' => "Email is not valid."));
+            return new JsonResponse(array('error' => "EMAIL_INVALID"));
         }
 
         $encoder = $this->container->get('security.password_encoder');
@@ -148,23 +148,8 @@ class UserController extends FOSRestController
                 }
               return $this->generateToken($user, 201);
         } else {
-            return new JsonResponse(array('error' => "Password is not valid."));
+            return new JsonResponse(array('error' => "PASS_INVALID"));
         }
-    }
-
-    /**
-     * @ApiDoc()
-     *
-     * @param User $user
-     *
-     * @return Response
-     */
-    public function deleteUserAction(User $user)
-    {
-        $this->getDoctrine()->getManager()->remove($user);
-        $this->getDoctrine()->getManager()->flush();
-
-        return new Response('User deleted', Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -174,17 +159,22 @@ class UserController extends FOSRestController
      */
     public function deleteUsersFlatAction(User $user)
     {
-        if($user->getRole() === 'ROLE_ADMIN'){
-            $admins = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('flat' => $user->getFlat(), 'role' => 'ROLE_ADMIN'));
-            if($admins.length <= 1){
-                return new JsonResponse(array('error' => "You can't delete the only admin!"));
+        $userLoggedIn = $this->get('security.token_storage')->getToken()->getUser();
+        if($user->getId() === $userLoggedIn->getId() || $userLoggedIn->getRole() === 'ROLE_ADMIN'){
+            if($user->getRole() === 'ROLE_ADMIN'){
+                $admins = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('flat' => $user->getFlat(), 'role' => 'ROLE_ADMIN'));
+                if($admins.length <= 1){
+                    return new JsonResponse(array('error' => "DELETE_ONLY_ADMIN"));
+                }
             }
-        }
-        $user->setFlat(null);
-        $this->getDoctrine()->getManager()->persist($user);
-        $this->getDoctrine()->getManager()->flush();
+            $user->setFlat(null);
+            $this->getDoctrine()->getManager()->persist($user);
+            $this->getDoctrine()->getManager()->flush();
 
-        return $this->get('security.token_storage')->getToken()->getUser()->getFlat();
+            return $this->get('security.token_storage')->getToken()->getUser()->getFlat();
+        } else {
+            return new JsonResponse(array('error' => "DELETE_NOT_ALLOWED"));
+        }
     }
 
     /**
@@ -194,13 +184,16 @@ class UserController extends FOSRestController
      */
     public function putUsersRoleAction(User $user)
     {
-        $role = $user->getRole();
-        if($role === 'ROLE_ADMIN'){
-            $user->setRole('ROLE_USER');
-        } else if ($role === 'ROLE_USER') {
-            $user->setRole('ROLE_ADMIN');
+        $userDb = $this->get('security.token_storage')->getToken()->getUser();
+        if($userDb->getRole() === 'ROLE_ADMIN'){
+            $role = $user->getRole();
+            if($role === 'ROLE_ADMIN'){
+                $user->setRole('ROLE_USER');
+            } else if ($role === 'ROLE_USER') {
+                $user->setRole('ROLE_ADMIN');
+            }
         }
-
+        
         $this->getDoctrine()->getManager()->persist($user);
         $this->getDoctrine()->getManager()->flush();
 
@@ -247,10 +240,10 @@ class UserController extends FOSRestController
                     $encoded = $encoder->encodePassword($user, $data['new']);
                     $user->setPassword($encoded);
                 } else {
-                    return new JsonResponse(array('error' => "passwords don't match"));
+                    return new JsonResponse(array('error' => "PASS_NOT_MATCH"));
                 }
             } else {
-                return new JsonResponse(array('error' => "Password is not valid."));
+                return new JsonResponse(array('error' => "PASS_INVALID"));
             }
         }
 
@@ -293,7 +286,11 @@ class UserController extends FOSRestController
                 )
                 ;
             $this->get('mailer')->send($message);
+        } else {
+            return new JsonResponse(array('error' => "EMAIL_INVALID"));
         }
+
+        return $user;
     }
 
     /**
@@ -307,10 +304,10 @@ class UserController extends FOSRestController
         $email = $request->request->get('email');
         $password = $request->request->get('password');
         if(is_null($email) || is_null($password)) {
-            return new JsonResponse(array('error' => "Not all fields are filled."));
+            return new JsonResponse(array('error' => "FIELDS_NOT_FILLED"));
         }
         if($password != $request->request->get('passwordRepeat')) {
-            return new JsonResponse(array('error' => "passwords do not match."));
+            return new JsonResponse(array('error' => "PASS_NOT_MATCH"));
         }
 
         $reset = $this->getDoctrine()->getRepository('AppBundle:Reset')->findOneByResetKey($request->request->get('resetKey'));
@@ -325,10 +322,10 @@ class UserController extends FOSRestController
                 $this->getDoctrine()->getManager()->flush();
                 return $this->generateToken($user, 201);
             } else {
-                return new JsonResponse(array('error' => "Email and reset key do not belong together."));
+                return new JsonResponse(array('error' => "RESET_NOT_BELONGING"));
             }
         } else {
-            return new JsonResponse(array('error' => "Reset key is too old."));
+            return new JsonResponse(array('error' => "RESET_INVALID"));
         }
     }
 

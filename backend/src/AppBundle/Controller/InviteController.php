@@ -25,11 +25,11 @@ class InviteController extends FOSRestController
             ->findOneByInviteKey($key);
 
         if(!$invite){
-            return new JsonResponse(array('error' => "This invite is not valid."));
+            return new JsonResponse(array('error' => "INVALID_INVITE"));
         } else if($invite->getAccepted()){
-            return new JsonResponse(array('error' => "This invite is already used."));
+            return new JsonResponse(array('error' => "USED_INVITE"));
         } else if($invite->getSendDate()->getTimestamp() <= strtotime('-2 day')){
-            return new JsonResponse(array('error' => "This invite is not valid anymore."));
+            return new JsonResponse(array('error' => "EXPIRED_INVITE"));
         } else {
             $user = $this->getDoctrine()
             ->getRepository('AppBundle:User')
@@ -76,6 +76,6 @@ class InviteController extends FOSRestController
             }
         }
 
-        return new JsonResponse(array('succes' => "Your flatmates got invited."));
+        return $invite;
     }
 }

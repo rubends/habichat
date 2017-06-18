@@ -1,4 +1,4 @@
-app.controller("pollCtrl", ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
+app.controller("pollCtrl", ['$rootScope', '$scope', '$http', '$location', "$filter", function($rootScope, $scope, $http, $location, $filter){
     $scope.getChecked = function($option){
 		$voters = $option.voters;
 		$hasVoted = false;
@@ -43,7 +43,7 @@ app.controller("pollCtrl", ['$rootScope', '$scope', '$http', function($rootScope
         };
         $http(oConfig).then(function successCallback(response) {
 			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
+				 $rootScope.error = $filter('translate')(response.data.error);
 			}
 			else{
 				$rootScope.error = "";
@@ -58,36 +58,7 @@ app.controller("pollCtrl", ['$rootScope', '$scope', '$http', function($rootScope
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
-		});
-	}
-
-    function postPoll($widgetId){
-		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/polls";
-        var oConfig = {
-            url: sUrl,
-            method: "POST",
-			data: $scope.addPollForm,
-			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
-            params: {callback: "JSON_CALLBACK"}
-        };
-        $http(oConfig).then(function successCallback(response) {
-			if (response.data.hasOwnProperty('error')){
-				$rootScope.error = response.data.error;
-			}
-			else{
-				$rootScope.error = "";
-				$scope.addPollForm = {};
-				for(widget in $rootScope.flat.widgets){
-					if($rootScope.flat.widgets[widget].id === $widgetId){
-						$rootScope.flat.widgets[widget].items.push(response.data);
-						$scope.fixStyle($widgetId);
-						break;
-					}
-				}
-			}
-		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 }]);

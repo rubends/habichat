@@ -1,4 +1,4 @@
-app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', function($rootScope, $http, $cookies, $location) {
+app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', '$filter', function($rootScope, $http, $cookies, $location, $filter) {
 	return {
 		getUser: function(){
             if ($cookies.get('token')) {
@@ -15,7 +15,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                     var promise = $http(oConfig).then(function successCallback(response) {
                         if (response.data.hasOwnProperty('error')){
                             $rootScope.loadScreen = false;
-                            $rootScope.error = response.data.error;
+                            $rootScope.error = $filter('translate')(response.data.error);
                         }
                         else{
                             $rootScope.error = "";
@@ -26,7 +26,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', fu
                             $rootScope.loadScreen = false;
                         }
                     }, function errorCallback(response) {
-                        console.log("error on login");
+                        $location.path('/login');
                     });
                 }
             }

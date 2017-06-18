@@ -1,8 +1,11 @@
-app.factory('getFlatService', ['$rootScope','$http', '$cookies', function($rootScope, $http, $cookies) {
+app.factory('getFlatService', ['$rootScope','$http', '$cookies', "$location", function($rootScope, $http, $cookies, $location) {
 	return {
 		getFlat: function(){
+            var decoded = jwt_decode($cookies.get('token'));
+            if(!decoded.flat){
+                decoded.flat = $rootScope.user.flat.id;
+            }
             if(!$rootScope.flat){
-                var decoded = jwt_decode($cookies.get('token'));
                 var sUrl = "../backend/web/api/flats/"+ decoded.flat;
                 var oConfig = {
                     url: sUrl,
@@ -19,7 +22,7 @@ app.factory('getFlatService', ['$rootScope','$http', '$cookies', function($rootS
                         $rootScope.flat = JSON.parse(response.data);
                     }
                 }, function errorCallback(response) {
-                    console.log(response);
+                    $location.path('/login');
                 });
             }
             return promise;

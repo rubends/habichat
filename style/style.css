@@ -67,6 +67,7 @@ hr {
   color: inherit;
 }
 .input-group .input-group-btn button md-icon svg {
+  transition: 0.2s ease-in-out;
   -webkit-transition: 0.2s ease-in-out;
   -moz-transition: 0.2s ease-in-out;
   -o-transition: 0.2s ease-in-out;
@@ -168,7 +169,7 @@ hr {
 }
 /*  === PAGE === */
 .page {
-  padding-top: 66px;
+  padding-top: 78px;
   min-height: 100vh;
   padding-bottom: 24px;
 }
@@ -248,11 +249,12 @@ hr {
 .homepage p {
   font-family: 'Allerta', sans-serif;
 }
-/* === LOGIN & REGISTER & FLAT & PROFILE  === */
+/* === LOGIN & REGISTER & FLAT & PROFILE & INVITE  === */
 .login h1,
 .register h1,
 .flat h1,
-.profile h1 {
+.profile h1,
+.invite h1 {
   text-align: center;
   font-size: 24px;
   font-weight: bold;
@@ -262,8 +264,14 @@ hr {
 .settings .md-nav-bar {
   margin-bottom: 24px;
 }
-.settings #userSettings .table td div {
-  display: inline-block;
+.settings h2 {
+  color: #00897b;
+}
+.settings #userSettings .roommateSettings {
+  margin-bottom: 24px;
+}
+.settings #userSettings .roommateSettings div {
+  word-break: break-all;
 }
 .settings .inviteBtns {
   margin-top: 16px;
@@ -292,9 +300,6 @@ hr {
 .settings #widgetPreview .resize {
   float: right;
 }
-.settings #widgetPreview .resize .fa {
-  cursor: pointer;
-}
 /* === DASHBOARD === */
 #dashboardBackground {
   background-size: cover;
@@ -303,7 +308,7 @@ hr {
   min-height: 100vh;
 }
 #notification {
-  position: absolute;
+  position: fixed;
   z-index: 20;
   width: 50%;
   margin-left: 25%;
@@ -315,6 +320,7 @@ hr {
   color: #00897b;
   font-weight: bold;
   text-transform: uppercase;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
 }
 .addWidgetBtn {
   position: fixed;
@@ -351,7 +357,6 @@ hr {
   /* TODO WIDGET */
   /* PICTURE && GIF WIDGET */
   /* BILL WIDGET */
-  /* POLL WIDGET */
   /* GROCERY WIDGET */
   /* WEATHER WIDGET */
   /* TEXT WIDGET */
@@ -417,7 +422,7 @@ hr {
   overflow: hidden;
   background-size: cover;
   background-position: center;
-  height: calc(100% - 34px);
+  height: calc(100% - 64px);
   margin: -23px -16px;
   position: absolute;
   width: 100%;

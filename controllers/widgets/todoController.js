@@ -1,4 +1,4 @@
-app.controller("todoCtrl", ['$rootScope', '$scope', '$http', function($rootScope, $scope, $http){
+app.controller("todoCtrl", ['$rootScope', '$scope', '$http', '$location', function($rootScope, $scope, $http, $location){
 	$scope.postTodo = function($widgetId, $todoTitle){
 		var sUrl = $rootScope.apiPath + "/widgets/"+$widgetId+"/todos";
         var oConfig = {
@@ -23,7 +23,7 @@ app.controller("todoCtrl", ['$rootScope', '$scope', '$http', function($rootScope
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 
@@ -54,7 +54,7 @@ app.controller("todoCtrl", ['$rootScope', '$scope', '$http', function($rootScope
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 
@@ -85,7 +85,7 @@ app.controller("todoCtrl", ['$rootScope', '$scope', '$http', function($rootScope
 				}
 			}
 		}, function errorCallback(response) {
-		    console.log(response);
+		    $location.path('/login');
 		});
 	}
 }]);

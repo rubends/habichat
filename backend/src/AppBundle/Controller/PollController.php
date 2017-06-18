@@ -25,7 +25,7 @@ class PollController extends FOSRestController
         $poll = $option->getPoll();
 
         if($poll->getUntil() < new \DateTime()){
-            return new JsonResponse(array('error' => "The voting on this poll has ended."));
+            return new JsonResponse(array('error' => "POLL_ENDED"));
         }
         
         if($poll->getMultiple()){
