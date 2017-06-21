@@ -6,15 +6,30 @@ var app = angular.module('habichat', ['ngRoute', 'ngCookies', 'ngMaterial', 'mdC
     	$locationProvider.hashPrefix('');
     	$routeProvider
 		.when("/", {
-			templateUrl : "templates/home.html"
+			templateUrl : "templates/home.html",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/login", {
 			templateUrl : "templates/login.html",
-			controller : "loginCtrl"
+			controller : "loginCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/register", {
 			templateUrl : "templates/register.html",
-			controller : "registerCtrl"
+			controller : "registerCtrl",
+			resolve: {
+                userService: ['getUserService', function(getUserService){
+                    return getUserService.getUser();
+                }]
+            }
 		})
 		.when("/dashboard", {
 			templateUrl : "templates/dashboard.html",

@@ -66,10 +66,10 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = $filter('translate')(response.data.error);
 			}
 			else{
-				$rootScope.error = "";
-				$rootScope.user = response.data;
-				$rootScope.user.loggedIn = true;
 				$location.path('/flat');
+				$rootScope.error = "";
+				$rootScope.flat = {};
+				$cookies.remove('token');
 			}
 		}, function errorCallback(response) {
 		    $location.path('/login');

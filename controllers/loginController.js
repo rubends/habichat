@@ -19,7 +19,7 @@ app.controller("loginCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$loca
 				$rootScope.error = "";
 				$cookies.put('token', response.data.token);
 				$rootScope.user = response.data;
-				$rootScope.user.loggedIn = true;
+				$rootScope.loggedIn = true;
 				if (response.data.flat) {
 					$location.path('/dashboard');
 				}

@@ -133,6 +133,7 @@ hr {
   width: 68%;
   left: 16%;
   position: absolute;
+  padding-top: 18px;
 }
 .navbar .flatname p {
   font-size: 25px;
@@ -246,8 +247,11 @@ hr {
 .homepage .intro img {
   width: 35%;
 }
-.homepage p {
-  font-family: 'Allerta', sans-serif;
+.homepage h2 {
+  text-align: center;
+  font-size: 21px;
+  margin-top: 10px;
+  margin-bottom: 24px;
 }
 /* === LOGIN & REGISTER & FLAT & PROFILE & INVITE  === */
 .login h1,
@@ -471,9 +475,6 @@ hr {
   background-color: black;
   color: white;
   border-color: black;
-}
-.widget .chore table {
-  table-layout: fixed;
 }
 .widget .chore tr,
 .widget .chore td {

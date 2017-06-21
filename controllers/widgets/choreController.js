@@ -5,7 +5,7 @@ app.controller("choreCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', funct
 		$mdDialog.show({
 			controller: () => this,
 			controllerAs: 'ctrl',
-			templateUrl: 'widgets/forms/choreDialog.html',
+			templateUrl: 'templates/widgets/forms/choreDialog.html',
 			parent: angular.element(document.body),
 			targetEvent: ev,
 			clickOutsideToClose: true

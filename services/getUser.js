@@ -1,4 +1,4 @@
-app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', '$filter', function($rootScope, $http, $cookies, $location, $filter) {
+app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', '$filter', 'getFlatService', function($rootScope, $http, $cookies, $location, $filter, getFlatService) {
 	return {
 		getUser: function(){
             if ($cookies.get('token')) {
@@ -22,7 +22,7 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', '$
                             $rootScope.user = JSON.parse(response.data.user);
                             $rootScope.calKey = response.data.calKey;
                             $rootScope.user.token = $cookies.get('token');
-                            $rootScope.user.loggedIn = true;
+                            $rootScope.loggedIn = true;
                             $rootScope.loadScreen = false;
                         }
                     }, function errorCallback(response) {
@@ -31,7 +31,8 @@ app.factory('getUserService', ['$rootScope','$http', '$cookies', '$location', '$
                 }
             }
             else{
-                if($location.path() === '/dasboard' || $location.path() === '/settings'){
+                $path = $location.path();
+                if($path === '/dashboard' || $path === '/settings' || $path === '/profile'){
                     $location.path('/login');
                 }
             }

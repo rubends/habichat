@@ -3,11 +3,10 @@
   "authors": [
     "rubends <rubendeswaef@gmail.com>"
   ],
-  "description": "The online dashboard for flatmates",
+  "description": "The online presonalisable dashboard for coinhabitants",
   "main": "app.js",
   "keywords": [
     "dashboard",
-    "flat",
     "habichat"
   ],
   "license": "none",
@@ -22,12 +21,15 @@
   ],
   "dependencies": {
     "angular": "^1.6.1",
-    "font-awesome": "^4.7.0",
     "bootstrap": "^3.3.7",
     "angular-route": "^1.6.1",
     "angular-cookies": "^1.6.1",
-    "packery": "^2.1.1",
-    "angular-masonry": "^0.17.0",
+    "angular-translate-loader-static-files": "^2.15.1",
+    "jwt-decode": "^2.2.0",
+    "material-design-icons": "^3.0.1",
+    "simplebar": "^2.4.1",
+    "tinycolor": ">=1.2.1",
+    "md-color-picker": "^0.2.6",
     "jquery": "2.2.4",
     "angular-material": "^1.1.4",
     "mdPickers": "https://github.com/andrea-vega/mdPickers.git#7c8f32fac12a01ad66e6728b603dcf8c7e86c0ce",

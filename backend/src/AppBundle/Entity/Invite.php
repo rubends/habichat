@@ -27,7 +27,7 @@ class Invite
     /**
      * 
      * @ORM\ManyToOne(targetEntity="Flat", inversedBy="invites")
-     * @ORM\JoinColumn(name="flat_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="flat_id", referencedColumnName="id",onDelete="CASCADE")
      *
      */
     protected $flat;

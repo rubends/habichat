@@ -115,21 +115,21 @@ class Flat
     protected $headerFontColor;
 
     /**
-    * @ORM\OneToMany(targetEntity="User", mappedBy="flat")
+    * @ORM\OneToMany(targetEntity="User", mappedBy="flat", cascade={"persist"})
     * @Serializer\Expose
     * @Serializer\Groups({"Flat"})
     */
     protected $users;
 
     /**
-    * @ORM\OneToMany(targetEntity="Widget", mappedBy="flat")
+    * @ORM\OneToMany(targetEntity="Widget", mappedBy="flat", cascade={"remove"}, orphanRemoval=true)
     * @Serializer\Expose
     * @Serializer\Groups({"Flat"})
     */
     private $widgets;
 
     /**
-    * @ORM\OneToMany(targetEntity="Invite", mappedBy="flat")
+    * @ORM\OneToMany(targetEntity="Invite", mappedBy="flat", cascade={"remove"}, orphanRemoval=true)
     * @Serializer\Expose
     * @Serializer\Groups({"Flat"})
     */
@@ -143,7 +143,7 @@ class Flat
     protected $flatToken;
 
     /**
-    * @ORM\OneToMany(targetEntity="Chat", mappedBy="flat")
+    * @ORM\OneToMany(targetEntity="Chat", mappedBy="flat", cascade={"remove"}, orphanRemoval=true)
     * @Serializer\Expose
     * @Serializer\Groups({"Flat"})
     */

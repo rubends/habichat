@@ -104,7 +104,7 @@ class Widget
 
     /**
      * @ORM\ManyToOne(targetEntity="Flat", inversedBy="widgets")
-     * @ORM\JoinColumn(name="flat_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="flat_id", referencedColumnName="id",onDelete="CASCADE")
      * @Serializer\Expose
      * @Serializer\Groups({"Widget"})
      */

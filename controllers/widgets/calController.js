@@ -17,7 +17,7 @@ app.controller("calCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', '$locat
 		}
 		$mdDialog.show({
 			controller: editCalItemController,
-			templateUrl: 'widgets/forms/calenderDialogEdit.html',
+			templateUrl: 'templates/widgets/forms/calenderDialogEdit.html',
 			parent: angular.element(document.body),
 			targetEvent: jsEvent,
 			clickOutsideToClose: true,
@@ -208,7 +208,7 @@ app.controller("calCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', '$locat
 		$mdDialog.show({
 			controller: () => this,
 			controllerAs: 'ctrl',
-			templateUrl: 'widgets/forms/calenderDialog.html',
+			templateUrl: 'templates/widgets/forms/calenderDialog.html',
 			parent: angular.element(document.body),
 			targetEvent: ev,
 			clickOutsideToClose: true

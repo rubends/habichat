@@ -20,9 +20,8 @@ app.controller("flatCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$locat
 			else{
 				$rootScope.error = "";
 				$token = $rootScope.user.token;
-				$rootScope.flat = response.data.flat;
 				$rootScope.user = response.data.user;
-				$rootScope.user.loggedIn = true;
+				$rootScope.loggedIn = true;
 				$rootScope.user.token = $token;
 				$scope.sendInvites();
 				$location.path('/dashboard');

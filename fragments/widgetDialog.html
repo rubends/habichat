@@ -55,7 +55,7 @@
                 </md-nav-bar>
                 <div ng-show="addView === 'add'" class="navView">
                     <form ng-submit="ctrl.addWidget()">
-                            <div ng-include="'widgets/forms/' + ctrl.widgetForm.type + 'Form.html'"></div>
+                            <div ng-include="'templates/widgets/forms/' + ctrl.widgetForm.type + 'Form.html'"></div>
                             <md-button type='submit' class="md-raised md-primary">{{'ADD' | translate}}</md-button>
                             <md-button ng-click="ctrl.widgetForm = {}">{{'RETURN' | translate}}</md-button>
                     </form>
