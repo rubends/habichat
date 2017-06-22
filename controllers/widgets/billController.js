@@ -1,36 +1,4 @@
 app.controller("billCtrl", ['$rootScope', '$scope', '$http', '$timeout', '$location', function($rootScope, $scope, $http, $timeout, $location){
-	$scope.setBillAmount= function ($type){
-		if($type === 'total'){
-			$timeout(function() {
-				$divided = $('.billsplitCheck.md-checked').length;
-				if($divided >= 1){
-					$amount = Number(($scope.addBillForm.amount / $divided).toFixed(2));
-					for($user in $rootScope.flat.users){
-						$id = $rootScope.flat.users[$user].id;
-						if($scope.addBillForm.user[$id]){
-							if($scope.addBillForm.user[$id].pay){
-								$scope.addBillForm.user[$id].amount = $amount;
-							} else {
-								$scope.addBillForm.user[$id].amount = 0;
-							}
-						}
-					}
-				}
-			});
-		} else {
-			$amount = 0;
-			for($user in $rootScope.flat.users){
-				$id = $rootScope.flat.users[$user].id;
-				if($scope.addBillForm.user[$id]){
-					if($scope.addBillForm.user[$id].pay){
-						$amount = $amount + $scope.addBillForm.user[$id].amount;
-					}
-				}
-			}
-			$scope.addBillForm.amount = $amount;
-		}
-	}
-
 	$scope.billPaid = function ($widgetId, $billId, $payerId){
 		var sUrl = $rootScope.apiPath + "/bills/"+$billId+"/payers/"+$payerId;
         var oConfig = {

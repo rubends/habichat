@@ -42,11 +42,11 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$rootScope.error = $filter('translate')(response.data.error);
 			}
 			else{
+				$location.path('/flat');
 				$rootScope.error = "";
-				$rootScope.flat = response.data;
-				if(!response.data){
-					$location.path('/flat');
-				}
+				$rootScope.flat = {};
+				$rootScope.user.flat = {};
+				$cookies.remove('token');
 			}
 		}, function errorCallback(response) {
 		    $location.path('/login');
@@ -69,6 +69,7 @@ app.controller("settingsCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$l
 				$location.path('/flat');
 				$rootScope.error = "";
 				$rootScope.flat = {};
+				$rootScope.user.flat = {};
 				$cookies.remove('token');
 			}
 		}, function errorCallback(response) {

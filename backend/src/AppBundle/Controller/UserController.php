@@ -163,7 +163,7 @@ class UserController extends FOSRestController
         if($user->getId() === $userLoggedIn->getId() || $userLoggedIn->getRole() === 'ROLE_ADMIN'){
             if($user->getRole() === 'ROLE_ADMIN'){
                 $admins = $this->getDoctrine()->getRepository('AppBundle:User')->findBy(array('flat' => $user->getFlat(), 'role' => 'ROLE_ADMIN'));
-                if($admins.length <= 1){
+                if(count($admins) <= 1){
                     return new JsonResponse(array('error' => "DELETE_ONLY_ADMIN"));
                 }
             }

@@ -66,12 +66,18 @@ class CalenderController extends FOSRestController
         $start = new \DateTime($startDate->format('Y-m-d') .' ' .$startTime->format('H:i:s'));
         $calender->setStart($start);
 
-        $endDate = new \DateTime($request->request->get('end')['date']);
+        if($request->request->get('end')){
+            $requestEnd = $request->request->get('end');
+        } else {
+            $requestEnd = $request->request->get('start');
+        }
+        $endDate = new \DateTime($requestEnd['date']);
         $endDate->setTimezone( new \DateTimeZone('Europe/Berlin') );
-        $endTime = new \DateTime($request->request->get('end')['time']);
+        $endTime = new \DateTime($requestEnd['time']);
         $endTime->setTimezone( new \DateTimeZone('Europe/Berlin') );
         $end = new \DateTime($endDate->format('Y-m-d') .' ' .$endTime->format('H:i:s'));
         $calender->setEnd($end);
+        
 
         $this->getDoctrine()->getManager()->persist($calender);
         $this->getDoctrine()->getManager()->flush();

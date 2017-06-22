@@ -43,4 +43,45 @@ app.controller("choreCtrl", ['$rootScope', '$scope', '$http', '$mdDialog', funct
 		    $location.path('/login');
 		});
 	}
+	
+	$scope.deleteChore = function ($widgetId, $choreId){
+		var sUrl = $rootScope.apiPath + "/widgets/" + $widgetId + "/chores/" + $choreId;
+        var oConfig = {
+            url: sUrl,
+            method: "DELETE",
+			data: $scope.choreForm,
+			headers: {Authorization: 'Bearer ' + $rootScope.user.token},
+            params: {callback: "JSON_CALLBACK"}
+        };
+        $http(oConfig).then(function successCallback(response) {
+			if (response.data.hasOwnProperty('error')){
+				$rootScope.error = response.data.error;
+			}
+			else{
+				$rootScope.error = "";
+				for(widget in $rootScope.flat.widgets){
+					if($rootScope.flat.widgets[widget].id === $widgetId){
+						for(item in $rootScope.flat.widgets[widget].items){
+							if($rootScope.flat.widgets[widget].items[item].id === $choreId){
+								$rootScope.flat.widgets[widget].items.splice(item, 1);
+								break;
+							}
+						}
+					}
+				}
+			}
+		}, function errorCallback(response) {
+		    $location.path('/login');
+		});
+	}
+
+	$(".widget").on({
+		mouseenter: function () {
+			console.log()
+			$("."+$(this).attr('class')).css("text-decoration", "line-through");
+		},
+		mouseleave:function () {
+			$("."+$(this).attr('class')).css("text-decoration", "none");
+		}
+	},'.chore td p');
 }]);

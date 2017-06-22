@@ -22,6 +22,9 @@ class FlatController extends FOSRestController
      */
     public function getFlatAction(Flat $flat)
     {
+        if($flat->getId() !== $this->get('security.token_storage')->getToken()->getUser()->getFlat()->getId()){
+            return new JsonResponse(array('error' => "WRONG_FLAT"));
+        }
         $widgets = $flat->getWidgets();
         foreach($widgets as $widget){
             $type = $widget->getWidgetType();

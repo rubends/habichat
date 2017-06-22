@@ -214,7 +214,7 @@ hr {
   position: relative;
 }
 #error h3 {
-  position: absolute;
+  position: fixed;
   z-index: 5;
   padding: 8px;
   border-radius: 6px;
@@ -485,6 +485,10 @@ hr {
 .widget .chore td p {
   margin: 16px 0;
   font-size: 12px;
+}
+.widget .chore tr p:hover,
+.widget .chore td p:hover {
+  cursor: pointer;
 }
 .widget .chore tr td:nth-child(2n+1),
 .widget .chore td td:nth-child(2n+1) {

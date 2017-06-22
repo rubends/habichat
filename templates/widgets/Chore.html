@@ -16,13 +16,13 @@
             <tbody>
                 <tr ng-repeat="flatmate in flat.users">
                     <th><p>{{flatmate.username}}</p></th>
-                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:1"><p>{{item.title}}</p></div></td>
-                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:2"><p>{{item.title}}</p></div></td>
-                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:3"><p>{{item.title}}</p></div></td>
-                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:4"><p>{{item.title}}</p></div></td>
-                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:5"><p>{{item.title}}</p></div></td>
-                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:6"><p>{{item.title}}</p></div></td>
-                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:7"><p>{{item.title}}</p></div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:1"><p ng-click="deleteChore(widget.id, item.id)" class="chore{{item.id}}">{{item.title}}</p></div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:2"><p ng-click="deleteChore(widget.id, item.id)" class="chore{{item.id}}">{{item.title}}</p></div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:3"><p ng-click="deleteChore(widget.id, item.id)" class="chore{{item.id}}">{{item.title}}</p></div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:4"><p ng-click="deleteChore(widget.id, item.id)" class="chore{{item.id}}">{{item.title}}</p></div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:5"><p ng-click="deleteChore(widget.id, item.id)" class="chore{{item.id}}">{{item.title}}</p></div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:6"><p ng-click="deleteChore(widget.id, item.id)" class="chore{{item.id}}">{{item.title}}</p></div></td>
+                    <td><div ng-repeat="item in widget.items | choreDay:flatmate.id:7"><p ng-click="deleteChore(widget.id, item.id)" class="chore{{item.id}}">{{item.title}}</p></div></td>
                 </tr>
             </tbody>
         </table>

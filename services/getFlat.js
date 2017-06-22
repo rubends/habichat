@@ -3,14 +3,14 @@ app.factory('getFlatService', ['$rootScope','$http', '$cookies', "$location", fu
 		getFlat: function(){
             $token = $cookies.get('token');
             var decoded = jwt_decode($token);
-            if(!decoded.flat){
-                if(!$rootScope.user || !$rootScope.user.flat){
-                    var sUrl = "../backend/web/api/flats";
+            if(!$rootScope.user || !$rootScope.user.flat){
+                if(decoded.flat){
+                    var sUrl = "../backend/web/api/flats/"+ decoded.flat;
                 } else {
-                    var sUrl = "../backend/web/api/flats/"+ $rootScope.user.flat.id;
+                    var sUrl = "../backend/web/api/flats";
                 }
             } else {
-                var sUrl = "../backend/web/api/flats/"+ decoded.flat;
+                var sUrl = "../backend/web/api/flats/"+ $rootScope.user.flat.id;
             }
             if(!$rootScope.flat){
                 var oConfig = {

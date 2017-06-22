@@ -75,13 +75,15 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 					$mdDialog.cancel();
 					$rootScope.flat.widgets = $rootScope.flat.widgets ? $rootScope.flat.widgets : [];
 					$response = JSON.parse(response.data);
-					$rootScope.flat.widgets.push($response);
-					if($response.widget_type === 'Picture'){
-						$scope.postPicture($response.id);
-					} else if($response.widget_type === 'Bill'){
-						$scope.postBill($response.id);
-					} else if($response.widget_type === 'Poll'){
-						$scope.postPoll($response.id);
+					if($rootScope.flat.widgets.length === 0 || $rootScope.flat.widgets[$rootScope.flat.widgets.length-1].id !== $response.id){
+						$rootScope.flat.widgets.push($response);
+						if($response.widget_type === 'Picture'){
+							$scope.postPicture($response.id);
+						} else if($response.widget_type === 'Bill'){
+							$scope.postBill($response.id);
+						} else if($response.widget_type === 'Poll'){
+							$scope.postPoll($response.id);
+						}
 					}
 				}
 			}, function errorCallback(response) {
@@ -319,6 +321,38 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 			});
 		}
 
+		$scope.setBillAmount= function ($type){
+		if($type === 'total'){
+			$timeout(function() {
+				$divided = $('.billsplitCheck.md-checked').length;
+				if($divided >= 1){
+					$amount = Number(($scope.addBillForm.amount / $divided).toFixed(2));
+					for($user in $rootScope.flat.users){
+						$id = $rootScope.flat.users[$user].id;
+						if($scope.addBillForm.user[$id]){
+							if($scope.addBillForm.user[$id].pay){
+								$scope.addBillForm.user[$id].amount = $amount;
+							} else {
+								$scope.addBillForm.user[$id].amount = 0;
+							}
+						}
+					}
+				}
+			});
+		} else {
+			$amount = 0;
+			for($user in $rootScope.flat.users){
+				$id = $rootScope.flat.users[$user].id;
+				if($scope.addBillForm.user[$id]){
+					if($scope.addBillForm.user[$id].pay){
+						$amount = $amount + $scope.addBillForm.user[$id].amount;
+					}
+				}
+			}
+			$scope.addBillForm.amount = $amount;
+		}
+	}
+
 		$scope.fixStyle = function ($id) {
 			$timeout(function() {
 				$('.checkboxColor .md-icon').css('background-color', 'transparent');
@@ -551,7 +585,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 				} else if(data.reason === 'chat') {
 					data.chat = JSON.parse(data.chat);
 					data.chat.send = moment(data.chat.send).format('HH:mm DD/MM/YY');
-					if($rootScope.flat.chats[$rootScope.flat.chats.length-1].id !== data.chat.id){
+					if($rootScope.flat.chats.length === 0 || $rootScope.flat.chats[$rootScope.flat.chats.length-1].id !== data.chat.id){
 						$rootScope.flat.chats.push(data.chat);
 						if(!$scope.chat || $location.path() !== '/dasboard'){
 							$audio = new Audio('/audio/music_marimba_chord.wav');

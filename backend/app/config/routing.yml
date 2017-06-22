@@ -50,3 +50,7 @@ chat:
     resource: "@AppBundle/Controller/ChatController.php"
     type:     rest
     prefix: /api
+chore:
+    resource: "@AppBundle/Controller/ChoreController.php"
+    type:     rest
+    prefix: /api
