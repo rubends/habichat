@@ -8,7 +8,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 		if($rootScope.flat.chats) {
 			$rootScope.flat.chats.new = 0;
 			for($i = $rootScope.flat.chats.length-1; $i >= 0; $i--){
-				if(moment($rootScope.flat.chats[$i].send).isAfter($rootScope.user.last_login)){
+				if(moment($rootScope.flat.chats[$i].send).isAfter($rootScope.user.last_login) && $rootScope.flat.chats[$i].user.id !== $rootScope.user.id){
 					$rootScope.flat.chats.new++;
 				} else { break; }
 			}
@@ -84,6 +84,7 @@ app.controller("dashboardCtrl", ['$rootScope', '$scope', '$http', '$cookies', '$
 						} else if($response.widget_type === 'Poll'){
 							$scope.postPoll($response.id);
 						}
+						$scope.fixStyle($response.id);
 					}
 				}
 			}, function errorCallback(response) {

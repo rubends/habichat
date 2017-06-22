@@ -74,8 +74,8 @@
      "TEXT": "Text",
      "PICTURE": "Picture",
      "WEATHER": "Weather",
-     "EXPENSES": "Expenses",
-     "CAT": "Catgif",
+     "BILL": "Expenses",
+     "CATGIF": "Catgif",
      "CALENDER": "Calender",
      "CHORES": "Chores",
      "CHORE": "chore",
@@ -164,5 +164,6 @@
      "RESET_NOT_BELONGING": "Email and reset key do not belong together.",
      "WIDGET_DELETE_NOT_ALLOWED": "User has no rights to delete this widget.",
      "SENT": "sent!",
-     "WEEK": {"1": "MON","2": "TUE","3": "WED","4": "THU","5": "FRI","6": "SAT","7": "SUN"}
+     "WEEK": {"1": "MON","2": "TUE","3": "WED","4": "THU","5": "FRI","6": "SAT","7": "SUN"},
+     "HUM": "hum"
 }
